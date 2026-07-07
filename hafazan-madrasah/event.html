@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📅 Event Manager - Madrasah</title>
+
+    <!-- iOS PWA Meta -->
+    <link rel="icon" type="image/png" href="https://api.iconify.design/twemoji/spiral-calendar.svg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Events">
+    <meta name="theme-color" content="#047857">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="https://api.iconify.design/twemoji/spiral-calendar.svg">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --primary: #047857;
+            --primary-light: #10b981;
+            --secondary: #3b82f6;
+            --gold: #fbbf24;
+            --red: #ef4444;
+            --text: #1f2937;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            padding: 30px 20px;
+        }
+
+        .login-logo {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-page h1 {
+            color: white;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+
+        .login-page p {
+            color: #fbbf24;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .login-form {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== APP PAGES ===== */
+        .app-page { display: none; }
+        .app-page.active { display: block; }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 15px 20px;
+            padding-top: calc(15px + env(safe-area-inset-top));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            background: white;
+            padding: 15px 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* ===== EVENTS LIST ===== */
+        .events-container {
+            padding: 15px;
+            padding-bottom: 100px;
+        }
+
+        .events-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(4,120,87,0.3);
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .event-card:active {
+            transform: scale(0.98);
+        }
+
+        .event-card.featured {
+            border: 2px solid var(--gold);
+            background: linear-gradient(135deg, #fffbeb, white);
+        }
+
+        .event-card.hidden-event {
+            opacity: 0.5;
+        }
+
+        .event-date-badge {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            min-width: 60px;
+            flex-shrink: 0;
+        }
+
+        .event-date-badge.color-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .event-date-badge.color-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .event-date-badge.color-orange { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .event-date-badge.color-green { background: linear-gradient(135deg, #10b981, #047857); }
+        .event-date-badge.color-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .event-date-badge.color-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+
+        .event-day {
+            font-size: 1.4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .event-month {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 3px;
+            opacity: 0.95;
+        }
+
+        .event-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .event-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .event-badge.featured-badge {
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #1f2937;
+        }
+
+        .event-badge.category {
+            background: #f0fdf4;
+            color: var(--primary);
+        }
+
+        .event-badge.hidden {
+            background: #fee2e2;
+            color: var(--red);
+        }
+
+        .event-title {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        .event-meta {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .event-meta span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* ===== FAB BUTTON ===== */
+        .fab-add {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(4,120,87,0.4);
+            cursor: pointer;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .fab-add:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== MODAL FORM ===== */
+        .form-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .form-modal.hidden {
+            display: none;
+        }
+
+        .form-content {
+            background: white;
+            width: 100%;
+            max-height: 95vh;
+            border-radius: 24px 24px 0 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            animation: slideUp 0.3s ease;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .form-header h2 {
+            font-size: 1.1rem;
+        }
+
+        .btn-close {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .form-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+
+        .form-group label .required {
+            color: var(--red);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Date Type Toggle */
+        .date-type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .date-type-option {
+            padding: 14px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .date-type-option.active {
+            background: linear-gradient(135deg, #f0fdf4, #d1fae5);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .date-type-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Featured Toggle */
+        .featured-toggle {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .featured-toggle input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--gold);
+        }
+
+        .featured-toggle label {
+            font-weight: 700;
+            color: #78350f;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Color Picker */
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .color-option {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 0 3px var(--primary);
+            transform: scale(1.1);
+        }
+
+        .color-option.active::after {
+            content: '✓';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+
+        /* Submit Buttons */
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .btn-cancel,
+        .btn-save,
+        .btn-delete {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: var(--text-light);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            box-shadow: 0 4px 12px rgba(4,120,87,0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, var(--red), #dc2626);
+            color: white;
+        }
+
+        .btn-save:active,
+        .btn-cancel:active,
+        .btn-delete:active {
+            transform: scale(0.98);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 9999;
+            display: none;
+            animation: toastIn 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translate(-50%, 30px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        /* Hidden helper */
+        .hidden { display: none !important; }
+
+        /* Sync indicator */
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.9);
+            margin-left: 8px;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .sync-dot.offline {
+            background: #ef4444;
+            animation: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================ -->
+    <!-- ===== LOGIN PAGE ========== -->
+    <!-- ============================ -->
+    <div class="login-page" id="loginPage">
+        <div class="login-logo">📅</div>
+        <h1>Event Manager</h1>
+        <p>Madrasah Tahfiz PSB</p>
+
+        <form class="login-form" onsubmit="doLogin(event)">
+            <label>ID Admin</label>
+            <input type="text" id="loginId" placeholder="admin" autocapitalize="none" required>
+
+            <label>Kata Laluan</label>
+            <input type="password" id="loginPass" placeholder="••••••" required>
+
+            <button type="submit" class="btn-login">🔐 Log Masuk</button>
+        </form>
+    </div>
+
+    <!-- ============================ -->
+    <!-- ===== MAIN APP =========== -->
+    <!-- ============================ -->
+    <div class="app-page" id="mainPage">
+
+        <!-- Header -->
+        <div class="app-header">
+            <div>
+                <h1>📅 Event Manager</h1>
+                <div class="sync-indicator">
+                    <span class="sync-dot" id="syncDot"></span>
+                    <span id="syncStatus">Synced</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" onclick="refreshEvents()" title="Refresh">🔄</button>
+                <button class="btn-icon" onclick="doLogout()" title="Logout">🚪</button>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num" id="statTotal">0</div>
+                <div class="stat-label">Jumlah</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statUpcoming">0</div>
+                <div class="stat-label">Akan Datang</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statFeatured">0</div>
+                <div class="stat-label">Featured</div>
+            </div>
+        </div>
+
+        <!-- Events Container -->
+        <div class="events-container">
+
+            <!-- Filter Buttons -->
+            <div class="events-filter">
+                <button class="filter-btn active" onclick="filterEvents('all', this)">📋 Semua</button>
+                <button class="filter-btn" onclick="filterEvents('upcoming', this)">🔜 Akan Datang</button>
+                <button class="filter-btn" onclick="filterEvents('past', this)">📜 Lepas</button>
+                <button class="filter-btn" onclick="filterEvents('featured', this)">⭐ Featured</button>
+                <button class="filter-btn" onclick="filterEvents('hidden', this)">🚫 Tersembunyi</button>
+            </div>
+
+            <!-- Events List -->
+            <div id="eventsList">
+                <div class="empty-state">
+                    <div class="empty-icon">⏳</div>
+                    <p>Memuat acara...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAB Add Button -->
+        <button class="fab-add" onclick="openEventForm()">
+            <span>+</span>
+        </button>
+    </div>
+
+    <!-- ============================ -->
+    <!-- ===== EVENT FORM MODAL === -->
+    <!-- ============================ -->
+    <div class="form-modal hidden" id="eventFormModal">
+        <div class="form-content">
+            <div class="form-header">
+                <h2 id="formTitle">➕ Tambah Acara Baru</h2>
+                <button class="btn-close" onclick="closeEventForm()">✕</button>
+            </div>
+
+            <form id="eventForm" onsubmit="saveEvent(event)">
+                <input type="hidden" id="eventEditId">
+
+                <div class="form-body">
+
+                    <!-- Featured Toggle -->
+                    <label class="featured-toggle">
+                        <input type="checkbox" id="eventFeatured">
+                        <label>⭐ <strong>Featured Event</strong> (Paparkan besar di atas website)</label>
+                    </label>
+
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label>Tajuk Acara <span class="required">*</span></label>
+                        <input type="text" id="eventTitle" required placeholder="cth: Majlis Khatam Quran">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label>Penerangan <span class="required">*</span></label>
+                        <textarea id="eventDesc" rows="3" required placeholder="Terangkan tentang acara..."></textarea>
+                    </div>
+
+                    <!-- Date Type Toggle -->
+                    <div class="form-group">
+                        <label>Jenis Tarikh <span class="required">*</span></label>
+                        <div class="date-type-toggle">
+                            <div class="date-type-option active" id="dateTypeSingle" onclick="setDateType('single')">
+                                <span class="date-type-icon">📅</span>
+                                <span>Satu Hari</span>
+                            </div>
+                            <div class="date-type-option" id="dateTypeRange" onclick="setDateType('range')">
+                                <span class="date-type-icon">📆</span>
+                                <span>Beberapa Hari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Date -->
+                    <div id="singleDateGroup">
+                        <div class="form-group">
+                            <label>Tarikh <span class="required">*</span></label>
+                            <input type="date" id="eventDate">
+                        </div>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div id="rangeDateGroup" class="hidden">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tarikh Mula <span class="required">*</span></label>
+                                <input type="date" id="eventDateStart">
+                            </div>
+                            <div class="form-group">
+                                <label>Tarikh Tamat <span class="required">*</span></label>
+                                <input type="date" id="eventDateEnd">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="form-group">
+                        <label>🕐 Masa</label>
+                        <input type="text" id="eventTime" placeholder="cth: 9:00 AM - 12:00 PM">
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label>📍 Lokasi <span class="required">*</span></label>
+                        <input type="text" id="eventLocation" required placeholder="cth: Dewan Utama Madrasah">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label>📋 Kategori <span class="required">*</span></label>
+                        <select id="eventCategory" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="class">📚 Kelas</option>
+                            <option value="event">🎉 Majlis</option>
+                            <option value="activity">🌟 Aktiviti</option>
+                            <option value="meeting">👨‍👩‍👧 Perjumpaan</option>
+                            <option value="holiday">🏖️ Cuti</option>
+                            <option value="special">⭐ Sambutan</option>
+                        </select>
+                    </div>
+
+                    <!-- Color Picker -->
+                    <div class="form-group">
+                        <label>🎨 Warna Tema <span class="required">*</span></label>
+                        <div class="color-picker">
+                            <div class="color-option" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);" data-color="purple" onclick="selectColor('purple', this)"></div>
+                            <div class="color-option" style="background:linear-gradient(135deg,#3b82f6,#2563eb);" data-color="blue" onclick="selectColor('blue', this)"></div>
+                            <div class="color-option" style="background:linear-gradient(135deg,#10b981,#047857);" data-color="green" onclick="selectColor('green', this)"></div>
+                            <div class="color-option" style="background:linear-gradient(135deg,#f97316,#ea580c);" data-color="orange" onclick="selectColor('orange', this)"></div>
+                            <div class="color-option" style="background:linear-gradient(135deg,#ef4444,#dc2626);" data-color="red" onclick="selectColor('red', this)"></div>
+                            <div class="color-option" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" data-color="gold" onclick="selectColor('gold', this)"></div>
+                        </div>
+                        <input type="hidden" id="eventColor" required>
+                    </div>
+
+                    <!-- Icon -->
+                    <div class="form-group">
+                        <label>✨ Icon (Optional)</label>
+                        <input type="text" id="eventIcon" placeholder="cth: 🌙 (1 emoji sahaja)" maxlength="2">
+                    </div>
+
+                    <!-- WhatsApp Message -->
+                    <div class="form-group">
+                        <label>💬 WhatsApp Message (Optional)</label>
+                        <input type="text" id="eventWAMessage" placeholder="cth: Saya berminat sertai...">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>👁 Status</label>
+                        <select id="eventStatus">
+                            <option value="active">✅ Aktif (Paparkan)</option>
+                            <option value="hidden">🚫 Sembunyi</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn-delete hidden" id="btnDelete" onclick="deleteEvent()">🗑 Padam</button>
+                    <button type="button" class="btn-cancel" onclick="closeEventForm()">Batal</button>
+                    <button type="submit" class="btn-save">💾 Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+    // ============================================
+    // ===== FIREBASE CONFIG ======================
+    // ============================================
+    var firebaseConfig = {
+        apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+        authDomain: "hafazan-madrasah.firebaseapp.com",
+        databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hafazan-madrasah",
+        storageBucket: "hafazan-madrasah.firebasestorage.app",
+        messagingSenderId: "707178356175",
+        appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    // ============================================
+    // ===== GLOBAL VARIABLES =====================
+    // ============================================
+    var allEvents = [];
+    var currentFilter = 'all';
+    var editingEventId = null;
+    var currentDateType = 'single';
+
+    // Set default dates
+    var today = new Date().toISOString().split('T')[0];
+
+    // Check session on load
+    var savedSession = sessionStorage.getItem('eventAppSession');
+    if (savedSession) {
+        showApp();
+    }
+
+    // ============================================
+    // ===== AUTHENTICATION =======================
+    // ============================================
+    function doLogin(e) {
+        e.preventDefault();
+        var id = document.getElementById('loginId').value.trim();
+        var pass = document.getElementById('loginPass').value.trim();
+
+        showToast('⏳ Logging in...');
+
+        db.ref('hafazanData/admins').once('value').then(function(snap) {
+            var admins = snap.val() || [];
+            var found = false;
+
+            for (var i = 0; i < admins.length; i++) {
+                if (admins[i].id === id && admins[i].password === pass) {
+                    found = true;
+                    sessionStorage.setItem('eventAppSession', JSON.stringify(admins[i]));
+                    showApp();
+                    showToast('✅ Selamat datang!');
+                    break;
+                }
+            }
+
+            if (!found) {
+                showToast('❌ ID atau password salah');
+            }
+        }).catch(function(err) {
+            showToast('❌ Error: ' + err.message);
+        });
+    }
+
+    function doLogout() {
+        if (!confirm('Log keluar?')) return;
+        sessionStorage.removeItem('eventAppSession');
+        document.getElementById('mainPage').classList.remove('active');
+        document.getElementById('loginPage').style.display = 'flex';
+    }
+
+    function showApp() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainPage').classList.add('active');
+        loadEvents();
+        startRealtimeSync();
+    }
+
+    // ============================================
+    // ===== LOAD EVENTS ==========================
+    // ============================================
+    function loadEvents() {
+        updateSyncStatus('syncing');
+
+        db.ref('hafazanData/events').once('value').then(function(snap) {
+            var data = snap.val();
+            allEvents = [];
+
+            if (data) {
+                if (Array.isArray(data)) {
+                    allEvents = data.filter(function(e) { return e; });
+                } else if (typeof data === 'object') {
+                    allEvents = Object.values(data).filter(function(e) { return e; });
+                }
+            }
+
+            renderEvents();
+            updateStats();
+            updateSyncStatus('synced');
+        }).catch(function(err) {
+            console.log('Load error:', err);
+            updateSyncStatus('offline');
+            showToast('❌ Gagal memuat: ' + err.message);
+        });
+    }
+
+    function refreshEvents() {
+        showToast('🔄 Refreshing...');
+        loadEvents();
+    }
+
+    // Real-time sync
+    function startRealtimeSync() {
+        db.ref('hafazanData/events').on('value', function(snap) {
+            var data = snap.val();
+            allEvents = [];
+
+            if (data) {
+                if (Array.isArray(data)) {
+                    allEvents = data.filter(function(e) { return e; });
+                } else if (typeof data === 'object') {
+                    allEvents = Object.values(data).filter(function(e) { return e; });
+                }
+            }
+
+            renderEvents();
+            updateStats();
+            updateSyncStatus('synced');
+        });
+    }
+
+    // ============================================
+    // ===== RENDER EVENTS ========================
+    // ============================================
+    function renderEvents() {
+        var container = document.getElementById('eventsList');
+        if (!container) return;
+
+        var today = new Date().toISOString().split('T')[0];
+        var filtered = allEvents.slice();
+
+        // Apply filter
+        if (currentFilter === 'upcoming') {
+            filtered = filtered.filter(function(e) {
+                return e.date >= today && e.status !== 'hidden';
+            });
+        } else if (currentFilter === 'past') {
+            filtered = filtered.filter(function(e) {
+                return e.date < today;
+            });
+        } else if (currentFilter === 'featured') {
+            filtered = filtered.filter(function(e) {
+                return e.featured && e.status !== 'hidden';
+            });
+        } else if (currentFilter === 'hidden') {
+            filtered = filtered.filter(function(e) {
+                return e.status === 'hidden';
+            });
+        } else {
+            // All - exclude hidden by default
+            filtered = filtered.filter(function(e) {
+                return e.status !== 'hidden';
+            });
+        }
+
+        // Sort by date
+        filtered.sort(function(a, b) {
+            return new Date(a.date) - new Date(b.date);
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML =
+                '<div class="empty-state">' +
+                '<div class="empty-icon">📭</div>' +
+                '<p style="font-weight:700;margin-bottom:5px;">Tiada acara</p>' +
+                '<small>Tap + untuk tambah acara baru</small>' +
+                '</div>';
+            return;
+        }
+
+        var months = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+        var categories = {
+            class: '📚 Kelas',
+            event: '🎉 Majlis',
+            activity: '🌟 Aktiviti',
+            meeting: '👨‍👩‍👧 Perjumpaan',
+            holiday: '🏖️ Cuti',
+            special: '⭐ Sambutan'
+        };
+
+        var html = '';
+        for (var i = 0; i < filtered.length; i++) {
+            var event = filtered[i];
+            var d = new Date(event.date);
+            var dEnd = event.dateEnd ? new Date(event.dateEnd) : d;
+            var isRange = event.dateEnd && event.dateEnd !== event.date;
+            var color = event.color || 'green';
+            var isHidden = event.status === 'hidden';
+
+            html += '<div class="event-card ' + (event.featured ? 'featured' : '') + ' ' + (isHidden ? 'hidden-event' : '') + '" onclick="editEvent(\'' + event.id + '\')">';
+
+            // Date badge
+            html += '<div class="event-date-badge color-' + color + '">';
+            if (isRange && d.getMonth() === dEnd.getMonth()) {
+                html += '<div class="event-day" style="font-size:1.1rem;">' + d.getDate() + '-' + dEnd.getDate() + '</div>';
+                html += '<div class="event-month">' + months[d.getMonth()] + '</div>';
+            } else if (isRange) {
+                html += '<div style="font-size:0.75rem;font-weight:800;">' + d.getDate() + ' ' + months[d.getMonth()] + '</div>';
+                html += '<div style="font-size:0.6rem;margin:2px 0;">→</div>';
+                html += '<div style="font-size:0.75rem;font-weight:800;">' + dEnd.getDate() + ' ' + months[dEnd.getMonth()] + '</div>';
+            } else {
+                html += '<div class="event-day">' + d.getDate() + '</div>';
+                html += '<div class="event-month">' + months[d.getMonth()] + '</div>';
+            }
+            html += '</div>';
+
+            // Info
+            html += '<div class="event-info">';
+
+            // Badges
+            html += '<div class="event-badges">';
+            if (event.featured) {
+                html += '<span class="event-badge featured-badge">⭐ FEATURED</span>';
+            }
+            html += '<span class="event-badge category">' + (categories[event.category] || event.category) + '</span>';
+            if (isHidden) {
+                html += '<span class="event-badge hidden">🚫 HIDDEN</span>';
+            }
+            html += '</div>';
+
+            // Title
+            html += '<div class="event-title">' + event.title + '</div>';
+
+            // Meta
+            html += '<div class="event-meta">';
+            if (event.time) html += '<span>🕐 ' + event.time + '</span>';
+            if (event.location) {
+                var loc = event.location.length > 20 ? event.location.substring(0, 20) + '...' : event.location;
+                html += '<span>📍 ' + loc + '</span>';
+            }
+            html += '</div>';
+
+            html += '</div>';
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+    }
+
+    // ============================================
+    // ===== UPDATE STATS =========================
+    // ============================================
+    function updateStats() {
+        var today = new Date().toISOString().split('T')[0];
+        var total = 0, upcoming = 0, featured = 0;
+
+        for (var i = 0; i < allEvents.length; i++) {
+            var e = allEvents[i];
+            if (e.status === 'hidden') continue;
+            total++;
+            if (e.date >= today) upcoming++;
+            if (e.featured) featured++;
+        }
+
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statUpcoming').textContent = upcoming;
+        document.getElementById('statFeatured').textContent = featured;
+    }
+
+    // ============================================
+    // ===== FILTER EVENTS ========================
+    // ============================================
+    function filterEvents(filter, btn) {
+        currentFilter = filter;
+
+        var btns = document.querySelectorAll('.filter-btn');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        if (btn) btn.classList.add('active');
+
+        renderEvents();
+    }
+
+    // ============================================
+    // ===== OPEN FORM ============================
+    // ============================================
+    function openEventForm() {
+        editingEventId = null;
+        document.getElementById('formTitle').textContent = '➕ Tambah Acara Baru';
+        document.getElementById('eventForm').reset();
+        document.getElementById('eventEditId').value = '';
+        document.getElementById('btnDelete').classList.add('hidden');
+
+        // Set default date
+        document.getElementById('eventDate').value = today;
+        document.getElementById('eventDateStart').value = today;
+        document.getElementById('eventDateEnd').value = today;
+
+        // Reset date type
+        setDateType('single');
+
+        // Reset color
+        var colorOpts = document.querySelectorAll('.color-option');
+        for (var i = 0; i < colorOpts.length; i++) {
+            colorOpts[i].classList.remove('active');
+        }
+        document.getElementById('eventColor').value = '';
+
+        document.getElementById('eventFormModal').classList.remove('hidden');
+    }
+
+    function closeEventForm() {
+        document.getElementById('eventFormModal').classList.add('hidden');
+        editingEventId = null;
+    }
+
+    // ============================================
+    // ===== EDIT EVENT ===========================
+    // ============================================
+    function editEvent(eventId) {
+        var event = null;
+        for (var i = 0; i < allEvents.length; i++) {
+            if (allEvents[i].id === eventId) {
+                event = allEvents[i];
+                break;
+            }
+        }
+        if (!event) return;
+
+        editingEventId = eventId;
+        document.getElementById('formTitle').textContent = '✏️ Edit Acara';
+        document.getElementById('eventEditId').value = eventId;
+        document.getElementById('btnDelete').classList.remove('hidden');
+
+        document.getElementById('eventTitle').value = event.title || '';
+        document.getElementById('eventDesc').value = event.description || '';
+        document.getElementById('eventTime').value = event.time || '';
+        document.getElementById('eventLocation').value = event.location || '';
+        document.getElementById('eventCategory').value = event.category || '';
+        document.getElementById('eventFeatured').checked = event.featured || false;
+        document.getElementById('eventIcon').value = event.icon || '';
+        document.getElementById('eventWAMessage').value = event.waMessage || '';
+        document.getElementById('eventStatus').value = event.status || 'active';
+
+        // Date type
+        if (event.dateEnd && event.dateEnd !== event.date) {
+            setDateType('range');
+            document.getElementById('eventDateStart').value = event.date || '';
+            document.getElementById('eventDateEnd').value = event.dateEnd || '';
+        } else {
+            setDateType('single');
+            document.getElementById('eventDate').value = event.date || '';
+        }
+
+        // Color
+        var colorOpts = document.querySelectorAll('.color-option');
+        for (var i = 0; i < colorOpts.length; i++) {
+            colorOpts[i].classList.remove('active');
+            if (colorOpts[i].dataset.color === event.color) {
+                colorOpts[i].classList.add('active');
+            }
+        }
+        document.getElementById('eventColor').value = event.color || '';
+
+        document.getElementById('eventFormModal').classList.remove('hidden');
+    }
+
+    // ============================================
+    // ===== DATE TYPE TOGGLE =====================
+    // ============================================
+    function setDateType(type) {
+        currentDateType = type;
+
+        document.getElementById('dateTypeSingle').classList.remove('active');
+        document.getElementById('dateTypeRange').classList.remove('active');
+
+        if (type === 'single') {
+            document.getElementById('dateTypeSingle').classList.add('active');
+            document.getElementById('singleDateGroup').classList.remove('hidden');
+            document.getElementById('rangeDateGroup').classList.add('hidden');
+        } else {
+            document.getElementById('dateTypeRange').classList.add('active');
+            document.getElementById('singleDateGroup').classList.add('hidden');
+            document.getElementById('rangeDateGroup').classList.remove('hidden');
+        }
+    }
+
+    // ============================================
+    // ===== COLOR PICKER =========================
+    // ============================================
+    function selectColor(color, el) {
+        var opts = document.querySelectorAll('.color-option');
+        for (var i = 0; i < opts.length; i++) {
+            opts[i].classList.remove('active');
+        }
+        el.classList.add('active');
+        document.getElementById('eventColor').value = color;
+    }
+
+    // ============================================
+    // ===== SAVE EVENT ===========================
+    // ============================================
+    function saveEvent(e) {
+        e.preventDefault();
+
+        // Get date values
+        var eventDate, eventDateEnd;
+        if (currentDateType === 'range') {
+            eventDate = document.getElementById('eventDateStart').value;
+            eventDateEnd = document.getElementById('eventDateEnd').value;
+
+            if (!eventDate || !eventDateEnd) {
+                showToast('❌ Sila isi tarikh mula dan tamat');
+                return;
+            }
+            if (new Date(eventDateEnd) < new Date(eventDate)) {
+                showToast('❌ Tarikh tamat mesti selepas tarikh mula');
+                return;
+            }
+        } else {
+            eventDate = document.getElementById('eventDate').value;
+            eventDateEnd = eventDate;
+
+            if (!eventDate) {
+                showToast('❌ Sila pilih tarikh');
+                return;
+            }
+        }
+
+        // Validate color
+        var color = document.getElementById('eventColor').value;
+        if (!color) {
+            showToast('❌ Sila pilih warna tema');
+            return;
+        }
+
+        var eventData = {
+            id: editingEventId || 'EVT' + Date.now(),
+            title: document.getElementById('eventTitle').value.trim(),
+            description: document.getElementById('eventDesc').value.trim(),
+            date: eventDate,
+            dateEnd: eventDateEnd,
+            dateType: currentDateType,
+            time: document.getElementById('eventTime').value.trim(),
+            location: document.getElementById('eventLocation').value.trim(),
+            category: document.getElementById('eventCategory').value,
+            color: color,
+            featured: document.getElementById('eventFeatured').checked,
+            icon: document.getElementById('eventIcon').value.trim(),
+            waMessage: document.getElementById('eventWAMessage').value.trim(),
+            status: document.getElementById('eventStatus').value,
+            updatedAt: new Date().toISOString()
+        };
+
+        showToast('⏳ Menyimpan...');
+        updateSyncStatus('syncing');
+
+        // Load current data
+        db.ref('hafazanData').once('value').then(function(snap) {
+            var data = snap.val() || {};
+            if (!data.events) data.events = [];
+
+            // If featured, unfeature others
+            if (eventData.featured) {
+                for (var i = 0; i < data.events.length; i++) {
+                    if (data.events[i] && data.events[i].id !== editingEventId) {
+                        data.events[i].featured = false;
+                    }
+                }
+            }
+
+            // Add or update
+            if (editingEventId) {
+                var updated = false;
+                for (var i = 0; i < data.events.length; i++) {
+                    if (data.events[i] && data.events[i].id === editingEventId) {
+                        // Preserve createdAt
+                        eventData.createdAt = data.events[i].createdAt || new Date().toISOString();
+                        data.events[i] = eventData;
+                        updated = true;
+                        break;
+                    }
+                }
+                if (!updated) {
+                    eventData.createdAt = new Date().toISOString();
+                    data.events.push(eventData);
+                }
+            } else {
+                eventData.createdAt = new Date().toISOString();
+                data.events.push(eventData);
+            }
+
+            data.lastUpdated = Date.now();
+
+            // Save to Firebase
+            return db.ref('hafazanData').set(data);
+        }).then(function() {
+            showToast(editingEventId ? '✅ Acara dikemaskini!' : '✅ Acara baru ditambah!');
+            closeEventForm();
+            updateSyncStatus('synced');
+        }).catch(function(err) {
+            showToast('❌ Gagal: ' + err.message);
+            updateSyncStatus('offline');
+        });
+    }
+
+    // ============================================
+    // ===== DELETE EVENT =========================
+    // ============================================
+    function deleteEvent() {
+        if (!editingEventId) return;
+
+        if (!confirm('⚠️ Padam acara ini?\n\nTindakan ini TIDAK boleh diundo!')) return;
+
+        showToast('⏳ Memadam...');
+        updateSyncStatus('syncing');
+
+        db.ref('hafazanData').once('value').then(function(snap) {
+            var data = snap.val() || {};
+            if (!data.events) data.events = [];
+
+            var newList = [];
+            for (var i = 0; i < data.events.length; i++) {
+                if (data.events[i] && data.events[i].id !== editingEventId) {
+                    newList.push(data.events[i]);
+                }
+            }
+            data.events = newList;
+            data.lastUpdated = Date.now();
+
+            return db.ref('hafazanData').set(data);
+        }).then(function() {
+            showToast('🗑 Acara dipadam');
+            closeEventForm();
+            updateSyncStatus('synced');
+        }).catch(function(err) {
+            showToast('❌ Gagal: ' + err.message);
+            updateSyncStatus('offline');
+        });
+    }
+
+    // ============================================
+    // ===== SYNC STATUS ==========================
+    // ============================================
+    function updateSyncStatus(status) {
+        var dot = document.getElementById('syncDot');
+        var text = document.getElementById('syncStatus');
+
+        if (status === 'syncing') {
+            dot.classList.remove('offline');
+            text.textContent = 'Syncing...';
+        } else if (status === 'synced') {
+            dot.classList.remove('offline');
+            text.textContent = 'Synced';
+        } else if (status === 'offline') {
+            dot.classList.add('offline');
+            text.textContent = 'Offline';
+        }
+    }
+
+    // ============================================
+    // ===== TOAST ================================
+    // ============================================
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function() { toast.classList.remove('show'); }, 3000);
+    }
+
+    // ============================================
+    // ===== PWA SERVICE WORKER ===================
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(reg) {
+                console.log('✅ PWA registered:', reg.scope);
+            }).catch(function(err) {
+                console.log('❌ PWA error:', err);
+            });
+        });
+    }
+
+    console.log('✅ Event Manager App loaded');
+    </script>
+
+</body>
+</html>

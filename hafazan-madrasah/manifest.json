@@ -1,0 +1,26 @@
+{
+  "name": "Madrasah Al-Hidayah",
+  "short_name": "Madrasah",
+  "description": "Sistem Pengurusan Hafazan Al-Quran",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#10b981",
+  "theme_color": "#047857",
+  "icons": [
+    {
+      "src": "https://api.iconify.design/twemoji/mosque.svg?height=192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://api.iconify.design/twemoji/mosque.svg?height=512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "lang": "ms-MY"
+}

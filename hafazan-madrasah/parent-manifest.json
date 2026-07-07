@@ -1,0 +1,30 @@
+{
+  "name": "Portal Ibu Bapa - Madrasah",
+  "short_name": "Parent",
+  "description": "Portal Ibu Bapa Madrasah Tahfiz",
+  "start_url": "/parent-app.html",
+  "display": "standalone",
+  "background_color": "#1e40af",
+  "theme_color": "#1e40af",
+  "orientation": "portrait",
+  "icons": [
+    {
+        "src": "https://i.ibb.co/DgSPkh8d/logo.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+    },
+    {
+        "src": "https://i.ibb.co/DgSPkh8d/logo.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+    },
+    {
+        "src": "https://i.ibb.co/DgSPkh8d/logo.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+    }
+]
+}

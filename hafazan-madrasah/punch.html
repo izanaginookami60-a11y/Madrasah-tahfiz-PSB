@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⏰ Smart Punch - Madrasah</title>
+    <link rel="icon" type="image/png" href="https://api.iconify.design/twemoji/alarm-clock.svg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Punch">
+    <meta name="theme-color" content="#047857">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Face API (Optimized Vlad Mandic version to match models) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.umd.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --primary: #047857;
+            --primary-light: #10b981;
+            --gold: #fbbf24;
+            --red: #ef4444;
+            --text: #1f2937;
+            --text-light: #64748b;
+            --bg: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== LOGIN ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .login-logo { font-size: 5rem; margin-bottom: 15px; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+        .login-page h1 { color: white; font-size: 1.6rem; margin-bottom: 5px; }
+        .login-page p { color: #fbbf24; margin-bottom: 25px; font-weight: 600; }
+
+        .login-form {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-form label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.9rem; }
+
+        .login-form input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .login-form input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(16,185,129,0.1); }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-login:active { transform: scale(0.98); }
+
+        /* ===== MAIN APP ===== */
+        .app-page { display: none; }
+        .app-page.active { display: block; min-height: 100vh; }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 15px 20px;
+            padding-top: calc(15px + env(safe-area-inset-top));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 { font-size: 1.1rem; }
+
+        .worker-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .worker-avatar {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .worker-name { font-weight: 800; font-size: 0.95rem; }
+        .worker-role { font-size: 0.78rem; opacity: 0.9; }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ===== TIME DISPLAY ===== */
+        .time-display {
+            text-align: center;
+            padding: 25px 20px;
+            color: white;
+        }
+
+        .time-date { font-size: 0.9rem; opacity: 0.9; }
+
+        .time-clock {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #fbbf24;
+            font-variant-numeric: tabular-nums;
+            margin: 8px 0;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .time-day { font-size: 1rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* ===== FACE SCAN AREA ===== */
+        .scan-area {
+            margin: 0 20px 20px;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .scan-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scan-header h3 { color: var(--primary); font-size: 1rem; }
+
+        .scan-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .scan-status.loading { background: #fef3c7; color: #78350f; }
+        .scan-status.ready { background: #d1fae5; color: #065f46; }
+        .scan-status.error { background: #fee2e2; color: #991b1b; }
+        .scan-status.success { background: #d1fae5; color: #065f46; }
+
+        /* Camera container */
+        .camera-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .camera-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        /* Face overlay */
+        .face-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .face-circle {
+            width: 200px;
+            height: 250px;
+            border: 3px dashed rgba(255,255,255,0.6);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .face-circle.detecting {
+            border-color: #fbbf24;
+            animation: pulse 1s infinite;
+        }
+
+        .face-circle.matched {
+            border-color: #10b981;
+            border-style: solid;
+            box-shadow: 0 0 30px rgba(16,185,129,0.5);
+        }
+
+        .face-circle.not-matched {
+            border-color: #ef4444;
+            border-style: solid;
+            box-shadow: 0 0 30px rgba(239,68,68,0.5);
+        }
+
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(251,191,36,0); }
+        }
+
+        .face-label {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* GPS & Face status */
+        .verify-section {
+            padding: 15px 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .verify-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.88rem;
+        }
+
+        .verify-icon { font-size: 1.2rem; }
+        .verify-item.valid { color: #047857; }
+        .verify-item.invalid { color: #ef4444; }
+        .verify-item.loading { color: #f59e0b; }
+
+        /* Action buttons */
+        .action-section {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-punch {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-punch:active { transform: scale(0.98); }
+        .btn-punch:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-punch-in {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+
+        .btn-punch-out {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 8px 25px rgba(239,68,68,0.4);
+        }
+
+        /* ===== STATS ===== */
+        .stats-section {
+            margin: 0 20px 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .stats-section h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 12px 8px;
+            background: #f0fdf4;
+            border-radius: 10px;
+        }
+
+        .stat-num { font-size: 1.3rem; font-weight: 900; color: var(--primary); }
+        .stat-label { font-size: 0.68rem; color: var(--text-light); font-weight: 600; margin-top: 3px; }
+
+        /* ===== RECENT RECORDS ===== */
+        .records-section {
+            margin: 0 20px 100px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .record-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-left: 4px solid #10b981;
+        }
+
+        .record-date { text-align: center; min-width: 45px; }
+        .record-day { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
+        .record-month { font-size: 0.65rem; color: var(--text-light); text-transform: uppercase; }
+        .record-info { flex: 1; }
+        .record-times { font-size: 0.82rem; color: var(--text-light); }
+        .record-hours { font-weight: 800; color: var(--primary); font-size: 0.92rem; }
+
+        /* ===== FACE REGISTRATION ===== */
+        .register-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-modal.hidden { display: none; }
+
+        .register-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 20px;
+            border-radius: 24px 24px 0 0;
+            text-align: center;
+        }
+
+        .register-body { padding: 25px; }
+
+        .register-photos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .register-photo-slot {
+            aspect-ratio: 1;
+            background: #f1f5f9;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .register-photo-slot.captured {
+            border-color: var(--primary);
+            border-style: solid;
+        }
+
+        .register-photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== RESULT POPUP ===== */
+        .result-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .result-popup.hidden { display: none; }
+
+        .result-box {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .result-icon { font-size: 5rem; margin-bottom: 15px; }
+        .result-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+        .result-desc { color: var(--text-light); margin-bottom: 20px; line-height: 1.5; }
+
+        .result-btn {
+            padding: 14px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* ===== LOADING OVERLAY ===== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .loading-overlay.hidden { display: none; }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: #fbbf24;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text { font-size: 1.1rem; font-weight: 700; }
+        .loading-sub { font-size: 0.85rem; opacity: 0.8; margin-top: 8px; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 99998;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show { display: block; animation: slideUp 0.3s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 30px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOADING OVERLAY ===== -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Memuatkan AI Model...</div>
+        <div class="loading-sub" id="loadingSub">Pertama kali mungkin ambil 10-20 saat</div>
+    </div>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <div class="login-page" id="loginPage" style="display:none;">
+        <div class="login-logo">🧠</div>
+        <h1>Smart Face Punch</h1>
+        <p>Madrasah Tahfiz PSB</p>
+
+        <form class="login-form" onsubmit="doLogin(event)">
+            <label>ID Pekerja</label>
+            <input type="text" id="loginId" placeholder="Masukkan ID anda" autocapitalize="none" required>
+
+            <label>Kata Laluan</label>
+            <input type="password" id="loginPass" placeholder="••••••" required>
+
+            <button type="submit" class="btn-login">🔐 Log Masuk</button>
+        </form>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-page" id="mainPage">
+
+        <!-- Header -->
+        <div class="app-header">
+            <div class="worker-info">
+                <div class="worker-avatar" id="workerAvatar">👤</div>
+                <div>
+                    <div class="worker-name" id="workerName">-</div>
+                    <div class="worker-role" id="workerRole">-</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="doLogout()">🚪</button>
+        </div>
+
+        <!-- Time Display -->
+        <div class="time-display">
+            <div class="time-date" id="timeDate">-</div>
+            <div class="time-clock" id="timeClock">00:00:00</div>
+            <div class="time-day" id="timeDay">-</div>
+        </div>
+
+        <!-- Face Scan Area -->
+        <div class="scan-area">
+            <div class="scan-header">
+                <h3>🧠 Face Recognition Punch</h3>
+                <span class="scan-status loading" id="scanStatus">Loading AI...</span>
+            </div>
+
+            <!-- Camera -->
+            <div class="camera-container" id="cameraContainer">
+                <video id="videoEl" autoplay playsinline muted></video>
+                <canvas id="canvasEl" style="display:none;"></canvas>
+
+                <div class="face-overlay">
+                    <div class="face-circle" id="faceCircle">
+                        <div class="face-label" id="faceLabel">Letakkan muka dalam bulatan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Status -->
+            <div class="verify-section">
+                <div class="verify-item loading" id="verifyGPS">
+                    <span class="verify-icon">📍</span>
+                    <span>Mengesan lokasi GPS...</span>
+                </div>
+                <div class="verify-item loading" id="verifyFace">
+                    <span class="verify-icon">🧠</span>
+                    <span>Menunggu AI model...</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <button class="btn-punch btn-punch-in" id="btnPunchIn" onclick="doPunchFace('in')" disabled>
+                    📥 PUNCH IN
+                </button>
+                <button class="btn-punch btn-punch-out" id="btnPunchOut" onclick="doPunchFace('out')" disabled>
+                    📤 PUNCH OUT
+                </button>
+            </div>
+        </div>
+
+        <!-- Today Stats -->
+        <div class="stats-section">
+            <h3>📊 Hari Ini</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-num" id="statShifts">0</div>
+                    <div class="stat-label">Shift Selesai</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="statHours">0</div>
+                    <div class="stat-label">Jam Kerja</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="statPay">RM 0</div>
+                    <div class="stat-label">Gaji Hari Ini</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Records -->
+        <div class="records-section">
+            <h3 style="color:var(--primary);font-size:0.95rem;margin-bottom:15px;">📋 Rekod Terkini</h3>
+            <div id="recentList"></div>
+        </div>
+    </div>
+
+    <!-- ===== FACE REGISTRATION MODAL ===== -->
+    <div class="register-modal hidden" id="registerModal">
+        <div class="register-content">
+            <div class="register-header">
+                <div style="font-size:3rem;margin-bottom:10px;">🧠</div>
+                <h2>Daftar Muka</h2>
+                <p style="opacity:0.9;margin-top:5px;">Ambil 3 gambar muka anda dari sudut berbeza</p>
+            </div>
+            <div class="register-body">
+                <p style="color:var(--text-light);margin-bottom:15px;font-size:0.9rem;text-align:center;">
+                    Pastikan muka anda nampak jelas, cahaya cukup, dan tiada halangan.
+                </p>
+
+                <div class="register-photos" id="registerPhotos">
+                    <div class="register-photo-slot" id="regSlot1" onclick="captureRegPhoto(0)">📷</div>
+                    <div class="register-photo-slot" id="regSlot2" onclick="captureRegPhoto(1)">📷</div>
+                    <div class="register-photo-slot" id="regSlot3" onclick="captureRegPhoto(2)">📷</div>
+                </div>
+
+                <div id="regProgress" style="text-align:center;margin:15px 0;font-size:0.88rem;color:var(--text-light);">
+                    0 / 3 gambar diambil
+                </div>
+
+                <div style="display:flex;gap:10px;">
+                    <button onclick="saveRegFace()" id="btnSaveReg" style="flex:1;padding:16px;background:linear-gradient(135deg,var(--primary),#065f46);color:white;border:none;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;" disabled>
+                        💾 Simpan Muka
+                    </button>
+                    <button onclick="cancelReg()" style="padding:16px 24px;background:#f1f5f9;color:var(--text-light);border:none;border-radius:12px;font-weight:600;cursor:pointer;">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== RESULT POPUP ===== -->
+    <div class="result-popup hidden" id="resultPopup">
+        <div class="result-box">
+            <div class="result-icon" id="resultIcon">✅</div>
+            <div class="result-title" id="resultTitle">Punch Berjaya!</div>
+            <div class="result-desc" id="resultDesc">-</div>
+            <button class="result-btn" onclick="closeResult()">OK</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <script src="js/data.js"></script>
+
+    <script>
+// ============================================
+// ===== FACE RECOGNITION PUNCH SYSTEM ========
+// ============================================
+
+// ===== GLOBALS =====
+var currentWorker = null;
+var appData = null;
+var videoStream = null;
+var faceApiReady = false;
+var gpsValid = false;
+var currentLocation = null;
+var faceDetected = false;
+var isProcessing = false;
+var registeredDescriptors = []; // Face descriptors for current worker
+var clockInterval = null;
+
+// Madrasah location
+var MADRASAH = {
+    lat: 3.247250,
+    lng: 101.317083,
+    radius: 1000,
+    name: 'Madrasah Tahfiz PSB'
+};
+
+// ============================================
+// ===== INIT =================================
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Init Firebase
+    if (typeof initFirebase === 'function') {
+        initFirebase();
+    }
+
+    // Sync then start
+    if (typeof syncData === 'function' && typeof firebaseReady !== 'undefined' && firebaseReady) {
+        syncData(function() {
+            startApp();
+        });
+    } else {
+        startApp();
+    }
+});
+
+function startApp() {
+    appData = loadData();
+
+    if (!appData.workers) appData.workers = [];
+    if (!appData.punchRecords) appData.punchRecords = [];
+    if (!appData.faceData) appData.faceData = {};
+
+    // Load madrasah location from settings
+    if (appData.punchSettings && appData.punchSettings.lat) {
+        MADRASAH.lat = appData.punchSettings.lat;
+        MADRASAH.lng = appData.punchSettings.lng;
+        MADRASAH.radius = appData.punchSettings.radius || 1000;
+        MADRASAH.name = appData.punchSettings.locationName || 'Madrasah';
+    }
+
+    // Start clock
+    updateClock();
+    clockInterval = setInterval(updateClock, 1000);
+
+    // Load face-api models
+    loadFaceModels();
+
+    // Check session
+    var saved = sessionStorage.getItem('punchWorker');
+    if (saved) {
+        currentWorker = JSON.parse(saved);
+        showMainPage();
+    } else {
+        showLoginPage();
+    }
+}
+
+// ============================================
+// ===== FACE API MODELS ======================
+// ============================================
+
+function loadFaceModels() {
+    updateLoading('Memuatkan AI Model...', 'Pertama kali mungkin ambil 10-20 saat');
+
+    // Check if face-api loaded
+    if (typeof faceapi === 'undefined') {
+        console.log('⏳ Waiting for face-api.js...');
+        setTimeout(loadFaceModels, 500);
+        return;
+    }
+
+    var MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model/';
+
+    Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+    ]).then(function() {
+        faceApiReady = true;
+        console.log('✅ Face API models loaded');
+        updateLoading('AI Model sedia!', 'Sila login untuk mula');
+
+        setTimeout(function() {
+            hideLoading();
+        }, 1000);
+
+    }).catch(function(err) {
+        console.log('❌ Face API error:', err);
+        updateLoading('❌ Gagal memuat AI Model', 'Sila refresh page. Error: ' + err.message);
+
+        // Retry after 3 seconds
+        setTimeout(loadFaceModels, 3000);
+    });
+}
+
+function updateLoading(text, sub) {
+    var el = document.getElementById('loadingText');
+    var subEl = document.getElementById('loadingSub');
+    if (el) el.textContent = text;
+    if (subEl) subEl.textContent = sub;
+}
+
+function hideLoading() {
+    var overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+// ============================================
+// ===== AUTH =================================
+// ============================================
+
+function doLogin(e) {
+    e.preventDefault();
+
+    appData = loadData();
+    if (!appData.workers) appData.workers = [];
+
+    var id = document.getElementById('loginId').value.trim().toLowerCase();
+    var pass = document.getElementById('loginPass').value.trim();
+
+    var found = null;
+    for (var i = 0; i < appData.workers.length; i++) {
+        var w = appData.workers[i];
+        if (w.loginId && w.loginId.toLowerCase() === id && w.loginPass === pass) {
+            found = w;
+            break;
+        }
+    }
+
+    if (!found) {
+        showToast('❌ ID atau Password salah');
+        return;
+    }
+
+    // Check if resigned
+    if (found.employStatus === 'resigned' || found.employStatus === 'terminated') {
+        showToast('❌ Akaun anda telah ditamatkan');
+        return;
+    }
+
+    currentWorker = found;
+    sessionStorage.setItem('punchWorker', JSON.stringify(currentWorker));
+    showToast('✅ Selamat datang, ' + currentWorker.name);
+    showMainPage();
+}
+
+function doLogout() {
+    if (!confirm('Log keluar?')) return;
+    stopCamera();
+    sessionStorage.removeItem('punchWorker');
+    currentWorker = null;
+    showLoginPage();
+}
+
+function showLoginPage() {
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('mainPage').classList.remove('active');
+    stopCamera();
+}
+
+function showMainPage() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainPage').classList.add('active');
+
+    // Update header
+    document.getElementById('workerAvatar').textContent = currentWorker.icon || '👤';
+    document.getElementById('workerName').textContent = currentWorker.name;
+    document.getElementById('workerRole').textContent = currentWorker.role;
+
+    // Load face descriptors
+    loadWorkerFace();
+
+    // Start camera & GPS
+    startCamera();
+    checkGPS();
+
+    // Update stats
+    updateTodayStats();
+    updateRecentList();
+
+    // Update scan status
+    updateScanStatus();
+}
+
+// ============================================
+// ===== CAMERA ===============================
+// ============================================
+
+function startCamera() {
+    var video = document.getElementById('videoEl');
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast('❌ Kamera tidak disokong');
+        return;
+    }
+
+    navigator.mediaDevices.getUserMedia({
+        video: {
+            facingMode: 'user',
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+        },
+        audio: false
+    }).then(function(stream) {
+        videoStream = stream;
+        video.srcObject = stream;
+
+        video.onloadedmetadata = function() {
+            video.play();
+            // Start face detection loop
+            startFaceDetection();
+        };
+
+        console.log('✅ Camera started');
+
+    }).catch(function(err) {
+        console.log('❌ Camera error:', err);
+        showToast('❌ Gagal akses kamera: ' + err.message);
+    });
+}
+
+function stopCamera() {
+    if (videoStream) {
+        var tracks = videoStream.getTracks();
+        for (var i = 0; i < tracks.length; i++) {
+            tracks[i].stop();
+        }
+        videoStream = null;
+    }
+}
+
+// ============================================
+// ===== FACE DETECTION LOOP ==================
+// ============================================
+
+var detectionInterval = null;
+
+function startFaceDetection() {
+    if (detectionInterval) clearInterval(detectionInterval);
+
+    detectionInterval = setInterval(function() {
+        detectFace();
+    }, 1000); // Check setiap 1 saat
+}
+
+function detectFace() {
+    if (!faceApiReady || isProcessing) return;
+
+    var video = document.getElementById('videoEl');
+    if (!video || video.readyState < 2) return;
+
+    var faceCircle = document.getElementById('faceCircle');
+    var faceLabel = document.getElementById('faceLabel');
+    var verifyFace = document.getElementById('verifyFace');
+
+    faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({
+        inputSize: 320,
+        scoreThreshold: 0.5
+    })).withFaceLandmarks().withFaceDescriptor().then(function(detection) {
+
+        if (detection) {
+            faceDetected = true;
+
+            faceCircle.className = 'face-circle detecting';
+            faceLabel.textContent = '🧠 Muka dikesan...';
+
+            verifyFace.className = 'verify-item valid';
+            verifyFace.innerHTML = '<span class="verify-icon">✅</span><span>Muka dikesan</span>';
+
+            // Store current descriptor for comparison
+            window._currentFaceDescriptor = detection.descriptor;
+
+            updatePunchButtons();
+
+        } else {
+            faceDetected = false;
+
+            faceCircle.className = 'face-circle';
+            faceLabel.textContent = 'Letakkan muka dalam bulatan';
+
+            verifyFace.className = 'verify-item loading';
+            verifyFace.innerHTML = '<span class="verify-icon">🔍</span><span>Mencari muka...</span>';
+
+            window._currentFaceDescriptor = null;
+
+            updatePunchButtons();
+        }
+
+    }).catch(function(err) {
+        console.log('Detection error:', err);
+    });
+}
+
+// ============================================
+// ===== FACE REGISTRATION ====================
+// ============================================
+
+var regPhotos = [null, null, null];
+var regDescriptors = [];
+
+function loadWorkerFace() {
+    if (!currentWorker) return;
+
+    appData = loadData();
+    if (!appData.faceData) appData.faceData = {};
+
+    var faceData = appData.faceData[currentWorker.id];
+
+    if (!faceData || !faceData.descriptors || faceData.descriptors.length === 0) {
+        // Belum daftar muka - tunjuk registration
+        console.log('⚠️ Face not registered, showing registration...');
+        showToast('📸 Sila daftar muka anda terlebih dahulu');
+
+        setTimeout(function() {
+            showRegisterModal();
+        }, 1500);
+        return;
+    }
+
+    // Load descriptors
+    registeredDescriptors = [];
+    for (var i = 0; i < faceData.descriptors.length; i++) {
+        // Convert array back to Float32Array
+        registeredDescriptors.push(new Float32Array(faceData.descriptors[i]));
+    }
+
+    console.log('✅ Loaded ' + registeredDescriptors.length + ' face descriptors');
+}
+
+function showRegisterModal() {
+    regPhotos = [null, null, null];
+    regDescriptors = [];
+
+    document.getElementById('regSlot1').innerHTML = '📷';
+    document.getElementById('regSlot1').className = 'register-photo-slot';
+    document.getElementById('regSlot2').innerHTML = '📷';
+    document.getElementById('regSlot2').className = 'register-photo-slot';
+    document.getElementById('regSlot3').innerHTML = '📷';
+    document.getElementById('regSlot3').className = 'register-photo-slot';
+
+    document.getElementById('regProgress').textContent = '0 / 3 gambar diambil';
+    document.getElementById('btnSaveReg').disabled = true;
+
+    document.getElementById('registerModal').classList.remove('hidden');
+}
+
+function cancelReg() {
+    document.getElementById('registerModal').classList.add('hidden');
+}
+
+function captureRegPhoto(index) {
+    if (!faceApiReady) {
+        showToast('⏳ AI belum sedia, tunggu...');
+        return;
+    }
+
+    var video = document.getElementById('videoEl');
+    if (!video || video.readyState < 2) {
+        showToast('❌ Kamera belum sedia');
+        return;
+    }
+
+    showToast('⏳ Mengesan muka...');
+
+    // Detect face
+    faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({
+        inputSize: 416,
+        scoreThreshold: 0.5
+    })).withFaceLandmarks().withFaceDescriptor().then(function(detection) {
+
+        if (!detection) {
+            showToast('❌ Muka tidak dikesan. Cuba lagi.');
+            return;
+        }
+
+        // Capture photo
+        var canvas = document.getElementById('canvasEl');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, 0, 0);
+
+        var photoData = canvas.toDataURL('image/jpeg', 0.7);
+
+        // Save
+        regPhotos[index] = photoData;
+        regDescriptors[index] = Array.from(detection.descriptor); // Convert to regular array for JSON
+
+        // Update UI
+        var slot = document.getElementById('regSlot' + (index + 1));
+        slot.innerHTML = '<img src="' + photoData + '">';
+        slot.className = 'register-photo-slot captured';
+
+        // Count
+        var count = 0;
+        for (var i = 0; i < regPhotos.length; i++) {
+            if (regPhotos[i]) count++;
+        }
+
+        document.getElementById('regProgress').textContent = count + ' / 3 gambar diambil';
+        document.getElementById('btnSaveReg').disabled = count < 3;
+
+        showToast('✅ Gambar ' + (index + 1) + ' diambil!');
+
+    }).catch(function(err) {
+        showToast('❌ Error: ' + err.message);
+    });
+}
+
+function saveRegFace() {
+    if (regDescriptors.length < 3) {
+        showToast('❌ Sila ambil 3 gambar');
+        return;
+    }
+
+    // Check all descriptors valid
+    for (var i = 0; i < regDescriptors.length; i++) {
+        if (!regDescriptors[i] || regDescriptors[i].length === 0) {
+            showToast('❌ Gambar ' + (i + 1) + ' tidak sah. Cuba lagi.');
+            return;
+        }
+    }
+
+    appData = loadData();
+    if (!appData.faceData) appData.faceData = {};
+
+    appData.faceData[currentWorker.id] = {
+        descriptors: regDescriptors,
+        registeredAt: new Date().toISOString(),
+        photoCount: 3
+    };
+
+    saveData(appData);
+
+    // Load ke memory
+    registeredDescriptors = [];
+    for (var i = 0; i < regDescriptors.length; i++) {
+        registeredDescriptors.push(new Float32Array(regDescriptors[i]));
+    }
+
+    document.getElementById('registerModal').classList.add('hidden');
+    showToast('✅ Muka berjaya didaftarkan!');
+
+    console.log('✅ Face registered with ' + registeredDescriptors.length + ' descriptors');
+}
+
+// ============================================
+// ===== FACE COMPARISON ======================
+// ============================================
+
+function compareFace(currentDescriptor) {
+    if (!currentDescriptor || registeredDescriptors.length === 0) {
+        return { match: false, confidence: 0, distance: 1 };
+    }
+
+    var bestDistance = 1;
+
+    for (var i = 0; i < registeredDescriptors.length; i++) {
+        var distance = faceapi.euclideanDistance(currentDescriptor, registeredDescriptors[i]);
+        if (distance < bestDistance) {
+            bestDistance = distance;
+        }
+    }
+
+    // Threshold: 0.6 = match (lower = more similar)
+    var threshold = 0.6;
+    var match = bestDistance < threshold;
+    var confidence = Math.round((1 - bestDistance) * 100);
+
+    return {
+        match: match,
+        confidence: confidence,
+        distance: bestDistance
+    };
+}
+
+// ============================================
+// ===== GPS ==================================
+// ============================================
+
+function checkGPS() {
+    var verifyGPS = document.getElementById('verifyGPS');
+
+    if (!navigator.geolocation) {
+        verifyGPS.className = 'verify-item invalid';
+        verifyGPS.innerHTML = '<span class="verify-icon">❌</span><span>GPS tidak disokong</span>';
+        gpsValid = false;
+        return;
+    }
+
+    verifyGPS.className = 'verify-item loading';
+    verifyGPS.innerHTML = '<span class="verify-icon">📡</span><span>Mengesan lokasi...</span>';
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            currentLocation = {
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude,
+                accuracy: pos.coords.accuracy
+            };
+
+            // Calculate distance
+            var distance = calcDistance(currentLocation.lat, currentLocation.lng, MADRASAH.lat, MADRASAH.lng);
+
+            if (distance <= MADRASAH.radius) {
+                gpsValid = true;
+                verifyGPS.className = 'verify-item valid';
+                verifyGPS.innerHTML = '<span class="verify-icon">✅</span><span>Lokasi sah (' + distance + 'm dari madrasah)</span>';
+            } else {
+                gpsValid = false;
+                verifyGPS.className = 'verify-item invalid';
+                verifyGPS.innerHTML = '<span class="verify-icon">❌</span><span>Terlalu jauh! (' + distance + 'm)</span>';
+            }
+
+            updatePunchButtons();
+        },
+        function(err) {
+            gpsValid = false;
+            verifyGPS.className = 'verify-item invalid';
+            verifyGPS.innerHTML = '<span class="verify-icon">❌</span><span>GPS error: ' + err.message + '</span>';
+            updatePunchButtons();
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+
+    // Re-check every 30 seconds
+    setTimeout(checkGPS, 30000);
+}
+
+function calcDistance(lat1, lng1, lat2, lng2) {
+    var R = 6371000;
+    var a1 = lat1 * Math.PI / 180;
+    var a2 = lat2 * Math.PI / 180;
+    var da = (lat2 - lat1) * Math.PI / 180;
+    var dl = (lng2 - lng1) * Math.PI / 180;
+
+    var a = Math.sin(da/2) * Math.sin(da/2) +
+            Math.cos(a1) * Math.cos(a2) *
+            Math.sin(dl/2) * Math.sin(dl/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return Math.round(R * c);
+}
+
+// ============================================
+// ===== PUNCH BUTTONS ========================
+// ============================================
+
+function updatePunchButtons() {
+    var btnIn = document.getElementById('btnPunchIn');
+    var btnOut = document.getElementById('btnPunchOut');
+
+    if (!btnIn || !btnOut) return;
+
+    var canPunch = gpsValid && faceDetected && faceApiReady && !isProcessing;
+
+    // Check if has active punch (for punch out)
+    var today = new Date().toISOString().split('T')[0];
+    var hasActive = false;
+
+    if (appData.punchRecords) {
+        for (var i = 0; i < appData.punchRecords.length; i++) {
+            var r = appData.punchRecords[i];
+            if (r.workerId === currentWorker.id && r.date === today && !r.punchOut) {
+                hasActive = true;
+                break;
+            }
+        }
+    }
+
+    if (hasActive) {
+        btnIn.disabled = true;
+        btnIn.style.opacity = '0.3';
+        btnOut.disabled = !canPunch;
+        btnOut.style.opacity = canPunch ? '1' : '0.5';
+    } else {
+        btnIn.disabled = !canPunch;
+        btnIn.style.opacity = canPunch ? '1' : '0.5';
+        btnOut.disabled = true;
+        btnOut.style.opacity = '0.3';
+    }
+}
+
+function updateScanStatus() {
+    var statusEl = document.getElementById('scanStatus');
+    if (!statusEl) return;
+
+    if (!faceApiReady) {
+        statusEl.className = 'scan-status loading';
+        statusEl.textContent = '⏳ Loading AI...';
+    } else if (registeredDescriptors.length === 0) {
+        statusEl.className = 'scan-status error';
+        statusEl.textContent = '⚠️ Muka belum didaftar';
+    } else {
+        statusEl.className = 'scan-status ready';
+        statusEl.textContent = '✅ Sedia';
+    }
+}
+
+// ============================================
+// ===== DO PUNCH =============================
+// ============================================
+
+function doPunchFace(type) {
+    if (isProcessing) return;
+
+    // Validation
+    if (!gpsValid) {
+        showToast('❌ Lokasi tidak sah! Mesti di madrasah.');
+        return;
+    }
+
+    if (!faceDetected || !window._currentFaceDescriptor) {
+        showToast('❌ Muka tidak dikesan. Hadapkan muka ke kamera.');
+        return;
+    }
+
+    if (registeredDescriptors.length === 0) {
+        showToast('⚠️ Muka belum didaftar!');
+        showRegisterModal();
+        return;
+    }
+
+    isProcessing = true;
+    showToast('🧠 Mengesahkan muka...');
+
+    var faceCircle = document.getElementById('faceCircle');
+    var faceLabel = document.getElementById('faceLabel');
+
+    faceCircle.className = 'face-circle detecting';
+    faceLabel.textContent = '🧠 Mengecam muka...';
+
+    // Do face comparison
+    setTimeout(function() {
+        var result = compareFace(window._currentFaceDescriptor);
+
+        console.log('Face comparison: distance=' + result.distance.toFixed(3) + ', confidence=' + result.confidence + '%, match=' + result.match);
+
+        if (result.match) {
+            // MATCH - proceed with punch
+            faceCircle.className = 'face-circle matched';
+            faceLabel.textContent = '✅ Muka disahkan! (' + result.confidence + '%)';
+
+            setTimeout(function() {
+                savePunch(type, result);
+            }, 500);
+
+        } else {
+            // NOT MATCH - reject
+            faceCircle.className = 'face-circle not-matched';
+            faceLabel.textContent = '❌ Muka tidak dikenali!';
+
+            showResult('error',
+                '❌ Muka Tidak Dikenali',
+                'Muka anda tidak sepadan dengan data yang didaftarkan.\n\nKeyakinan: ' + result.confidence + '%\n\nSila cuba lagi atau hubungi admin.'
+            );
+
+            isProcessing = false;
+
+            // Reset after 3 seconds
+            setTimeout(function() {
+                faceCircle.className = 'face-circle';
+                faceLabel.textContent = 'Letakkan muka dalam bulatan';
+            }, 3000);
+        }
+    }, 1000);
+}
+
+// ============================================
+// ===== SAVE PUNCH ===========================
+// ============================================
+
+function savePunch(type, faceResult) {
+    appData = loadData();
+    if (!appData.punchRecords) appData.punchRecords = [];
+
+    var today = new Date().toISOString().split('T')[0];
+    var now = new Date();
+    var nowISO = now.toISOString();
+
+    if (type === 'out') {
+        // Find active record
+        var activeRecord = null;
+        for (var i = 0; i < appData.punchRecords.length; i++) {
+            var r = appData.punchRecords[i];
+            if (r.workerId === currentWorker.id && r.date === today && !r.punchOut) {
+                activeRecord = r;
+                break;
+            }
+        }
+
+        if (!activeRecord) {
+            showToast('❌ Tiada punch in aktif');
+            isProcessing = false;
+            return;
+        }
+
+        // Punch OUT
+        var punchInTime = new Date(activeRecord.punchIn);
+        var hoursWorked = (now - punchInTime) / (1000 * 60 * 60);
+
+        activeRecord.punchOut = nowISO;
+        activeRecord.hoursWorked = Math.round(hoursWorked * 100) / 100;
+        activeRecord.punchOutLocation = currentLocation;
+        activeRecord.punchOutLocationValid = gpsValid;
+        activeRecord.punchOutFaceConfidence = faceResult.confidence;
+
+        saveData(appData);
+
+        showResult('success',
+            '📤 Punch OUT Berjaya!',
+            '✅ Muka disahkan (' + faceResult.confidence + '% keyakinan)\n\n⏱️ Jam kerja: ' + activeRecord.hoursWorked.toFixed(1) + ' jam\n📍 Lokasi: Di madrasah'
+        );
+
+    } else {
+        // Punch IN
+        var newRecord = {
+            id: 'PCH' + Date.now(),
+            workerId: currentWorker.id,
+            workerName: currentWorker.name,
+            date: today,
+            punchIn: nowISO,
+            punchOut: null,
+            hoursWorked: 0,
+            status: 'approved', // Auto-approved sebab face verified
+            shiftName: 'Auto',
+            punchInLocation: currentLocation,
+            punchInLocationValid: gpsValid,
+            punchInFaceConfidence: faceResult.confidence,
+            faceVerified: true,
+            createdAt: nowISO
+        };
+
+        appData.punchRecords.push(newRecord);
+        saveData(appData);
+
+        showResult('success',
+            '📥 Punch IN Berjaya!',
+            '✅ Muka disahkan (' + faceResult.confidence + '% keyakinan)\n\n🕐 Masa: ' + formatTimeSimple(now) + '\n📍 Lokasi: Di madrasah'
+        );
+    }
+
+    isProcessing = false;
+
+    // Update UI
+    setTimeout(function() {
+        updatePunchButtons();
+        updateTodayStats();
+        updateRecentList();
+
+        // Reset face circle
+        var faceCircle = document.getElementById('faceCircle');
+        var faceLabel = document.getElementById('faceLabel');
+        if (faceCircle) faceCircle.className = 'face-circle';
+        if (faceLabel) faceLabel.textContent = 'Letakkan muka dalam bulatan';
+    }, 1000);
+}
+
+// ============================================
+// ===== RESULT POPUP =========================
+// ============================================
+
+function showResult(type, title, desc) {
+    var popup = document.getElementById('resultPopup');
+    var icon = document.getElementById('resultIcon');
+    var titleEl = document.getElementById('resultTitle');
+    var descEl = document.getElementById('resultDesc');
+
+    if (type === 'success') {
+        icon.textContent = '✅';
+        titleEl.style.color = '#047857';
+    } else {
+        icon.textContent = '❌';
+        titleEl.style.color = '#ef4444';
+    }
+
+    titleEl.textContent = title;
+    descEl.textContent = desc;
+
+    popup.classList.remove('hidden');
+}
+
+function closeResult() {
+    document.getElementById('resultPopup').classList.add('hidden');
+}
+
+// ============================================
+// ===== CLOCK ================================
+// ============================================
+
+function updateClock() {
+    var now = new Date();
+    var months = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+    var days = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+
+    var dateEl = document.getElementById('timeDate');
+    var clockEl = document.getElementById('timeClock');
+    var dayEl = document.getElementById('timeDay');
+
+    if (dateEl) dateEl.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    if (clockEl) clockEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+    if (dayEl) dayEl.textContent = days[now.getDay()];
+}
+
+// ============================================
+// ===== TODAY STATS ==========================
+// ============================================
+
+function updateTodayStats() {
+    if (!currentWorker) return;
+    appData = loadData();
+
+    var today = new Date().toISOString().split('T')[0];
+    var totalHours = 0;
+    var completedShifts = 0;
+
+    if (appData.punchRecords) {
+        for (var i = 0; i < appData.punchRecords.length; i++) {
+            var r = appData.punchRecords[i];
+            if (r.workerId === currentWorker.id && r.date === today) {
+                totalHours += r.hoursWorked || 0;
+                if (r.punchOut) completedShifts++;
+            }
+        }
+    }
+
+    var rate = currentWorker.hourlyRate || 0;
+    var pay = totalHours * rate;
+
+    var el1 = document.getElementById('statShifts');
+    var el2 = document.getElementById('statHours');
+    var el3 = document.getElementById('statPay');
+
+    if (el1) el1.textContent = completedShifts;
+    if (el2) el2.textContent = totalHours.toFixed(1);
+    if (el3) el3.textContent = 'RM ' + pay.toFixed(0);
+}
+
+// ============================================
+// ===== RECENT LIST ==========================
+// ============================================
+
+function updateRecentList() {
+    if (!currentWorker) return;
+
+    var container = document.getElementById('recentList');
+    if (!container) return;
+
+    appData = loadData();
+
+    var records = [];
+    if (appData.punchRecords) {
+        for (var i = 0; i < appData.punchRecords.length; i++) {
+            if (appData.punchRecords[i].workerId === currentWorker.id) {
+                records.push(appData.punchRecords[i]);
+            }
+        }
+    }
+
+    records.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+    records = records.slice(0, 7);
+
+    if (records.length === 0) {
+        container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:20px;">Belum ada rekod</p>';
+        return;
+    }
+
+    var months = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+
+    var html = '';
+    for (var i = 0; i < records.length; i++) {
+        var r = records[i];
+        var d = new Date(r.date);
+
+        var inTime = r.punchIn ? formatTimeSimple(new Date(r.punchIn)) : '-';
+        var outTime = r.punchOut ? formatTimeSimple(new Date(r.punchOut)) : 'Aktif...';
+
+        var faceIcon = r.faceVerified ? '🧠' : '📸';
+
+        html += '<div class="record-item">';
+        html += '<div class="record-date">';
+        html += '<div class="record-day">' + d.getDate() + '</div>';
+        html += '<div class="record-month">' + months[d.getMonth()] + '</div>';
+        html += '</div>';
+        html += '<div class="record-info">';
+        html += '<div class="record-times">' + faceIcon + ' 📥 ' + inTime + ' → 📤 ' + outTime + '</div>';
+        html += '<div class="record-hours">' + (r.hoursWorked || 0).toFixed(1) + ' jam</div>';
+        html += '</div>';
+        html += '</div>';
+    }
+
+    container.innerHTML = html;
+}
+
+// ============================================
+// ===== HELPERS ==============================
+// ============================================
+
+function formatTimeSimple(date) {
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    if (h === 0) h = 12;
+    return h + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+}
+
+function showToast(msg) {
+    var toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+// Auto refresh every 30 seconds
+setInterval(function() {
+    if (!currentWorker) return;
+    appData = loadData();
+    updatePunchButtons();
+    updateTodayStats();
+}, 30000);
+
+console.log('✅ Face Recognition Punch System loaded');
+</script>
+
+</body>
+</html>

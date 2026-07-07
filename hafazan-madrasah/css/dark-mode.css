@@ -1,0 +1,103 @@
+/* ========================================================
+   MOD GELAP PREMIUM - PORTAL IBU BAPA & ADMIN
+   ======================================================== */
+
+/* 1. Warna Latar Belakang Utama */
+body.dark-mode {
+    background-color: #0f172a !important; /* Deep Slate 900 */
+    color: #f1f5f9 !important;
+}
+
+/* 2. Overide Kad Putih & Kotak Inline CSS (Sangat Penting!) */
+body.dark-mode div[style*="background:white"],
+body.dark-mode div[style*="background: white"],
+body.dark-mode div[style*="background:#ffffff"],
+body.dark-mode div[style*="background: #ffffff"],
+body.dark-mode div[style*="background: rgb(255, 255, 255)"],
+body.dark-mode .card,
+body.dark-mode .stat-box {
+    background-color: #1e293b !important; /* Slate 800 */
+    color: #f1f5f9 !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 3. Mengharmonikan Header Ungu Teratas */
+body.dark-mode div[style*="background:linear-gradient"],
+body.dark-mode div[style*="background: linear-gradient"] {
+    background: linear-gradient(135deg, #1e1b4b, #0f172a) !important; /* Indigo Gelap ke Slate */
+    border-bottom: 2px solid #334155 !important;
+}
+
+/* 4. Teks di dalam Kad-kad Gelap */
+body.dark-mode div[style*="background:white"] strong,
+body.dark-mode div[style*="background: white"] strong,
+body.dark-mode div[style*="background:white"] span,
+body.dark-mode div[style*="background: white"] span {
+    color: #ffffff !important;
+}
+
+body.dark-mode div[style*="background:white"] div,
+body.dark-mode div[style*="background: white"] div,
+body.dark-mode div[style*="background:white"] p,
+body.dark-mode div[style*="background: white"] p {
+    color: #cbd5e1 !important; /* Kelabu Cerah 300 */
+}
+
+/* Sub-teks (Masa, Lokasi, Catatan) */
+body.dark-mode div[style*="color:#64748b"],
+body.dark-mode span[style*="color:#64748b"],
+body.dark-mode p[style*="color:#64748b"],
+body.dark-mode small {
+    color: #94a3b8 !important; /* Slate 400 */
+}
+
+/* 5. Butang Navigasi Sub-Tab (Bayaran, Takwim, Gallery, Outing) */
+body.dark-mode button[style*="background:#f1f5f9"],
+body.dark-mode button[style*="background: #f1f5f9"],
+body.dark-mode .hr-tab-btn {
+    background-color: #1e293b !important;
+    color: #94a3b8 !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode button[style*="background:linear-gradient"],
+body.dark-mode button.active {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+    color: #ffffff !important;
+}
+
+/* 6. Butang Hijau "Ustaz" & Butang Putih "Bayaran" */
+body.dark-mode div[style*="background:#10b981"],
+body.dark-mode div[style*="background: #10b981"],
+body.dark-mode button[style*="background:#10b981"] {
+    background: linear-gradient(135deg, #047857, #064e3b) !important;
+    border: 1px solid #065f46 !important;
+}
+
+body.dark-mode div[style*="background:#ffffff"] {
+    background-color: #1e293b !important;
+}
+
+/* 7. Penyelarasan Warna Ikon & Nombor Peratusan */
+body.dark-mode span[style*="color:#7c3aed"],
+body.dark-mode div[style*="color:#7c3aed"] {
+    color: #c084fc !important; /* Ungu Cerah */
+}
+
+body.dark-mode span[style*="color:#047857"],
+body.dark-mode div[style*="color:#047857"] {
+    color: #34d399 !important; /* Hijau Mint */
+}
+
+/* 8. Panel Bekas Takwim (Calendar Container) */
+body.dark-mode div[style*="background:#f8fafc"],
+body.dark-mode div[style*="background: #f8fafc"] {
+    background-color: #0f172a !important; /* Latar Belakang Takwim */
+    border: 1px solid #1e293b !important;
+}
+
+body.dark-mode .calendar-header {
+    background-color: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+}

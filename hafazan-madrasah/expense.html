@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💰 Quick Expense - Madrasah</title>
+    <link rel="icon" type="image/png" href="https://api.iconify.design/twemoji/mosque.svg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#047857">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #047857;
+            --primary-light: #10b981;
+            --gold: #fbbf24;
+            --red: #ef4444;
+            --text: #1f2937;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* ===== LOGIN ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #047857, #065f46);
+            padding: 30px 20px;
+        }
+
+        .login-page .logo { font-size: 4rem; margin-bottom: 15px; }
+        .login-page h1 { color: white; font-size: 1.5rem; margin-bottom: 5px; }
+        .login-page p { color: #fbbf24; margin-bottom: 30px; font-weight: 600; }
+
+        .login-form {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.9rem; }
+        .login-form input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        .login-form input:focus { outline: none; border-color: var(--primary); }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* ===== MAIN APP ===== */
+        .app-page { display: none; }
+        .app-page.active { display: block; }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 15px 20px;
+            padding-top: calc(15px + env(safe-area-inset-top));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-header h1 { font-size: 1.2rem; }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* ===== FORM ===== */
+        .expense-form {
+            padding: 20px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .form-card h2 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+        }
+
+        /* Type Toggle */
+        .type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .type-btn {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .type-btn.active-debit {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .type-btn.active-credit {
+            background: linear-gradient(135deg, #fee2e2, #fca5a5);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .type-btn-icon { font-size: 2rem; margin-bottom: 5px; display: block; }
+
+        /* Amount Input */
+        .amount-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0 14px;
+        }
+
+        .amount-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+        }
+
+        .amount-wrapper .rm {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .amount-wrapper input {
+            border: none !important;
+            padding: 14px 0 !important;
+            font-size: 1.5rem !important;
+            font-weight: 800 !important;
+            box-shadow: none !important;
+        }
+
+        .amount-wrapper input:focus {
+            outline: none;
+            box-shadow: none !important;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #1f2937;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(251,191,36,0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Recent Entries */
+        .recent-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .recent-card h2 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .recent-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .recent-item:last-child { border-bottom: none; }
+
+        .recent-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .recent-icon.debit { background: #d1fae5; }
+        .recent-icon.credit { background: #fee2e2; }
+
+        .recent-info { flex: 1; }
+        .recent-desc { font-weight: 700; font-size: 0.92rem; margin-bottom: 2px; }
+        .recent-meta { font-size: 0.78rem; color: var(--text-light); }
+
+        .recent-amount { font-weight: 800; font-size: 1rem; }
+        .recent-amount.debit { color: var(--primary); }
+        .recent-amount.credit { color: var(--red); }
+
+        .recent-empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+        }
+
+        /* Toast */
+        .exp-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 9999;
+            display: none;
+            animation: toastIn 0.3s ease;
+        }
+
+        .exp-toast.show { display: block; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translate(-50%, 30px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+                /* ===== STUDENT DROPDOWN ===== */
+        #expStudentLink {
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            width: 100%;
+            background: white;
+            font-family: inherit;
+        }
+
+        #expStudentLink:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ===== RECEIPT CAPTURE ===== */
+        .receipt-capture {
+            border: 2px dashed #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .capture-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .capture-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 15px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .capture-btn:hover {
+            background: #f0fdf4;
+            border-color: var(--primary);
+        }
+
+        .capture-btn:active {
+            transform: scale(0.97);
+        }
+
+        .receipt-preview {
+            padding: 15px;
+        }
+
+        .receipt-preview img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .receipt-preview-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .receipt-remove {
+            background: #fee2e2;
+            color: #991b1b;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .receipt-status {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .receipt-status.uploading { color: #f59e0b; }
+        .receipt-status.done { color: var(--primary); }
+        .receipt-status.error { color: var(--red); }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <div class="login-page" id="expLoginPage">
+        <div class="logo">💰</div>
+        <h1>Quick Expense</h1>
+        <p>Madrasah Tahfiz PSB</p>
+
+        <form class="login-form" onsubmit="expLogin(event)">
+            <label>ID Admin</label>
+            <input type="text" id="expLoginId" placeholder="admin" required>
+
+            <label>Kata Laluan</label>
+            <input type="password" id="expLoginPass" placeholder="••••••" required>
+
+            <button type="submit" class="btn-login">🔐 Log Masuk</button>
+        </form>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-page" id="expMainPage">
+
+        <div class="app-header">
+            <h1>💰 Quick Expense</h1>
+            <button class="btn-logout" onclick="expLogout()">🚪 Keluar</button>
+        </div>
+
+        <div class="expense-form">
+
+            <div class="form-card">
+                <h2>📝 Catat Perbelanjaan</h2>
+
+                <!-- Type Toggle -->
+                <div class="type-toggle">
+                    <div class="type-btn active-debit" id="btnDebit" onclick="setExpType('debit')">
+                        <span class="type-btn-icon">📥</span>
+                        Wang Masuk
+                    </div>
+                    <div class="type-btn" id="btnCredit" onclick="setExpType('credit')">
+                        <span class="type-btn-icon">📤</span>
+                        Wang Keluar
+                    </div>
+                </div>
+
+                <form onsubmit="saveExpense(event)">
+                    <!-- Amount -->
+                    <div class="form-group">
+                        <label>💰 Jumlah</label>
+                        <div class="amount-wrapper">
+                            <span class="rm">RM</span>
+                            <input type="number" id="expAmount" required min="0.01" step="0.01" placeholder="0.00" inputmode="decimal">
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label>📝 Perkara</label>
+                        <input type="text" id="expDesc" required placeholder="cth: Beli beras 10kg">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label>📋 Kategori</label>
+                        <select id="expCategory">
+                            <optgroup label="📥 Pendapatan">
+                                <option value="Yuran Bulanan">Yuran Bulanan</option>
+                                <option value="Yuran Pendaftaran">Yuran Pendaftaran</option>
+                                <option value="Derma">Derma / Sumbangan</option>
+                                <option value="Pendapatan Lain">Pendapatan Lain</option>
+                            </optgroup>
+                            <optgroup label="📤 Perbelanjaan">
+                                <option value="Makanan" selected>Makanan</option>
+                                <option value="Utiliti">Utiliti (Air/Elektrik)</option>
+                                <option value="Buku & Alatan">Buku & Alatan</option>
+                                <option value="Penyelenggaraan">Penyelenggaraan</option>
+                                <option value="Pengangkutan">Pengangkutan</option>
+                                <option value="Gaji Guru">Gaji Guru</option>
+                                <option value="Sewa">Sewa</option>
+                                <option value="Perbelanjaan Lain">Perbelanjaan Lain</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label>📅 Tarikh</label>
+                        <input type="date" id="expDate">
+                    </div>
+
+                                        <!-- Person & Student Link -->
+                    <div class="form-group">
+                        <label>👤 Penerima / Pembayar</label>
+                        <input type="text" id="expPerson" placeholder="cth: Kedai Ali">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🔗 Link ke Pelajar (optional)</label>
+                        <select id="expStudentLink">
+                            <option value="">-- Pilih Pelajar --</option>
+                        </select>
+                        <small style="color:#64748b;display:block;margin-top:5px;">
+                            💡 Auto-link pembayaran ke portal ibu bapa
+                        </small>
+                    </div>
+
+                    <!-- Receipt Photo -->
+                    <div class="form-group">
+                        <label>📸 Gambar Resit (optional)</label>
+
+                        <div class="receipt-capture" id="receiptCapture">
+                            <!-- Capture button -->
+                            <div class="capture-buttons" id="captureButtons">
+                                <button type="button" class="capture-btn" id="btnCaptureCamera">
+    <span style="font-size:2rem;">📷</span>
+    <span>Ambil Gambar</span>
+</button>
+<button type="button" class="capture-btn" id="btnCaptureGallery">
+    <span style="font-size:2rem;">🖼️</span>
+    <span>Pilih Dari Gallery</span>
+</button>
+                            </div>
+
+                            <!-- Hidden file inputs -->
+                            <input type="file" id="receiptCamera" accept="image/*" capture="environment" style="display:none;">
+                            <input type="file" id="receiptGallery" accept="image/*" style="display:none;">
+
+                            <!-- Preview -->
+                            <div class="receipt-preview" id="receiptPreview" style="display:none;">
+                                <img id="receiptImage" src="" alt="Receipt">
+                                <div class="receipt-preview-actions">
+                                    <button type="button" class="receipt-remove" onclick="removeReceipt()">🗑 Buang</button>
+                                    <span class="receipt-status" id="receiptStatus">📷 Sedia untuk upload</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label>📝 Catatan (optional)</label>
+                        <textarea id="expNotes" rows="2" placeholder="Catatan tambahan..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">💾 Simpan ke Buku Tunai</button>
+                </form>
+            </div>
+
+            <!-- Recent Entries -->
+            <div class="recent-card">
+                <h2>📋 Rekod Terkini</h2>
+                <div id="recentExpenses">
+                    <div class="recent-empty">Memuat data...</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="exp-toast" id="expToast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+// ========================================
+// ===== FIREBASE CONFIG ==================
+// ========================================
+var firebaseConfig = {
+    apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+    authDomain: "hafazan-madrasah.firebaseapp.com",
+    databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hafazan-madrasah",
+    storageBucket: "hafazan-madrasah.firebasestorage.app",
+    messagingSenderId: "707178356175",
+    appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+};
+
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+var appData = null;
+var expType = 'debit'; // Default: wang keluar
+var receiptPhotoUrl = null;
+var IMGBB_KEY = 'f5e045918eaade7e35b9a66a87dcfd16';
+
+// Set default date
+document.getElementById('expDate').value = new Date().toISOString().split('T')[0];
+
+// Check session
+var savedSession = sessionStorage.getItem('expSession');
+if (savedSession) {
+    showApp();
+}
+
+// ========================================
+// ===== LOAD STUDENTS ====================
+// ========================================
+function loadStudents() {
+    console.log('📥 Loading students...');
+
+    db.ref('hafazanData/students').once('value').then(function(snap) {
+        var raw = snap.val();
+        var select = document.getElementById('expStudentLink');
+        if (!select) {
+            console.log('❌ expStudentLink not found');
+            return;
+        }
+
+        // Convert to array (Firebase boleh return object atau array)
+        var students = [];
+        if (Array.isArray(raw)) {
+            students = raw.filter(function(s) { return s; });
+        } else if (raw && typeof raw === 'object') {
+            students = Object.values(raw).filter(function(s) { return s; });
+        }
+
+        var html = '<option value="">-- Pilih Pelajar --</option>';
+
+        // Sort by name
+        students.sort(function(a, b) {
+            return (a.name || '').localeCompare(b.name || '');
+        });
+
+        for (var i = 0; i < students.length; i++) {
+            var s = students[i];
+            if (!s || !s.name) continue;
+            html += '<option value="' + s.id + '">' + s.name + ' (' + (s.class || '') + ')</option>';
+        }
+
+        select.innerHTML = html;
+        console.log('✅ Loaded ' + students.length + ' students');
+    }).catch(function(err) {
+        console.log('❌ Load students error:', err.message);
+    });
+}
+
+// ========================================
+// ===== RECEIPT PHOTO HANDLING ===========
+// ========================================
+function handleReceiptFile(input) {
+    console.log('📷 File selected:', input.files);
+
+    if (!input.files || !input.files[0]) {
+        console.log('❌ No file selected');
+        return;
+    }
+
+    var file = input.files[0];
+    console.log('File:', file.name, 'Size:', file.size);
+
+    // Check size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        showExpToast('❌ Gambar terlalu besar! Max 5MB');
+        input.value = '';
+        return;
+    }
+
+    // Show preview
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('receiptImage').src = e.target.result;
+        document.getElementById('receiptPreview').style.display = 'block';
+        document.getElementById('captureButtons').style.display = 'none';
+        document.getElementById('receiptStatus').textContent = '⏳ Uploading...';
+        document.getElementById('receiptStatus').className = 'receipt-status uploading';
+
+        // Upload to ImgBB
+        uploadReceiptPhoto(e.target.result);
+    };
+    reader.readAsDataURL(file);
+}
+
+function uploadReceiptPhoto(dataUrl) {
+    console.log('📤 Uploading to ImgBB...');
+
+    var base64 = dataUrl.split(',')[1];
+    var formData = new FormData();
+    formData.append('image', base64);
+
+    fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success && data.data) {
+            receiptPhotoUrl = data.data.url;
+            document.getElementById('receiptStatus').textContent = '✅ Gambar berjaya diupload';
+            document.getElementById('receiptStatus').className = 'receipt-status done';
+            console.log('✅ Uploaded:', data.data.url);
+        } else {
+            document.getElementById('receiptStatus').textContent = '❌ Upload gagal';
+            document.getElementById('receiptStatus').className = 'receipt-status error';
+            console.log('❌ Upload failed:', data);
+        }
+    })
+    .catch(function(err) {
+        document.getElementById('receiptStatus').textContent = '❌ Error: ' + err.message;
+        document.getElementById('receiptStatus').className = 'receipt-status error';
+        console.log('❌ Upload error:', err);
+    });
+}
+
+function removeReceipt() {
+    receiptPhotoUrl = null;
+    document.getElementById('receiptPreview').style.display = 'none';
+    document.getElementById('captureButtons').style.display = 'grid';
+    document.getElementById('receiptCamera').value = '';
+    document.getElementById('receiptGallery').value = '';
+}
+
+// ========================================
+// ===== LOGIN ============================
+// ========================================
+function expLogin(e) {
+    e.preventDefault();
+    var id = document.getElementById('expLoginId').value.trim();
+    var pass = document.getElementById('expLoginPass').value.trim();
+
+    db.ref('hafazanData/admins').once('value').then(function(snap) {
+        var admins = snap.val() || [];
+        var found = false;
+
+        for (var i = 0; i < admins.length; i++) {
+            if (admins[i].id === id && admins[i].password === pass) {
+                found = true;
+                sessionStorage.setItem('expSession', JSON.stringify(admins[i]));
+                showApp();
+                break;
+            }
+        }
+
+        if (!found) {
+            showExpToast('❌ ID atau password salah');
+        }
+    });
+}
+
+function expLogout() {
+    sessionStorage.removeItem('expSession');
+    document.getElementById('expLoginPage').style.display = 'flex';
+    document.getElementById('expMainPage').classList.remove('active');
+}
+
+function showApp() {
+    document.getElementById('expLoginPage').style.display = 'none';
+    document.getElementById('expMainPage').classList.add('active');
+    loadRecentExpenses();
+    loadStudents(); // ✅ Panggil di sini
+}
+
+// ========================================
+// ===== TYPE TOGGLE ======================
+// ========================================
+function setExpType(type) {
+    expType = type;
+    var btnDebit = document.getElementById('btnDebit');
+    var btnCredit = document.getElementById('btnCredit');
+
+    btnDebit.className = 'type-btn' + (type === 'debit' ? ' active-debit' : '');
+    btnCredit.className = 'type-btn' + (type === 'credit' ? ' active-credit' : '');
+}
+
+// ========================================
+// ===== SAVE EXPENSE =====================
+// ========================================
+function saveExpense(e) {
+    e.preventDefault();
+
+    var amount = parseFloat(document.getElementById('expAmount').value);
+    var desc = document.getElementById('expDesc').value.trim();
+    var category = document.getElementById('expCategory').value;
+    var date = document.getElementById('expDate').value;
+    var person = document.getElementById('expPerson').value.trim();
+    var notes = document.getElementById('expNotes').value.trim();
+
+    if (!amount || !desc || !date) {
+        showExpToast('❌ Sila isi jumlah, perkara & tarikh');
+        return;
+    }
+
+    showExpToast('⏳ Menyimpan...');
+
+    // Load current data
+    db.ref('hafazanData').once('value').then(function(snap) {
+        var data = snap.val() || {};
+        if (!data.cashbook) data.cashbook = [];
+
+        // Auto generate ref number
+        var yearShort = date.split('-')[0].slice(-2);
+        var prefix = expType === 'debit' ? 'RT-PSB-' + yearShort : 'PV/' + date.split('-')[0] + '/';
+        var maxNum = 0;
+
+        for (var i = 0; i < data.cashbook.length; i++) {
+            var ref = data.cashbook[i].ref || '';
+            if (ref.indexOf(prefix) === 0) {
+                var num = parseInt(ref.substring(prefix.length)) || 0;
+                if (num > maxNum) maxNum = num;
+            }
+        }
+
+        var refNum = prefix + String(maxNum + 1).padStart(4, '0');
+
+        var studentId = document.getElementById('expStudentLink').value || null;
+
+        var entry = {
+            id: 'CASH' + Date.now(),
+            batchId: 'MOBILE' + Date.now(),
+            batchIndex: 1,
+            batchTotal: 1,
+            date: date,
+            ref: refNum,
+            description: desc,
+            category: category,
+            type: expType,
+            amount: amount,
+            payMethod: 'Tunai',
+            notes: notes || 'Dicatat dari Quick Expense App',
+            person: person,
+            studentId: studentId,
+            receiptPhoto: receiptPhotoUrl || null,
+            createdAt: new Date().toISOString(),
+            source: 'mobile_app'
+        };
+
+        data.cashbook.push(entry);
+        data.lastUpdated = Date.now();
+
+        // Save to Firebase
+        db.ref('hafazanData').set(data).then(function() {
+            showExpToast('✅ Berjaya disimpan! Ref: ' + refNum);
+
+            // Reset form
+            document.getElementById('expAmount').value = '';
+            document.getElementById('expDesc').value = '';
+            document.getElementById('expPerson').value = '';
+            document.getElementById('expNotes').value = '';
+            document.getElementById('expStudentLink').value = '';
+            document.getElementById('expDate').value = new Date().toISOString().split('T')[0];
+            removeReceipt();
+            receiptPhotoUrl = null;
+
+            loadRecentExpenses();
+        }).catch(function(err) {
+            showExpToast('❌ Gagal: ' + err.message);
+        });
+    });
+}
+
+// ========================================
+// ===== LOAD RECENT EXPENSES =============
+// ========================================
+function loadRecentExpenses() {
+    var container = document.getElementById('recentExpenses');
+
+    db.ref('hafazanData/cashbook').limitToLast(20).once('value').then(function(snap) {
+        var data = snap.val();
+        if (!data) {
+            container.innerHTML = '<div class="recent-empty">📭 Tiada rekod</div>';
+            return;
+        }
+
+        var entries = Array.isArray(data) ? data : Object.values(data);
+        entries = entries.filter(function(e) { return e; });
+        entries.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+        entries = entries.slice(0, 10);
+
+        if (entries.length === 0) {
+            container.innerHTML = '<div class="recent-empty">📭 Tiada rekod</div>';
+            return;
+        }
+
+        var months = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+        var html = '';
+
+        for (var i = 0; i < entries.length; i++) {
+            var e = entries[i];
+            var d = new Date(e.date);
+            var dateStr = d.getDate() + ' ' + months[d.getMonth()];
+            var icon = e.type === 'debit' ? '📥' : '📤';
+            var amtClass = e.type === 'debit' ? 'debit' : 'credit';
+            var amtSign = e.type === 'debit' ? '+' : '-';
+            var mobileTag = e.source === 'mobile_app' ? ' 📱' : '';
+            var receiptTag = e.receiptPhoto ? ' 🧾' : '';
+            var studentTag = '';
+            if (e.studentId) {
+                studentTag = ' 🔗';
+            }
+
+            html += '<div class="recent-item">';
+            html += '<div class="recent-icon ' + amtClass + '">' + icon + '</div>';
+            html += '<div class="recent-info">';
+            html += '<div class="recent-desc">' + e.description + mobileTag + receiptTag + studentTag + '</div>';
+            html += '<div class="recent-meta">' + dateStr + ' • ' + e.category + (e.ref ? ' • ' + e.ref : '') + '</div>';
+            html += '</div>';
+            html += '<div class="recent-amount ' + amtClass + '">' + amtSign + 'RM ' + e.amount.toFixed(2) + '</div>';
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+    });
+}
+
+// ========================================
+// ===== TOAST ============================
+// ========================================
+function showExpToast(msg) {
+    var toast = document.getElementById('expToast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+// ========================================
+// ===== ATTACH EVENT LISTENERS ===========
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Loaded, attaching listeners...');
+
+    // Camera button
+    var btnCamera = document.getElementById('btnCaptureCamera');
+    if (btnCamera) {
+        btnCamera.addEventListener('click', function() {
+            console.log('📷 Camera button clicked');
+            document.getElementById('receiptCamera').click();
+        });
+        console.log('✅ Camera button listener attached');
+    } else {
+        console.log('❌ btnCaptureCamera not found');
+    }
+
+    // Gallery button
+    var btnGallery = document.getElementById('btnCaptureGallery');
+    if (btnGallery) {
+        btnGallery.addEventListener('click', function() {
+            console.log('🖼️ Gallery button clicked');
+            document.getElementById('receiptGallery').click();
+        });
+        console.log('✅ Gallery button listener attached');
+    } else {
+        console.log('❌ btnCaptureGallery not found');
+    }
+
+    // File input change handlers
+    var cameraInput = document.getElementById('receiptCamera');
+    if (cameraInput) {
+        cameraInput.addEventListener('change', function() {
+            console.log('📷 Camera input changed');
+            handleReceiptFile(this);
+        });
+        console.log('✅ Camera input listener attached');
+    } else {
+        console.log('❌ receiptCamera not found');
+    }
+
+    var galleryInput = document.getElementById('receiptGallery');
+    if (galleryInput) {
+        galleryInput.addEventListener('change', function() {
+            console.log('🖼️ Gallery input changed');
+            handleReceiptFile(this);
+        });
+        console.log('✅ Gallery input listener attached');
+    } else {
+        console.log('❌ receiptGallery not found');
+    }
+
+    console.log('✅ All listeners attached');
+});
+</script>
+
+</body>
+</html>

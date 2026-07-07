@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Maklumat Pelajar - Madrasah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 50%, #e9d5ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(4,120,87,0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            font-weight: 900;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        
+        .student-info {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        
+        .student-info h2 {
+            color: #7c3aed;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .student-info p {
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+        
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #faf5ff;
+        }
+        
+        .form-section-title .icon {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        .form-section-title h3 {
+            color: #7c3aed;
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 0.88rem;
+        }
+        
+        .form-group label .required {
+            color: #ef4444;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
+            border: 2px solid #a78bfa;
+            color: #7c3aed;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid #ef4444;
+            color: #991b1b;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #a78bfa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .form-hint {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Header -->
+    <div class="header">
+        <h1 style="display:flex;align-items:center;gap:10px;justify-content:center;"><img src="https://i.ibb.co/DgSPkh8d/logo.png" style="width:50px;height:50px;object-fit:contain;" alt="Logo"> Madrasah Tahfiz Pekan Sungai Buloh</h1>
+        <p>Borang Kemaskini Maklumat Pelajar</p>
+    </div>
+    
+    <!-- Loading -->
+    <div id="loadingDiv" class="loading">
+        <div class="loading-spinner"></div>
+        <p style="color:#64748b;">Memuatkan maklumat pelajar...</p>
+    </div>
+    
+    <!-- Error (invalid link) -->
+    <div id="errorDiv" class="error-message" style="display:none;">
+        <h2>⚠️ Link Tidak Sah</h2>
+        <p style="margin-top:10px;">Link ini mungkin sudah tamat tempoh atau tidak betul. Sila hubungi pihak madrasah.</p>
+    </div>
+    
+    <!-- Success -->
+    <div id="successDiv" class="success-message">
+        <div style="font-size:4rem;margin-bottom:10px;">✅</div>
+        <h2>Berjaya Dikemaskini!</h2>
+        <p style="margin-top:10px;">Terima kasih. Maklumat anak anda telah berjaya dikemaskini.</p>
+        <p style="margin-top:10px;font-size:0.85rem;opacity:0.9;">Anda boleh tutup halaman ini.</p>
+    </div>
+    
+    <!-- Form -->
+    <div id="formDiv" style="display:none;">
+        
+        <!-- Student Info -->
+        <div class="student-info">
+            <h2 id="studentName">Loading...</h2>
+            <p id="studentClass">-</p>
+        </div>
+        
+        <form id="updateForm" onsubmit="submitForm(event)">
+            
+            <!-- Maklumat Pelajar -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">👨‍🎓</div>
+                    <h3>Maklumat Pelajar</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nama Penuh Pelajar <span class="required">*</span></label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. MyKid/MyKad</label>
+                        <input type="text" id="ic" placeholder="cth: 120815-14-1234">
+                    </div>
+                    <div class="form-group">
+                        <label>Tarikh Lahir</label>
+                        <input type="date" id="dob">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jantina</label>
+                    <select id="gender">
+                        <option value="">Pilih Jantina</option>
+                        <option value="Lelaki">Lelaki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Alamat -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">🏠</div>
+                    <h3>Alamat Rumah</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Alamat (Baris 1)</label>
+                    <input type="text" id="address1" placeholder="cth: No 123, Jalan ABC">
+                </div>
+                
+                <div class="form-group">
+                    <label>Alamat (Baris 2)</label>
+                    <input type="text" id="address2" placeholder="cth: Taman XYZ">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Poskod</label>
+                        <input type="text" id="postcode" maxlength="5" placeholder="cth: 40000">
+                    </div>
+                    <div class="form-group">
+                        <label>Bandar</label>
+                        <input type="text" id="city" placeholder="cth: Shah Alam">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Negeri</label>
+                    <select id="state">
+                        <option value="">Pilih Negeri</option>
+                        <option value="Johor">Johor</option>
+                        <option value="Kedah">Kedah</option>
+                        <option value="Kelantan">Kelantan</option>
+                        <option value="Melaka">Melaka</option>
+                        <option value="Negeri Sembilan">Negeri Sembilan</option>
+                        <option value="Pahang">Pahang</option>
+                        <option value="Perak">Perak</option>
+                        <option value="Perlis">Perlis</option>
+                        <option value="Pulau Pinang">Pulau Pinang</option>
+                        <option value="Sabah">Sabah</option>
+                        <option value="Sarawak">Sarawak</option>
+                        <option value="Selangor">Selangor</option>
+                        <option value="Terengganu">Terengganu</option>
+                        <option value="WP Kuala Lumpur">WP Kuala Lumpur</option>
+                        <option value="WP Labuan">WP Labuan</option>
+                        <option value="WP Putrajaya">WP Putrajaya</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Maklumat Bapa -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">👨</div>
+                    <h3>Maklumat Bapa</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nama Bapa <span class="required">*</span></label>
+                    <input type="text" id="fatherName" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. MyKad Bapa</label>
+                        <input type="text" id="fatherIC">
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telefon Bapa <span class="required">*</span></label>
+                        <input type="tel" id="fatherPhone" required placeholder="cth: 0123456789">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pekerjaan Bapa</label>
+                        <input type="text" id="fatherJob">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Bapa</label>
+                        <input type="email" id="fatherEmail">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Maklumat Ibu -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">👩</div>
+                    <h3>Maklumat Ibu</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nama Ibu</label>
+                    <input type="text" id="motherName">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. MyKad Ibu</label>
+                        <input type="text" id="motherIC">
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telefon Ibu</label>
+                        <input type="tel" id="motherPhone">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Pekerjaan Ibu</label>
+                    <input type="text" id="motherJob">
+                </div>
+            </div>
+            
+            <!-- Kecemasan -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">🆘</div>
+                    <h3>Hubungi Kecemasan</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nama Waris Kecemasan</label>
+                    <input type="text" id="emergencyName" placeholder="cth: Nenek / Pakcik">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Hubungan</label>
+                        <input type="text" id="emergencyRelation" placeholder="cth: Pakcik">
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telefon</label>
+                        <input type="tel" id="emergencyPhone">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kesihatan -->
+            <div class="form-card">
+                <div class="form-section-title">
+                    <div class="icon">🏥</div>
+                    <h3>Maklumat Kesihatan</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label>Alahan (Makanan/Ubat)</label>
+                    <input type="text" id="allergy" placeholder="cth: Kacang, Ubat penisilin (atau 'Tiada')">
+                </div>
+                
+                <div class="form-group">
+                    <label>Penyakit Kronik</label>
+                    <input type="text" id="chronicDisease" placeholder="cth: Asma, Diabetes (atau 'Tiada')">
+                </div>
+                
+                <div class="form-group">
+                    <label>Catatan Kesihatan Lain</label>
+                    <textarea id="healthNotes" rows="3" placeholder="Sebarang maklumat kesihatan penting yang perlu diketahui"></textarea>
+                </div>
+            </div>
+            
+            <!-- Submit -->
+            <button type="submit" class="submit-btn">
+                💾 Hantar Kemaskini
+            </button>
+            
+        </form>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+// ===== FIREBASE CONFIG =====
+// PENTING: Ganti dengan Firebase config anda yang sama macam admin
+const firebaseConfig = {
+    // Copy dari fail data.js anda
+    apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+    authDomain: "hafazan-madrasah.firebaseapp.com",
+    databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hafazan-madrasah",
+    storageBucket: "hafazan-madrasah.firebasestorage.app",
+    messagingSenderId: "707178356175",
+    appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ===== GET URL PARAMETERS =====
+const urlParams = new URLSearchParams(window.location.search);
+const studentId = urlParams.get('id');
+const token = urlParams.get('token');
+
+let currentStudent = null;
+
+// ===== LOAD STUDENT DATA =====
+async function loadStudentData() {
+    if (!studentId || !token) {
+        showError();
+        return;
+    }
+    
+    try {
+        const snapshot = await db.ref('hafazanData/students').once('value');
+        const students = snapshot.val() || [];
+        
+        // Find student
+        const student = students.find(s => s.id === studentId);
+        
+        if (!student) {
+            showError();
+            return;
+        }
+        
+        // Verify token
+        const expectedToken = generateToken(studentId);
+        if (token !== expectedToken) {
+            showError();
+            return;
+        }
+        
+        currentStudent = student;
+        fillForm(student);
+        
+        document.getElementById('loadingDiv').style.display = 'none';
+        document.getElementById('formDiv').style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showError();
+    }
+}
+
+// ===== GENERATE TOKEN (simple hash) =====
+function generateToken(id) {
+    // Simple hash - boleh ditingkatkan untuk security
+    let hash = 0;
+    const str = id + 'MADRASAH_SECRET_2024';
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+    return Math.abs(hash).toString(36);
+}
+
+// ===== FILL FORM =====
+function fillForm(student) {
+    document.getElementById('studentName').textContent = student.name || 'Pelajar';
+    document.getElementById('studentClass').textContent = student.class || '-';
+    
+    // Fill all fields
+    document.getElementById('name').value = student.name || '';
+    document.getElementById('ic').value = student.ic || '';
+    document.getElementById('dob').value = student.dob || '';
+    document.getElementById('gender').value = student.gender || '';
+    
+    // Address
+    if (student.address) {
+        document.getElementById('address1').value = student.address.line1 || '';
+        document.getElementById('address2').value = student.address.line2 || '';
+        document.getElementById('postcode').value = student.address.postcode || '';
+        document.getElementById('city').value = student.address.city || '';
+        document.getElementById('state').value = student.address.state || '';
+    }
+    
+    // Father
+    document.getElementById('fatherName').value = student.fatherName || '';
+    document.getElementById('fatherIC').value = student.fatherIC || '';
+    document.getElementById('fatherPhone').value = student.fatherPhone || '';
+    document.getElementById('fatherJob').value = student.fatherJob || '';
+    document.getElementById('fatherEmail').value = student.fatherEmail || '';
+    
+    // Mother
+    document.getElementById('motherName').value = student.motherName || '';
+    document.getElementById('motherIC').value = student.motherIC || '';
+    document.getElementById('motherPhone').value = student.motherPhone || '';
+    document.getElementById('motherJob').value = student.motherJob || '';
+    
+    // Emergency
+    document.getElementById('emergencyName').value = student.emergencyName || '';
+    document.getElementById('emergencyRelation').value = student.emergencyRelation || '';
+    document.getElementById('emergencyPhone').value = student.emergencyPhone || '';
+    
+    // Health
+    document.getElementById('allergy').value = student.allergy || '';
+    document.getElementById('chronicDisease').value = student.chronicDisease || '';
+    document.getElementById('healthNotes').value = student.healthNotes || '';
+}
+
+// ===== SUBMIT FORM =====
+async function submitForm(event) {
+    event.preventDefault();
+    
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Menghantar...';
+    
+    try {
+        // Get snapshot
+        const snapshot = await db.ref('hafazanData/students').once('value');
+        let students = snapshot.val() || [];
+        
+        // Find and update
+        const index = students.findIndex(s => s.id === studentId);
+        if (index === -1) {
+            alert('❌ Pelajar tidak ditemui');
+            return;
+        }
+        
+        // Update student data
+        students[index] = {
+            ...students[index],
+            name: document.getElementById('name').value.trim(),
+            ic: document.getElementById('ic').value.trim(),
+            dob: document.getElementById('dob').value,
+            gender: document.getElementById('gender').value,
+            address: {
+                line1: document.getElementById('address1').value.trim(),
+                line2: document.getElementById('address2').value.trim(),
+                postcode: document.getElementById('postcode').value.trim(),
+                city: document.getElementById('city').value.trim(),
+                state: document.getElementById('state').value
+            },
+            fatherName: document.getElementById('fatherName').value.trim(),
+            fatherIC: document.getElementById('fatherIC').value.trim(),
+            fatherPhone: document.getElementById('fatherPhone').value.trim(),
+            fatherJob: document.getElementById('fatherJob').value.trim(),
+            fatherEmail: document.getElementById('fatherEmail').value.trim(),
+            motherName: document.getElementById('motherName').value.trim(),
+            motherIC: document.getElementById('motherIC').value.trim(),
+            motherPhone: document.getElementById('motherPhone').value.trim(),
+            motherJob: document.getElementById('motherJob').value.trim(),
+            emergencyName: document.getElementById('emergencyName').value.trim(),
+            emergencyRelation: document.getElementById('emergencyRelation').value.trim(),
+            emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+            allergy: document.getElementById('allergy').value.trim(),
+            chronicDisease: document.getElementById('chronicDisease').value.trim(),
+            healthNotes: document.getElementById('healthNotes').value.trim(),
+            lastUpdatedByParent: new Date().toISOString()
+        };
+        
+        // Save to Firebase
+        await db.ref('hafazanData/students').set(students);
+        
+        // Show success
+        document.getElementById('formDiv').style.display = 'none';
+        document.getElementById('successDiv').style.display = 'block';
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Gagal menghantar. Sila cuba lagi.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '💾 Hantar Kemaskini';
+    }
+}
+
+// ===== SHOW ERROR =====
+function showError() {
+    document.getElementById('loadingDiv').style.display = 'none';
+    document.getElementById('errorDiv').style.display = 'block';
+}
+
+// ===== START =====
+loadStudentData();
+</script>
+
+</body>
+</html>

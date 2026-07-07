@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madrasah Tahfiz Pekan Sungai Buloh - Membentuk Generasi Quran Cinta Sunnah</title>
+    <meta name="description" content="Madrasah Tahfiz Pekan Sungai Buloh - Pusat pembelajaran Al-Quran & hafazan sejak 2014. Daftar sekarang!">
+    <meta name="keywords" content="madrasah, tahfiz, sungai buloh, jeram, hafazan, quran, iqra, sekolah agama">
+
+    <!-- Open Graph (for sharing) -->
+    <meta property="og:title" content="Madrasah Tahfiz Pekan Sungai Buloh">
+    <meta property="og:description" content="Membentuk Generasi Quran Cinta Sunnah">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://api.iconify.design/twemoji/mosque.svg">
+    <meta name="theme-color" content="#7c3aed">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="home-navbar" id="homeNavbar">
+    <div class="nav-container">
+        <a href="#home" class="nav-logo">
+            <img class="nav-logo-icon" src="https://i.ibb.co/DgSPkh8d/logo.png" style="width:40px;height:40px;object-fit:contain;" alt="Logo">
+            <div class="nav-logo-text">
+                <div class="nav-logo-name">Madrasah Tahfiz</div>
+                <div class="nav-logo-sub">Pekan Sungai Buloh</div>
+            </div>
+        </a>
+
+        <button class="nav-toggle" id="navToggle" onclick="toggleMobileNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+            <!-- Main links (visible on desktop) -->
+            <a href="#home" class="nav-link">Utama</a>
+            <a href="#about" class="nav-link">Tentang</a>
+            <a href="#programs" class="nav-link">Program</a>
+            <a href="#yuran" class="nav-link">Yuran</a>
+            <a href="#gallery" class="nav-link">Galeri</a>
+            <a href="#contact" class="nav-link">Hubungi</a>
+
+            <!-- More dropdown (desktop only) -->
+            <div class="nav-more-dropdown">
+                <button class="nav-more-btn" onclick="toggleNavMoreHome(event)">
+                    Lagi ▾
+                </button>
+                <div class="nav-more-menu-home" id="navMoreMenuHome">
+                    <a href="#akreditasi">🏆 Akreditasi</a>
+                    <a href="#quiz">🎯 Quiz Pintar</a>
+                    <a href="#donation">💝 Infaq</a>
+                    <a href="#team">👨‍🏫 Guru</a>
+                    <a href="#tour">🏫 Virtual Tour</a>
+                    <a href="#events">📅 Acara</a>
+                    <a href="#testimonials">💬 Testimoni</a>
+                    <a href="#faq">❓ FAQ</a>
+                </div>
+            </div>
+
+            <!-- Hidden on desktop, shown in mobile menu -->
+            <a href="#akreditasi" class="nav-link">🏆 Akreditasi</a>
+            <a href="#quiz" class="nav-link">🎯 Quiz</a>
+            <a href="#donation" class="nav-link">💝 Infaq</a>
+            <a href="#team" class="nav-link">👨‍🏫 Guru</a>
+            <a href="#tour" class="nav-link">🏫 Tour</a>
+            <a href="#events" class="nav-link">📅 Acara</a>
+            <a href="#testimonials" class="nav-link">💬 Testimoni</a>
+            <a href="#faq" class="nav-link">❓ FAQ</a>
+
+            <!-- Language & CTA -->
+            <button class="nav-lang-btn" onclick="toggleHomeLang()" id="homeLangBtn">🇲🇾 BM</button>
+            <a href="daftar.html" class="nav-btn nav-btn-primary">📝 Daftar</a>
+            <a href="login.html" class="nav-btn nav-btn-outline">🔐 Login</a>
+        </div>
+    </div>
+</nav>
+
+        <!-- ===== HERO SECTION (PREMIUM with VIDEO) ===== -->
+<section class="hero hero-premium" id="home">
+
+    <!-- Video Background Layer -->
+    <div class="hero-video-container" id="heroVideoContainer">
+        <video
+            id="heroBackgroundVideo"
+            class="hero-bg-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="">
+            <source src="" type="video/mp4">
+        </video>
+        <div class="hero-video-fallback" id="heroVideoFallback"></div>
+    </div>
+
+    <!-- Dark Overlay -->
+    <div class="hero-video-overlay"></div>
+
+    <!-- Background Effects -->
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Stars/Sparkles -->
+    <div class="hero-stars">
+        <span class="star">✦</span>
+        <span class="star">✧</span>
+        <span class="star">✦</span>
+        <span class="star">✧</span>
+        <span class="star">✦</span>
+        <span class="star">✧</span>
+    </div>
+
+    <!-- HERO CONTAINER CONTENT -->
+    <div class="hero-container hero-container-centered">
+
+        <!-- Logo with 3D Effect -->
+        <div class="hero-logo-wrapper">
+            <div class="hero-logo-glow"></div>
+            <div class="hero-logo-3d">
+                <img src="images/logo.png" alt="Logo Madrasah Tahfiz Pekan Sungai Buloh" class="hero-logo-img">
+            </div>
+        </div>
+
+        <!-- Badge -->
+        <div class="hero-badge hero-badge-premium">
+            <img src="https://i.ibb.co/DgSPkh8d/logo.png" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;" alt="Logo">
+            <span data-i18n="hero.since">Sejak 2014</span>
+            <span class="badge-dot"></span>
+        </div>
+
+        <!-- Arabic Basmalah -->
+        <div class="hero-arabic-wrapper">
+            <span class="arabic-decorator left">۞</span>
+            <h1 class="hero-arabic hero-arabic-premium">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h1>
+            <span class="arabic-decorator right">۞</span>
+        </div>
+
+        <!-- Main Title -->
+        <h2 class="hero-title hero-title-premium" data-i18n="hero.title">
+            Madrasah Tahfiz<br>
+            <span class="hero-title-accent">Pekan Sungai Buloh</span>
+        </h2>
+
+        <!-- Tagline -->
+        <div class="hero-tagline-wrapper">
+            <span class="tagline-line"></span>
+            <p class="hero-tagline" data-i18n="hero.tagline">
+                Membentuk Generasi Quran Cinta Sunnah
+            </p>
+            <span class="tagline-line"></span>
+        </div>
+
+        <!-- Description -->
+        <p class="hero-description hero-description-centered" data-i18n="hero.description">
+            Pusat pembelajaran Al-Quran dan hafazan dengan pendekatan moden,
+            dibimbing oleh ustaz/ustazah berpengalaman dan bertauliah.
+        </p>
+
+        <!-- Buttons -->
+        <div class="hero-buttons hero-buttons-centered">
+            <a href="daftar.html" class="btn-hero btn-hero-primary btn-hero-3d" data-i18n="hero.btnRegister">
+                <span class="btn-icon">📝</span>
+                <span class="btn-text">Daftar Sekarang</span>
+                <span class="btn-shine"></span>
+            </a>
+            <a href="#about" class="btn-hero btn-hero-outline btn-hero-glass" data-i18n="hero.btnLearn">
+                <span class="btn-icon">📖</span>
+                <span class="btn-text">Ketahui Lebih Lanjut</span>
+            </a>
+        </div>
+
+        <!-- Premium Stats Cards -->
+        <div class="hero-stats-premium">
+            <div class="stat-premium">
+                <div class="stat-premium-icon">👨‍🎓</div>
+                <div class="stat-premium-content">
+                    <div class="stat-premium-num">100<span>+</span></div>
+                    <div class="stat-premium-label" data-i18n="hero.students">Pelajar</div>
+                </div>
+            </div>
+            <div class="stat-premium">
+                <div class="stat-premium-icon">👨‍🏫</div>
+                <div class="stat-premium-content">
+                    <div class="stat-premium-num">10<span>+</span></div>
+                    <div class="stat-premium-label" data-i18n="hero.teachers">Ustaz/Ustazah</div>
+                </div>
+            </div>
+            <div class="stat-premium">
+                <div class="stat-premium-icon">🎓</div>
+                <div class="stat-premium-content">
+                    <div class="stat-premium-num">10<span>+</span></div>
+                    <div class="stat-premium-label" data-i18n="hero.years">Tahun</div>
+                </div>
+            </div>
+            <div class="stat-premium stat-premium-highlight">
+                <div class="stat-premium-icon">📝</div>
+                <div class="stat-premium-content">
+                    <div class="stat-premium-num" data-i18n="hero.regOpen">Dibuka</div>
+                    <div class="stat-premium-label" data-i18n="hero.intake">Ambilan 2025</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator-premium">
+        <div class="mouse">
+            <div class="mouse-wheel"></div>
+        </div>
+        <span data-i18n="hero.scroll">Scroll Down</span>
+    </div>
+
+</section>
+<!-- ===== END HERO SECTION ===== -->
+
+<!-- Wave Divider: Hero → About -->
+<div class="wave-divider" style="background: #0a3621;">
+    <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,50 C200,100 400,0 600,50 C800,100 1000,0 1200,50 L1200,100 L0,100 Z" fill="#ffffff"></path>
+    </svg>
+</div>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>ℹ️</span>
+                    <span data-i18n="about.badge">Tentang Kami</span>
+                </div>
+                <h2 class="section-title" data-i18n="about.title">
+                    Membentuk Generasi Quran<br>
+                    <span class="section-title-accent">Cinta Sunnah</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="about.subtitle">
+                    Sejak 2014, kami komited memberikan pendidikan Al-Quran terbaik
+                </p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-content">
+                    <h3 data-i18n="about.heading">Madrasah Tahfiz Pekan Sungai Buloh</h3>
+                    <p data-i18n="about.p1">
+                        Madrasah kami merupakan pusat pembelajaran Al-Quran yang ditubuhkan
+                        pada tahun 2014 dengan matlamat membentuk generasi yang menghafaz Al-Quran
+                        serta mencintai Sunnah Rasulullah ﷺ.
+                    </p>
+                    <p data-i18n="about.p2">
+                        Kami menggunakan pendekatan moden dan tradisional dalam pengajaran,
+                        dibimbing oleh ustaz dan ustazah yang berpengalaman serta bertauliah
+                        dari institusi tahfiz terkemuka.
+                    </p>
+
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <span class="about-feature-icon">✅</span>
+                            <div>
+                                <h4 data-i18n="about.f1Title">Pendekatan Sistematik</h4>
+                                <p data-i18n="about.f1Desc">Kurikulum tersusun dari Iqra' hingga Khatam</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <span class="about-feature-icon">✅</span>
+                            <div>
+                                <h4 data-i18n="about.f2Title">Guru Bertauliah</h4>
+                                <p data-i18n="about.f2Desc">Pengajar berpengalaman & bertauliah</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <span class="about-feature-icon">✅</span>
+                            <div>
+                                <h4 data-i18n="about.f3Title">Persekitaran Kondusif</h4>
+                                <p data-i18n="about.f3Desc">Suasana pembelajaran yang selesa & islamik</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <span class="about-feature-icon">✅</span>
+                            <div>
+                                <h4 data-i18n="about.f4Title">Portal Ibu Bapa</h4>
+                                <p data-i18n="about.f4Desc">Pantau progress anak secara online</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-visual">
+                    <!-- Vision Card -->
+                    <div class="vision-card vision-card-1">
+                        <div class="vision-icon">🎯</div>
+                        <h4 data-i18n="about.visionTitle">Visi</h4>
+                        <p data-i18n="about.visionDesc">
+                            Menjadi pusat hafazan Al-Quran yang melahirkan
+                            huffaz dan huffazah yang berakhlak mulia.
+                        </p>
+                    </div>
+
+                    <!-- Mission Card -->
+                    <div class="vision-card vision-card-2">
+                        <div class="vision-icon">🌟</div>
+                        <h4 data-i18n="about.missionTitle">Misi</h4>
+                        <p data-i18n="about.missionDesc">
+                            Memberikan pendidikan Al-Quran berkualiti dengan
+                            pendekatan moden dan tradisional yang seimbang.
+                        </p>
+                    </div>
+
+                    <!-- Values Card -->
+                    <div class="vision-card vision-card-3">
+                        <div class="vision-icon">💎</div>
+                        <h4 data-i18n="about.valuesTitle">Nilai</h4>
+                        <p data-i18n="about.valuesDesc">
+                            Ikhlas, Sabar, Istiqamah, Tawadhu' dan
+                            Cintakan Ilmu Al-Quran.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+    <!-- Wave Divider: About → Akreditasi -->
+    <div class="wave-divider" style="background: #faf5ff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C200,80 400,0 600,40 C800,80 1000,10 1200,40 L1200,100 L0,100 Z" fill="#ffffff"></path>
+        </svg>
+    </div>
+
+    <!-- ===== AKREDITASI SECTION ===== -->
+    <section class="akreditasi-section" id="akreditasi">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>🏆</span>
+                    <span data-i18n="akred.badge">Pengiktirafan Rasmi</span>
+                </div>
+                <h2 class="section-title" data-i18n="akred.title">
+                    Diiktiraf & Diakreditasi<br>
+                    <span class="section-title-accent">Oleh Pihak Berwajib</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="akred.subtitle">
+                    Madrasah kami didaftarkan rasmi dan diiktiraf oleh agensi-agensi kerajaan
+                </p>
+            </div>
+
+            <!-- Trust Badges Strip -->
+            <div class="trust-strip">
+                <div class="trust-badge">
+                    <div class="trust-icon">✅</div>
+                    <div class="trust-text">
+                        <strong data-i18n="akred.t1Title">Berdaftar Rasmi</strong>
+                        <small data-i18n="akred.t1Sub">Sejak 2014</small>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon"><img src="https://i.ibb.co/DgSPkh8d/logo.png" style="width:50px;height:50px;object-fit:contain;" alt="Logo"></div>
+                    <div class="trust-text">
+                        <strong data-i18n="akred.t2Title">Diakreditasi JAIS</strong>
+                        <small data-i18n="akred.t2Sub">Selangor</small>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon">🛡️</div>
+                    <div class="trust-text">
+                        <strong data-i18n="akred.t3Title">Halal Certified</strong>
+                        <small data-i18n="akred.t3Sub">Makanan halal</small>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-icon">⭐</div>
+                    <div class="trust-text">
+                        <strong data-i18n="akred.t4Title">10+ Tahun</strong>
+                        <small data-i18n="akred.t4Sub">Pengalaman</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logos Grid -->
+            <div class="akreditasi-logos">
+                <h3 class="logos-heading" data-i18n="akred.logosTitle">🏛️ Pengiktirafan & Pendaftaran Rasmi</h3>
+                <div class="logos-grid">
+
+                    <!-- JAKIM -->
+                    <div class="logo-card" onclick="openSijilModal('jakim')">
+                        <div class="logo-image jakim-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">🕌</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>JAKIM</h4>
+                            <p data-i18n="akred.jakim">Jabatan Kemajuan Islam Malaysia</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Berdaftar</span></span>
+                        </div>
+                    </div>
+
+                    <!-- JAIS -->
+                    <div class="logo-card" onclick="openSijilModal('jais')">
+                        <div class="logo-image jais-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">🏛️</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>JAIS</h4>
+                            <p data-i18n="akred.jais">Jabatan Agama Islam Selangor</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Berdaftar</span></span>
+                        </div>
+                    </div>
+
+                    <!-- KPM -->
+                    <div class="logo-card" onclick="openSijilModal('kpm')">
+                        <div class="logo-image kpm-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">🎓</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>KPM</h4>
+                            <p data-i18n="akred.kpm">Kementerian Pendidikan Malaysia</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Berdaftar</span></span>
+                        </div>
+                    </div>
+
+                    <!-- SSM -->
+                    <div class="logo-card" onclick="openSijilModal('ssm')">
+                        <div class="logo-image ssm-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">📋</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>ROS / SSM</h4>
+                            <p data-i18n="akred.ssm">Pendaftar Pertubuhan</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Berdaftar</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Halal -->
+                    <div class="logo-card" onclick="openSijilModal('halal')">
+                        <div class="logo-image halal-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">🛡️</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>Halal</h4>
+                            <p data-i18n="akred.halal">Sijil Halal Makanan</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Diakreditasi</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Tahfiz -->
+                    <div class="logo-card" onclick="openSijilModal('tahfiz')">
+                        <div class="logo-image tahfiz-logo">
+                            <div class="logo-placeholder">
+                                <span style="font-size:3rem;">📖</span>
+                            </div>
+                        </div>
+                        <div class="logo-info">
+                            <h4>Pusat Tahfiz</h4>
+                            <p data-i18n="akred.tahfiz">Pengiktirafan Tahfiz</p>
+                            <span class="logo-status">✅ <span data-i18n="akred.verified">Diiktiraf</span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="logos-note" data-i18n="akred.note">
+                    💡 Klik mana-mana logo untuk lihat sijil rasmi
+                </p>
+            </div>
+
+            <!-- Akreditasi Info Cards -->
+            <div class="akreditasi-info-grid">
+
+                <div class="info-card">
+                    <div class="info-card-icon">📋</div>
+                    <h4 data-i18n="akred.info1Title">No. Pendaftaran</h4>
+                    <p class="info-value">MTPSB-2014-001</p>
+                    <small data-i18n="akred.info1Sub">Berdaftar dengan JAIS Selangor</small>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">📅</div>
+                    <h4 data-i18n="akred.info2Title">Ditubuhkan</h4>
+                    <p class="info-value">2014</p>
+                    <small data-i18n="akred.info2Sub">Lebih 10 tahun beroperasi</small>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">👥</div>
+                    <h4 data-i18n="akred.info3Title">Jumlah Pelajar</h4>
+                    <p class="info-value">100+</p>
+                    <small data-i18n="akred.info3Sub">Pelajar aktif setiap tahun</small>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">🎓</div>
+                    <h4 data-i18n="akred.info4Title">Alumni</h4>
+                    <p class="info-value">200+</p>
+                    <small data-i18n="akred.info4Sub">Pelajar berjaya khatam</small>
+                </div>
+            </div>
+
+            <!-- Achievements Banner -->
+            <div class="achievements-banner">
+                <div class="achievements-header">
+                    <h3>🏅 <span data-i18n="akred.achTitle">Pencapaian & Anugerah</span></h3>
+                </div>
+                <div class="achievements-grid">
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🥇</div>
+                        <div class="achievement-text">
+                            <strong data-i18n="akred.ach1">Anugerah Tahfiz Terbaik</strong>
+                            <small>JAIS Selangor 2023</small>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-text">
+                            <strong data-i18n="akred.ach2">Johan Tilawah Daerah</strong>
+                            <small>Kuala Selangor 2022, 2023</small>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">⭐</div>
+                        <div class="achievement-text">
+                            <strong data-i18n="akred.ach3">50+ Khatam Quran</strong>
+                            <small>Sejak 2014</small>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🌟</div>
+                        <div class="achievement-text">
+                            <strong data-i18n="akred.ach4">Pengiktirafan Komuniti</strong>
+                            <small>Madrasah Terbaik Daerah 2023</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification CTA -->
+            <div class="verification-cta">
+                <div class="verification-icon">🔍</div>
+                <h3 data-i18n="akred.verifyTitle">Mahu Verify Pendaftaran Kami?</h3>
+                <p data-i18n="akred.verifyDesc">
+                    Anda boleh semak status pendaftaran madrasah kami di portal rasmi JAIS Selangor
+                </p>
+                <div class="verification-buttons">
+                    <a href="https://www.jais.gov.my" target="_blank" class="btn-verify">
+                        🌐 <span data-i18n="akred.verifyBtn1">Portal JAIS Selangor</span>
+                    </a>
+                    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20bertanya%20tentang%20pendaftaran%20dan%20akreditasi%20madrasah"
+                       target="_blank"
+                       class="btn-verify btn-verify-wa">
+                        💬 <span data-i18n="akred.verifyBtn2">Tanya Kami</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wave Divider: Akreditasi → Programs -->
+    <div class="wave-divider" style="background: #ffffff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C200,80 400,0 600,40 C800,80 1000,10 1200,40 L1200,100 L0,100 Z" fill="#faf5ff"></path>
+        </svg>
+    </div>
+
+    <!-- ===== PROGRAMS SECTION ===== -->
+    <section class="programs-section" id="programs">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>📚</span>
+                    <span data-i18n="programs.badge">Program Kami</span>
+                </div>
+                <h2 class="section-title" data-i18n="programs.title">
+                    Pelbagai Program<br>
+                    <span class="section-title-accent">Untuk Semua Peringkat</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="programs.subtitle">
+                    Dari kanak-kanak hingga dewasa, kami ada kelas yang sesuai untuk anda
+                </p>
+            </div>
+
+            <div class="programs-grid">
+                <!-- Program 1: Iqra' -->
+                <div class="program-card">
+                    <div class="program-icon">📕</div>
+                    <h3 class="program-title" data-i18n="prog.iqra.title">Kelas Iqra'</h3>
+                    <p class="program-desc" data-i18n="prog.iqra.desc">
+                        Asas pembelajaran Al-Quran dari Iqra' 1 hingga Iqra' 6.
+                        Sesuai untuk pemula dan kanak-kanak.
+                    </p>
+                    <ul class="program-features">
+                        <li><span>✓</span> <span data-i18n="prog.iqra.f1">Iqra' 1-6 lengkap</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.iqra.f2">Tajwid asas</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.iqra.f3">Makhraj huruf</span></li>
+                    </ul>
+                    <div class="program-meta">
+                        <span class="program-age">👶 4-7 tahun</span>
+                        <span class="program-class" data-i18n="prog.iqra.class">Kelas 1</span>
+                    </div>
+                </div>
+
+                <!-- Program 2: Al-Quran Asas -->
+                <div class="program-card program-card-featured">
+                    <div class="program-badge" data-i18n="programs.popular">⭐ Popular</div>
+                    <div class="program-icon">📖</div>
+                    <h3 class="program-title" data-i18n="prog.asas.title">Al-Quran Asas</h3>
+                    <p class="program-desc" data-i18n="prog.asas.desc">
+                        Pembelajaran Al-Quran dengan fokus tajwid yang lengkap.
+                        Lulusan Iqra' atau yang sudah boleh baca.
+                    </p>
+                    <ul class="program-features">
+                        <li><span>✓</span> <span data-i18n="prog.asas.f1">Bacaan dengan tajwid</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.asas.f2">Khatam Al-Quran</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.asas.f3">Hafazan Surah Lazim</span></li>
+                    </ul>
+                    <div class="program-meta">
+                        <span class="program-age">🧒 7-12 tahun</span>
+                        <span class="program-class" data-i18n="prog.asas.class">Kelas 2</span>
+                    </div>
+                </div>
+
+                <!-- Program 3: Hafazan Juz 30 -->
+                <div class="program-card">
+                    <div class="program-icon">🌟</div>
+                    <h3 class="program-title" data-i18n="prog.juz30.title">Hafazan Juz 30</h3>
+                    <p class="program-desc" data-i18n="prog.juz30.desc">
+                        Hafazan Juz Amma (Juz 30) dengan kaedah talqin dan murajaah.
+                        Pelajar yang sudah lancar membaca Al-Quran.
+                    </p>
+                    <ul class="program-features">
+                        <li><span>✓</span> <span data-i18n="prog.juz30.f1">Khatam Juz 30</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.juz30.f2">Sabak baru harian</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.juz30.f3">Para sabak & murajaah</span></li>
+                    </ul>
+                    <div class="program-meta">
+                        <span class="program-age">👦 8-15 tahun</span>
+                        <span class="program-class" data-i18n="prog.juz30.class">Kelas 3</span>
+                    </div>
+                </div>
+
+                <!-- Program 4: Hafazan 5 Surah Pilihan -->
+<div class="program-card">
+    <div class="program-icon">⭐</div>
+    <h3 class="program-title" data-i18n="prog.5surah.title">Hafazan 5 Surah Pilihan</h3>
+    <p class="program-desc" data-i18n="prog.5surah.desc">
+        Program hafazan khusus 5 surah pilihan yang penuh fadhilat
+        dan keberkatan untuk amalan harian.
+    </p>
+    <ul class="program-features">
+        <li><span>✓</span> <span data-i18n="prog.5surah.f1">Surah Ya-Sin</span></li>
+        <li><span>✓</span> <span data-i18n="prog.5surah.f2">Surah As-Sajdah</span></li>
+        <li><span>✓</span> <span data-i18n="prog.5surah.f3">Surah Al-Mulk</span></li>
+        <li><span>✓</span> <span data-i18n="prog.5surah.f4">Surah Ad-Dukhan</span></li>
+        <li><span>✓</span> <span data-i18n="prog.5surah.f5">Surah Al-Waqi'ah</span></li>
+    </ul>
+    <div class="program-meta">
+        <span class="program-age">👦 10+ tahun</span>
+        <span class="program-class" data-i18n="prog.5surah.class">Kelas 4</span>
+    </div>
+</div>
+
+                <!-- Program 5: Hafazan Lanjutan -->
+                <div class="program-card">
+                    <div class="program-icon">🎓</div>
+                    <h3 class="program-title" data-i18n="prog.lanjutan.title">Hafazan Lanjutan</h3>
+                    <p class="program-desc" data-i18n="prog.lanjutan.desc">
+                        Untuk pelajar yang sudah ada hafazan banyak juz.
+                        Target khatam 30 juz dengan kaedah intensif.
+                    </p>
+                    <ul class="program-features">
+                        <li><span>✓</span> <span data-i18n="prog.lanjutan.f1">Hafazan intensif</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.lanjutan.f2">Sistem mentor</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.lanjutan.f3">Pra-syahadah</span></li>
+                    </ul>
+                    <div class="program-meta">
+                        <span class="program-age">👨 12-18 tahun</span>
+                        <span class="program-class" data-i18n="prog.lanjutan.class">Kelas 5</span>
+                    </div>
+                </div>
+
+                <!-- Program 6: Khatam -->
+                <div class="program-card">
+                    <div class="program-icon">🏆</div>
+                    <h3 class="program-title" data-i18n="prog.khatam.title">Kelas Khatam</h3>
+                    <p class="program-desc" data-i18n="prog.khatam.desc">
+                        Bagi pelajar yang sudah khatam 30 juz. Fokus pada
+                        pengukuhan hafazan dan persediaan syahadah.
+                    </p>
+                    <ul class="program-features">
+                        <li><span>✓</span> <span data-i18n="prog.khatam.f1">Khatam 30 juz</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.khatam.f2">Syahadah</span></li>
+                        <li><span>✓</span> <span data-i18n="prog.khatam.f3">Sijil rasmi</span></li>
+                    </ul>
+                    <div class="program-meta">
+                        <span class="program-age">👨 14+ tahun</span>
+                        <span class="program-class" data-i18n="prog.khatam.class">Kelas 6</span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- CTA -->
+            <div class="programs-cta">
+                <h3 data-i18n="programs.ctaTitle">Sertai Madrasah Kami Hari Ini!</h3>
+                <p data-i18n="programs.ctaDesc">Pendaftaran dibuka sepanjang tahun</p>
+                <a href="daftar.html" class="btn-hero btn-hero-primary" data-i18n="programs.ctaBtn">
+                    📝 Daftar Sekarang
+                </a>
+            </div>
+        </div>
+    </section>
+
+                </section>
+
+    <!-- Wave Divider: Programs → Quiz -->
+    <div class="wave-divider" style="background: #f8fafc;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C300,90 600,10 900,50 C1050,70 1150,30 1200,40 L1200,100 L0,100 Z" fill="#ffffff"></path>
+        </svg>
+    </div>
+
+    <!-- ===== SMART QUIZ SECTION ===== -->
+    <section class="quiz-section" id="quiz">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>🎯</span>
+                    <span data-i18n="quiz.badge">Quiz Pintar</span>
+                </div>
+                <h2 class="section-title" data-i18n="quiz.title">
+                    Kelas Mana Sesuai<br>
+                    <span class="section-title-accent">Untuk Anak Anda?</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="quiz.subtitle">
+                    Jawab 5 soalan ringkas, kami akan recommend kelas terbaik untuk anak anda
+                </p>
+            </div>
+
+            <!-- Quiz Container -->
+            <div class="quiz-container">
+
+                <!-- START SCREEN -->
+                <div id="quizStart" class="quiz-screen active">
+                    <div class="quiz-start-icon">🎓</div>
+                    <h3 data-i18n="quiz.startTitle">Mari Cari Kelas Yang Sesuai!</h3>
+                    <p data-i18n="quiz.startDesc">
+                        Quiz ini akan bantu anda pilih kelas yang paling sesuai dengan tahap dan keperluan anak anda.
+                        Hanya ambil masa <strong>2 minit</strong>.
+                    </p>
+
+                    <div class="quiz-features">
+                        <div class="quiz-feature">
+                            <div class="feature-num">5</div>
+                            <div class="feature-text" data-i18n="quiz.feature1">Soalan Mudah</div>
+                        </div>
+                        <div class="quiz-feature">
+                            <div class="feature-num">2</div>
+                            <div class="feature-text" data-i18n="quiz.feature2">Minit Sahaja</div>
+                        </div>
+                        <div class="quiz-feature">
+                            <div class="feature-num">6</div>
+                            <div class="feature-text" data-i18n="quiz.feature3">Kelas Tersedia</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-quiz-start" onclick="startQuiz()">
+                        <span data-i18n="quiz.startBtn">🚀 Mula Quiz</span>
+                    </button>
+
+                    <p class="quiz-disclaimer" data-i18n="quiz.disclaimer">
+                        💡 Cadangan ini hanya rujukan. Sila berbincang dengan ustaz untuk penilaian penuh.
+                    </p>
+                </div>
+
+                <!-- QUESTIONS SCREEN -->
+                <div id="quizQuestions" class="quiz-screen">
+
+                    <!-- Progress Bar -->
+                    <div class="quiz-progress">
+                        <div class="progress-info">
+                            <span class="progress-label" data-i18n="quiz.progress">Soalan</span>
+                            <span><span id="quizCurrent">1</span> / <span id="quizTotal">5</span></span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="quizProgressBar"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="quizQuestionContainer">
+                        <!-- Questions akan dijana JS -->
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="quiz-navigation">
+                        <button class="btn-quiz-nav btn-quiz-back" onclick="prevQuestion()" id="quizPrevBtn">
+                            ← <span data-i18n="quiz.back">Kembali</span>
+                        </button>
+                        <button class="btn-quiz-nav btn-quiz-next" onclick="nextQuestion()" id="quizNextBtn" disabled>
+                            <span data-i18n="quiz.next">Seterusnya</span> →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RESULT SCREEN -->
+                <div id="quizResult" class="quiz-screen">
+
+                    <div class="result-celebration">🎉</div>
+
+                    <h3 data-i18n="quiz.resultTitle">Tahniah! Kami Ada Cadangan Untuk Anda</h3>
+                    <p class="result-subtitle" data-i18n="quiz.resultSub">
+                        Berdasarkan jawapan anda, ini adalah kelas yang paling sesuai:
+                    </p>
+
+                    <!-- Recommended Class -->
+                    <div class="result-card" id="quizResultCard">
+                        <!-- Akan dijana JS -->
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="result-actions">
+                        <a href="daftar.html" class="btn-quiz-primary">
+                            <span>📝</span>
+                            <span data-i18n="quiz.register">Daftar Sekarang</span>
+                        </a>
+                        <a href="https://wa.me/60192363638" target="_blank" class="btn-quiz-secondary" id="quizWAButton">
+                            <span>💬</span>
+                            <span data-i18n="quiz.contact">Hubungi Mudir</span>
+                        </a>
+                        <button class="btn-quiz-restart" onclick="restartQuiz()">
+                            <span>🔄</span>
+                            <span data-i18n="quiz.restart">Cuba Lagi</span>
+                        </button>
+                    </div>
+
+                    <!-- Other Recommendations -->
+                    <div class="other-recommendations">
+                        <h4 data-i18n="quiz.otherClasses">📚 Pilihan Lain</h4>
+                        <div id="quizOtherClasses">
+                            <!-- Akan dijana JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Wave Divider: Quiz → Yuran -->
+    <div class="wave-divider" style="background: #ffffff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C300,90 600,10 900,50 C1050,70 1150,30 1200,40 L1200,100 L0,100 Z" fill="#7c3aed"></path>
+        </svg>
+    </div>
+
+    <!-- ===== YURAN SECTION ===== -->
+    <section class="yuran-section" id="yuran">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fbbf24;">
+                    <span>💰</span>
+                    <span data-i18n="yuran.badge">Yuran & Bayaran</span>
+                </div>
+                <h2 class="section-title" style="color:white;" data-i18n="yuran.title">
+                    Yuran Berpatutan<br>
+                    <span style="background:linear-gradient(135deg,#fbbf24,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Telus & Transparent</span>
+                </h2>
+                <p class="section-subtitle" style="color:rgba(255,255,255,0.9);" data-i18n="yuran.subtitle">
+                    Tiada caj tersembunyi. Bayaran berbaloi untuk masa depan anak anda
+                </p>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="yuran-grid">
+
+                <!-- Pendaftaran -->
+                <div class="yuran-card yuran-card-registration">
+                    <div class="yuran-card-icon">📝</div>
+                    <h3 class="yuran-card-title" data-i18n="yuran.regTitle">Yuran Pendaftaran</h3>
+                    <p class="yuran-card-subtitle" data-i18n="yuran.regSub">Sekali sahaja untuk pelajar baru</p>
+
+                    <div class="yuran-price">
+                        <span class="yuran-currency">RM</span>
+                        <span class="yuran-amount">100</span>
+                        <span class="yuran-period" data-i18n="yuran.once">/sekali</span>
+                    </div>
+
+                    <ul class="yuran-features">
+                        <li><span class="check">✓</span> <span data-i18n="yuran.reg1">Pendaftaran rasmi</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.reg2">Buku rekod pelajar</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.reg3">Akses Portal Ibu Bapa</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.reg4">Penilaian awal pelajar</span></li>
+                    </ul>
+                </div>
+
+                <!-- Bulanan (Featured) -->
+                <div class="yuran-card yuran-card-monthly yuran-card-featured">
+                    <div class="yuran-badge" data-i18n="yuran.popular">⭐ Paling Popular</div>
+                    <div class="yuran-card-icon">📚</div>
+                    <h3 class="yuran-card-title" data-i18n="yuran.monthTitle">Yuran Bulanan</h3>
+                    <p class="yuran-card-subtitle" data-i18n="yuran.monthSub">Untuk semua kelas dan peringkat</p>
+
+                    <div class="yuran-price">
+                        <span class="yuran-currency">RM</span>
+                        <span class="yuran-amount">300</span>
+                        <span class="yuran-period" data-i18n="yuran.month">/bulan</span>
+                    </div>
+
+                    <ul class="yuran-features">
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m1">Kelas hafazan harian</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m2">Bahan pembelajaran asas</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m3">Bimbingan ustaz/ustazah</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m4">Laporan progress mingguan</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m5">Pilihan sesi (Pagi/Petang/Malam)</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.m6">Akses Portal Ibu Bapa 24/7</span></li>
+                    </ul>
+                </div>
+
+                <!-- Khatam Package -->
+                <div class="yuran-card yuran-card-khatam">
+                    <div class="yuran-card-icon">🎓</div>
+                    <h3 class="yuran-card-title" data-i18n="yuran.khatamTitle">Pakej Khatam</h3>
+                    <p class="yuran-card-subtitle" data-i18n="yuran.khatamSub">Termasuk majlis & sijil rasmi</p>
+
+                    <div class="yuran-price">
+                        <span class="yuran-currency">RM</span>
+                        <span class="yuran-amount">500</span>
+                        <span class="yuran-period" data-i18n="yuran.khatamPeriod">/khatam</span>
+                    </div>
+
+                    <ul class="yuran-features">
+                        <li><span class="check">✓</span> <span data-i18n="yuran.k1">Majlis khatam rasmi</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.k2">Sijil khatam</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.k3">Jubah graduasi</span></li>
+                        <li><span class="check">✓</span> <span data-i18n="yuran.k4">Album foto majlis</span></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Discount Banner -->
+            <div class="yuran-discount">
+                <div class="discount-icon">🎁</div>
+                <div class="discount-content">
+                    <h3 data-i18n="yuran.discountTitle">Diskaun Adik-Beradik!</h3>
+                    <p data-i18n="yuran.discountDesc">
+                        Daftar <strong>2 anak ke atas</strong> dapat diskaun <strong>RM50/bulan</strong> setiap anak ke-2 dan seterusnya.
+                    </p>
+                </div>
+                <div class="discount-badge">
+                    <div class="discount-percent">-RM50</div>
+                    <div class="discount-label" data-i18n="yuran.perChild">/anak</div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="yuran-payment">
+                <h3 data-i18n="yuran.paymentTitle">💳 Cara Pembayaran</h3>
+                <div class="payment-methods-grid">
+                    <div class="payment-method">
+                        <div class="payment-icon">💵</div>
+                        <div class="payment-name" data-i18n="yuran.cash">Tunai</div>
+                        <div class="payment-desc" data-i18n="yuran.cashDesc">Bayar di pejabat madrasah</div>
+                    </div>
+                    <div class="payment-method">
+                        <div class="payment-icon">🏦</div>
+                        <div class="payment-name" data-i18n="yuran.bank">Bank Transfer</div>
+                        <div class="payment-desc" data-i18n="yuran.bankDesc">Pindahan ke akaun rasmi</div>
+                    </div>
+                    <div class="payment-method">
+                        <div class="payment-icon">📱</div>
+                        <div class="payment-name" data-i18n="yuran.online">Online Banking</div>
+                        <div class="payment-desc" data-i18n="yuran.onlineDesc">FPX / DuitNow</div>
+                    </div>
+                    <div class="payment-method">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-name" data-i18n="yuran.ewallet">E-Wallet</div>
+                        <div class="payment-desc" data-i18n="yuran.ewalletDesc">Touch n Go, GrabPay, dll</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Quick -->
+            <div class="yuran-info">
+                <div class="yuran-info-item">
+                    <div class="info-icon">📅</div>
+                    <div>
+                        <strong data-i18n="yuran.info1Title">Bayaran Bulanan</strong>
+                        <p data-i18n="yuran.info1Desc">Dibayar sebelum 10hb setiap bulan</p>
+                    </div>
+                </div>
+                <div class="yuran-info-item">
+                    <div class="info-icon">🧾</div>
+                    <div>
+                        <strong data-i18n="yuran.info2Title">Resit Rasmi</strong>
+                        <p data-i18n="yuran.info2Desc">Setiap bayaran dapat resit & invois</p>
+                    </div>
+                </div>
+                <div class="yuran-info-item">
+                    <div class="info-icon">💝</div>
+                    <div>
+                        <strong data-i18n="yuran.info3Title">Tiada Caj Tersembunyi</strong>
+                        <p data-i18n="yuran.info3Desc">Yuran yang dipaparkan adalah harga sebenar</p>
+                    </div>
+                </div>
+                <div class="yuran-info-item">
+                    <div class="info-icon">🆘</div>
+                    <div>
+                        <strong data-i18n="yuran.info4Title">Bantuan Tersedia</strong>
+                        <p data-i18n="yuran.info4Desc">Hubungi kami untuk bincang pilihan bayaran</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="yuran-cta">
+                <h3 data-i18n="yuran.ctaTitle">Bersedia Untuk Mendaftar?</h3>
+                <p data-i18n="yuran.ctaDesc">Mulakan perjalanan hafazan anak anda hari ini</p>
+                <div class="yuran-cta-buttons">
+                    <a href="daftar.html" class="btn-hero btn-hero-primary">
+                        📝 <span data-i18n="yuran.ctaBtn1">Daftar Sekarang</span>
+                    </a>
+                    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20bertanya%20tentang%20yuran"
+                       target="_blank"
+                       class="btn-hero btn-hero-glass">
+                        💬 <span data-i18n="yuran.ctaBtn2">Tanya Yuran</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </section>
+
+    <!-- Wave Divider: Yuran → Donation -->
+    <div class="wave-divider" style="background: #7c3aed;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C300,90 600,10 900,50 C1050,70 1150,30 1200,40 L1200,100 L0,100 Z" fill="#fef3c7"></path>
+        </svg>
+    </div>
+
+    <!-- ===== DONATION SECTION ===== -->
+    <section class="donation-section" id="donation">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge" style="background:rgba(251,191,36,0.2);color:#92400e;border-color:rgba(251,191,36,0.4);">
+                    <span>💝</span>
+                    <span data-i18n="donate.badge">Infaq & Sumbangan</span>
+                </div>
+                <h2 class="section-title" data-i18n="donate.title">
+                    Sertai Kami Dalam<br>
+                    <span class="section-title-accent">Membantu Madrasah</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="donate.subtitle">
+                    Setiap sumbangan anda akan membantu pelajar dan operasi madrasah.
+                    Pilih cara untuk membantu.
+                </p>
+            </div>
+
+            <!-- Hadith/Ayat Inspirasi -->
+            <div class="donation-inspiration">
+                <div class="inspiration-icon">📖</div>
+                <p class="inspiration-arabic">مَنْ بَنَى لِلَّهِ مَسْجِدًا بَنَى اللَّهُ لَهُ بَيْتًا فِي الْجَنَّةِ</p>
+                <p class="inspiration-translation" data-i18n="donate.hadith">
+                    "Sesiapa yang membina (membantu) masjid kerana Allah, nescaya Allah akan binakan untuknya sebuah rumah di syurga"
+                </p>
+                <small data-i18n="donate.hadithSource">— Hadith Riwayat Bukhari & Muslim</small>
+            </div>
+
+            <!-- 3 Donation Categories -->
+            <div class="donation-grid">
+
+                <!-- 1. Bil Utiliti -->
+                <div class="donation-card donation-utility">
+                    <div class="donation-card-header">
+                        <div class="donation-icon">💡</div>
+                        <span class="donation-tag" data-i18n="donate.urgent">⚡ Bulanan</span>
+                    </div>
+                    <h3 class="donation-title" data-i18n="donate.utility.title">Bil Utiliti</h3>
+                    <p class="donation-desc" data-i18n="donate.utility.desc">
+                        Bantu kami bayar bil bulanan utiliti madrasah. Bayar terus ke akaun TNB, Syabas atau Internet.
+                    </p>
+
+                    <!-- Bill Options -->
+                    <div class="bill-options">
+                        <div class="bill-item" onclick="openBillModal('tnb')">
+                            <div class="bill-icon">⚡</div>
+                            <div class="bill-info">
+                                <div class="bill-name">TNB (Elektrik)</div>
+                                <div class="bill-amount">~RM 800/bulan</div>
+                            </div>
+                            <div class="bill-arrow">→</div>
+                        </div>
+
+                        <div class="bill-item" onclick="openBillModal('syabas')">
+                            <div class="bill-icon">💧</div>
+                            <div class="bill-info">
+                                <div class="bill-name">Syabas (Air)</div>
+                                <div class="bill-amount">~RM 200/bulan</div>
+                            </div>
+                            <div class="bill-arrow">→</div>
+                        </div>
+
+                        <div class="bill-item" onclick="openBillModal('internet')">
+                            <div class="bill-icon">📡</div>
+                            <div class="bill-info">
+                                <div class="bill-name">Internet / WiFi</div>
+                                <div class="bill-amount">~RM 150/bulan</div>
+                            </div>
+                            <div class="bill-arrow">→</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-donation" onclick="openBillModal('all')">
+                        💳 <span data-i18n="donate.utility.btn">Bayar Bil</span>
+                    </button>
+                </div>
+
+                <!-- 2. Barang Mentah -->
+                <div class="donation-card donation-essentials">
+                    <div class="donation-card-header">
+                        <div class="donation-icon">🛒</div>
+                        <span class="donation-tag" data-i18n="donate.popular">⭐ Popular</span>
+                    </div>
+                    <h3 class="donation-title" data-i18n="donate.essentials.title">Infaq Barang Mentah</h3>
+                    <p class="donation-desc" data-i18n="donate.essentials.desc">
+                        Sumbang barang mentah untuk dapur madrasah. Pilih item yang anda nak infaqkan.
+                    </p>
+
+                    <!-- Essentials Grid -->
+                    <div class="essentials-grid">
+                        <div class="essential-item" onclick="selectEssential(this, 'beras', 50)">
+                            <div class="essential-icon">🍚</div>
+                            <div class="essential-name">Beras (10kg)</div>
+                            <div class="essential-price">RM 50</div>
+                        </div>
+                        <div class="essential-item" onclick="selectEssential(this, 'minyak', 30)">
+                            <div class="essential-icon">🫒</div>
+                            <div class="essential-name">Minyak (5L)</div>
+                            <div class="essential-price">RM 30</div>
+                        </div>
+                        <div class="essential-item" onclick="selectEssential(this, 'gula', 15)">
+                            <div class="essential-icon">🍬</div>
+                            <div class="essential-name">Gula (2kg)</div>
+                            <div class="essential-price">RM 15</div>
+                        </div>
+                        <div class="essential-item" onclick="selectEssential(this, 'tepung', 12)">
+                            <div class="essential-icon">🌾</div>
+                            <div class="essential-name">Tepung (2kg)</div>
+                            <div class="essential-price">RM 12</div>
+                        </div>
+                        <div class="essential-item" onclick="selectEssential(this, 'telur', 25)">
+                            <div class="essential-icon">🥚</div>
+                            <div class="essential-name">Telur (30 biji)</div>
+                            <div class="essential-price">RM 25</div>
+                        </div>
+                        <div class="essential-item" onclick="selectEssential(this, 'sardin', 20)">
+                            <div class="essential-icon">🐟</div>
+                            <div class="essential-name">Sardin (6 tin)</div>
+                            <div class="essential-price">RM 20</div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Total -->
+                    <div class="essentials-total" id="essentialsTotal" style="display:none;">
+                        <div class="total-label" data-i18n="donate.total">Jumlah:</div>
+                        <div class="total-amount">RM <span id="essentialsAmount">0</span></div>
+                    </div>
+
+                    <button class="btn-donation" onclick="confirmEssentials()">
+                        🛒 <span data-i18n="donate.essentials.btn">Sumbang Sekarang</span>
+                    </button>
+                </div>
+
+                <!-- 3. Sajian Makanan -->
+                <div class="donation-card donation-meals">
+                    <div class="donation-card-header">
+                        <div class="donation-icon">🍽️</div>
+                        <span class="donation-tag" data-i18n="donate.recommended">💫 Disyorkan</span>
+                    </div>
+                    <h3 class="donation-title" data-i18n="donate.meals.title">Sajian Makanan</h3>
+                    <p class="donation-desc" data-i18n="donate.meals.desc">
+                        Sponsor makanan untuk pelajar. Pilih kekerapan sumbangan yang anda mahu.
+                    </p>
+
+                    <!-- Meal Packages -->
+                    <div class="meal-packages">
+                        <div class="meal-package" onclick="selectMeal(this, 'daily', 100)">
+                            <div class="meal-icon">📅</div>
+                            <div class="meal-info">
+                                <div class="meal-name">Makan Sehari</div>
+                                <div class="meal-detail">100 pelajar × 1 hari</div>
+                            </div>
+                            <div class="meal-price">RM 100</div>
+                        </div>
+
+                        <div class="meal-package featured" onclick="selectMeal(this, 'weekly', 600)">
+                            <div class="meal-badge">⭐ Best Value</div>
+                            <div class="meal-icon">📆</div>
+                            <div class="meal-info">
+                                <div class="meal-name">Makan Seminggu</div>
+                                <div class="meal-detail">100 pelajar × 7 hari</div>
+                            </div>
+                            <div class="meal-price">RM 600</div>
+                        </div>
+
+                        <div class="meal-package" onclick="selectMeal(this, 'monthly', 2400)">
+                            <div class="meal-icon">🗓️</div>
+                            <div class="meal-info">
+                                <div class="meal-name">Makan Sebulan</div>
+                                <div class="meal-detail">100 pelajar × 30 hari</div>
+                            </div>
+                            <div class="meal-price">RM 2,400</div>
+                        </div>
+
+                        <!-- Custom Amount -->
+                        <div class="meal-package custom" onclick="selectMealCustom()">
+                            <div class="meal-icon">💚</div>
+                            <div class="meal-info">
+                                <div class="meal-name">Jumlah Pilihan</div>
+                                <div class="meal-detail">Masukkan sendiri</div>
+                            </div>
+                            <input type="number" id="customMealAmount" placeholder="RM" min="10" onclick="event.stopPropagation()" oninput="updateCustomMeal(this.value)">
+                        </div>
+                    </div>
+
+                    <button class="btn-donation" onclick="confirmMeal()">
+                        🤝 <span data-i18n="donate.meals.btn">Sponsor Makanan</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bank Account Info -->
+            <div class="bank-info-card">
+                <div class="bank-info-header">
+                    <h3>🏦 <span data-i18n="donate.bankInfo">Maklumat Akaun Bank Madrasah</span></h3>
+                </div>
+                <div class="bank-details">
+                    <div class="bank-detail-item">
+                        <span class="bank-label">Bank:</span>
+                        <span class="bank-value">Maybank</span>
+                    </div>
+                    <div class="bank-detail-item">
+                        <span class="bank-label" data-i18n="donate.accName">Nama Akaun:</span>
+                        <span class="bank-value">Madrasah Tahfiz Pekan Sungai Buloh</span>
+                    </div>
+                    <div class="bank-detail-item">
+                        <span class="bank-label" data-i18n="donate.accNum">No. Akaun:</span>
+                        <span class="bank-value bank-acc-number" id="bankAccNumber">5621-5478-9632</span>
+                        <button class="copy-btn" onclick="copyAccountNumber()" title="Copy">📋</button>
+                    </div>
+                </div>
+                <p class="bank-note" data-i18n="donate.bankNote">
+                    💡 Sila WhatsApp resit/screenshot pembayaran kepada Mudir untuk pengesahan dan resit rasmi.
+                </p>
+            </div>
+
+            <!-- CTA -->
+            <div class="donation-cta">
+                <div class="cta-icon">🤲</div>
+                <h3 data-i18n="donate.ctaTitle">Sumbangan Anda Sangat Bermakna</h3>
+                <p data-i18n="donate.ctaDesc">
+                    Setiap sen yang anda infaqkan akan menjadi pahala jariah yang berterusan.
+                    Bantu kami mendidik generasi Quran masa hadapan.
+                </p>
+                <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20berminat%20untuk%20menderma%20kepada%20madrasah"
+                   target="_blank"
+                   class="btn-hero btn-hero-primary">
+                    💬 <span data-i18n="donate.contactBtn">Hubungi Mudir Untuk Sumbangan Khas</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BILL PAYMENT MODAL (POPUP CENTER) ===== -->
+<div id="billModal" class="bill-popup-overlay hidden">
+    <div class="bill-popup-container">
+        <div class="bill-popup-header">
+            <h2 id="billModalTitle">💡 Bayar Bil Utiliti</h2>
+            <button onclick="closeBillModal()" class="bill-popup-close">✕</button>
+        </div>
+        <div class="bill-popup-body">
+            <p class="bill-popup-intro">
+                Sila pilih cara pembayaran terus ke pembekal:
+            </p>
+
+            <div class="payment-links" id="paymentLinks">
+                <!-- Payment options akan dijana JS -->
+            </div>
+
+            <div class="bill-popup-note">
+                <strong style="color:#92400e;">📝 Selepas Bayar:</strong>
+                <p>
+                    WhatsApp screenshot resit kepada Mudir untuk pengesahan dan resit rasmi madrasah.
+                </p>
+                <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20baru%20bayar%20bil%20utiliti%20untuk%20madrasah"
+                   target="_blank"
+                   class="bill-popup-wa">
+                    💬 WhatsApp Mudir
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- ===== TEAM SECTION ===== -->
+    <section class="team-section" id="team">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>👨‍🏫</span>
+                    <span data-i18n="team.badge">Pasukan Kami</span>
+                </div>
+                <h2 class="section-title" data-i18n="team.title">
+                    Diajar Oleh Ustaz<br>
+                    <span class="section-title-accent">& Ustazah Bertauliah</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="team.subtitle">
+                    Pengajar berpengalaman dengan latar belakang pendidikan tahfiz dari institusi terkemuka
+                </p>
+            </div>
+
+            <!-- Team Grid -->
+            <div class="team-grid">
+
+                <!-- Team Member 1: Mudir -->
+                <div class="team-card team-card-featured">
+                    <div class="team-card-badge" data-i18n="team.mudir">👑 Mudir</div>
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder">
+                            <span>👨‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustaz Mudir</h3>
+                        <p class="team-role" data-i18n="team.1role">Mudir / Pengetua</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.1edu">Hafiz 30 Juz</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.1exp">15+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.1bio">
+                            Pengasas madrasah dengan pengalaman luas dalam pendidikan tahfiz Al-Quran.
+                            Mengabdikan diri untuk melahirkan generasi huffaz.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.1s1">Hafazan Lanjutan</span>
+                            <span class="team-specialty" data-i18n="team.1s2">Tajwid</span>
+                        </div>
+                        <a href="tel:0192363638" class="team-contact">
+                            <span>📞</span>
+                            <span>019-236 3638</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="team-card">
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder">
+                            <span>👨‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustaz Hisyam</h3>
+                        <p class="team-role" data-i18n="team.2role">Ustaz Senior</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.2edu">Hafiz 30 Juz</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.2exp">10+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.2bio">
+                            Ustaz senior yang pakar dalam pengajaran hafazan dengan kaedah talqin
+                            dan musyafahah untuk pelajar pelbagai peringkat.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.2s1">Hafazan Juz 30</span>
+                            <span class="team-specialty" data-i18n="team.2s2">Murajaah</span>
+                        </div>
+                        <a href="tel:01161000542" class="team-contact">
+                            <span>📞</span>
+                            <span>011-6100 0542</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-card">
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder team-placeholder-female">
+                            <span>👩‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustazah Hafizah</h3>
+                        <p class="team-role" data-i18n="team.3role">Ustazah Senior</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.3edu">Hafizah 30 Juz</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.3exp">8+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.3bio">
+                            Ustazah berpengalaman mengajar pelajar perempuan dengan pendekatan
+                            mesra dan penyabar. Pakar dalam tajwid.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.3s1">Kelas Perempuan</span>
+                            <span class="team-specialty" data-i18n="team.3s2">Tajwid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-card">
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder">
+                            <span>👨‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustaz Muhammad</h3>
+                        <p class="team-role" data-i18n="team.4role">Ustaz Hafazan</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.4edu">Hafiz 30 Juz</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.4exp">5+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.4bio">
+                            Ustaz muda yang energetic dalam mengajar kelas Iqra' dan
+                            asas Al-Quran untuk kanak-kanak.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.4s1">Kelas Iqra'</span>
+                            <span class="team-specialty" data-i18n="team.4s2">Asas Quran</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 5 -->
+                <div class="team-card">
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder team-placeholder-female">
+                            <span>👩‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustazah Aminah</h3>
+                        <p class="team-role" data-i18n="team.5role">Ustazah Iqra'</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.5edu">Diploma Tahfiz</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.5exp">3+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.5bio">
+                            Ustazah yang penyabar dan pakar dalam mengajar kanak-kanak perempuan
+                            dari Iqra' hingga lancar membaca Al-Quran.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.5s1">Iqra' Perempuan</span>
+                            <span class="team-specialty" data-i18n="team.5s2">Tajwid Asas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 6 -->
+                <div class="team-card">
+                    <div class="team-image-wrapper">
+                        <div class="team-image team-placeholder">
+                            <span>👨‍🏫</span>
+                        </div>
+                        <div class="team-image-glow"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Ustaz Abdullah</h3>
+                        <p class="team-role" data-i18n="team.6role">Ustaz Khatam</p>
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-icon">🎓</span>
+                                <span data-i18n="team.6edu">Hafiz Sanad</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-icon">⭐</span>
+                                <span data-i18n="team.6exp">12+ Tahun</span>
+                            </div>
+                        </div>
+                        <p class="team-bio" data-i18n="team.6bio">
+                            Ustaz berpengalaman dengan sanad bacaan. Pakar dalam pengukuhan
+                            hafazan dan persediaan syahadah 30 juz.
+                        </p>
+                        <div class="team-specialties">
+                            <span class="team-specialty" data-i18n="team.6s1">Khatam 30 Juz</span>
+                            <span class="team-specialty" data-i18n="team.6s2">Syahadah</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="team-cta">
+                <h3 data-i18n="team.ctaTitle">Bersedia Untuk Berkenalan?</h3>
+                <p data-i18n="team.ctaDesc">Hubungi kami untuk lawatan atau temujanji dengan ustaz</p>
+                <div class="team-cta-buttons">
+                    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20berjumpa%20dengan%20Mudir%20untuk%20temujanji"
+                       target="_blank"
+                       class="btn-hero btn-hero-primary">
+                        💬 WhatsApp Mudir
+                    </a>
+                    <a href="#contact" class="btn-hero btn-hero-outline-dark">
+                        📞 Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+            </section>
+
+    <!-- Wave Divider: Team → Virtual Tour -->
+    <div class="wave-divider" style="background: #ffffff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 L1200,100 L0,100 Z" fill="#4c1d95"></path>
+        </svg>
+    </div>
+
+    <!-- ===== VIRTUAL TOUR SECTION ===== -->
+    <section class="vtour-section" id="tour">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge" style="background:rgba(255,255,255,0.15);color:#fbbf24;border-color:rgba(255,255,255,0.3);">
+                    <span>🏫</span>
+                    <span data-i18n="tour.badge">Lawatan Maya</span>
+                </div>
+                <h2 class="section-title" style="color:white;" data-i18n="tour.title">
+                    Jelajah Madrasah<br>
+                    <span style="background:linear-gradient(135deg,#fbbf24,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Secara Virtual</span>
+                </h2>
+                <p class="section-subtitle" style="color:rgba(255,255,255,0.9);" data-i18n="tour.subtitle">
+                    Lihat sendiri kemudahan dan persekitaran madrasah kami
+                </p>
+            </div>
+
+            <!-- Tour Areas Grid -->
+            <div class="vtour-grid">
+
+                <!-- Area 1: Kelas Hafazan -->
+                <div class="vtour-card" onclick="openTourModal('kelas')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <span>📖</span>
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">📚 Kelas</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Kelas Hafazan</h3>
+                        <p>Bilik kelas yang kondusif untuk sesi hafazan dan talaqqi</p>
+                        <span class="vtour-photo-count">📷 5 Gambar</span>
+                    </div>
+                </div>
+
+                <!-- Area 2: Surau -->
+                <div class="vtour-card" onclick="openTourModal('surau')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <img src="https://i.ibb.co/DgSPkh8d/logo.png" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;" alt="Logo">
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">🕌 Surau</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Surau Madrasah</h3>
+                        <p>Surau untuk solat berjemaah dan kelas malam</p>
+                        <span class="vtour-photo-count">📷 4 Gambar</span>
+                    </div>
+                </div>
+
+                <!-- Area 3: Dapur & Ruang Makan -->
+                <div class="vtour-card" onclick="openTourModal('dapur')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <span>🍽️</span>
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">🍽️ Makan</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Dapur & Ruang Makan</h3>
+                        <p>Dapur bersih & ruang makan selesa untuk pelajar</p>
+                        <span class="vtour-photo-count">📷 3 Gambar</span>
+                    </div>
+                </div>
+
+                <!-- Area 4: Asrama -->
+                <div class="vtour-card" onclick="openTourModal('asrama')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <span>🛏️</span>
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">🛏️ Asrama</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Asrama Pelajar</h3>
+                        <p>Asrama bersih & selesa untuk pelajar bermastautin</p>
+                        <span class="vtour-photo-count">📷 4 Gambar</span>
+                    </div>
+                </div>
+
+                <!-- Area 5: Padang & Kawasan Luar -->
+                <div class="vtour-card" onclick="openTourModal('padang')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <span>🌳</span>
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">🌳 Luar</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Padang & Kawasan Luar</h3>
+                        <p>Kawasan lapang untuk sukan dan aktiviti luar</p>
+                        <span class="vtour-photo-count">📷 3 Gambar</span>
+                    </div>
+                </div>
+
+                <!-- Area 6: Pejabat -->
+                <div class="vtour-card" onclick="openTourModal('pejabat')">
+                    <div class="vtour-card-image">
+                        <div class="vtour-card-placeholder">
+                            <span>🏢</span>
+                        </div>
+                        <div class="vtour-card-overlay">
+                            <div class="vtour-view-btn">👁 Lihat</div>
+                        </div>
+                        <div class="vtour-card-badge">🏢 Pejabat</div>
+                    </div>
+                    <div class="vtour-card-info">
+                        <h3>Pejabat Pentadbiran</h3>
+                        <p>Pejabat urusan pendaftaran dan pentadbiran</p>
+                        <span class="vtour-photo-count">📷 3 Gambar</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="vtour-cta">
+                <h3>🤝 Jom Datang Melawat!</h3>
+                <p>Hubungi kami untuk sesi lawatan secara fizikal ke madrasah</p>
+                <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20melawat%20madrasah" target="_blank" class="btn-hero btn-hero-primary">
+                    💬 Book Lawatan
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TOUR MODAL ===== -->
+    <div id="tourModal" class="tour-modal-overlay hidden">
+        <div class="tour-modal-container">
+            <div class="tour-modal-header">
+                <h2 id="tourModalTitle">🏫 Kelas Hafazan</h2>
+                <button onclick="closeTourModal()" class="tour-modal-close">✕</button>
+            </div>
+            <div class="tour-modal-body">
+                <!-- Photo Gallery -->
+                <div class="tour-gallery" id="tourGallery">
+                    <div class="tour-main-photo">
+                        <img id="tourMainImage" src="" alt="">
+                        <button class="tour-nav-btn tour-prev" onclick="tourPrevPhoto()">‹</button>
+                        <button class="tour-nav-btn tour-next" onclick="tourNextPhoto()">›</button>
+                        <div class="tour-photo-counter" id="tourPhotoCounter">1 / 5</div>
+                    </div>
+                    <div class="tour-thumbs" id="tourThumbs"></div>
+                </div>
+
+                <!-- Info -->
+                <div class="tour-info" id="tourInfo">
+                    <h3 id="tourAreaName">Kelas Hafazan</h3>
+                    <p id="tourAreaDesc">Penerangan tentang area ini...</p>
+
+                    <div class="tour-features" id="tourFeatures"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wave Divider: Tour → Events -->
+    <div class="wave-divider" style="background: #4c1d95;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 L1200,100 L0,100 Z" fill="#faf5ff"></path>
+        </svg>
+    </div>
+
+    <!-- ===== EVENTS SECTION ===== -->
+    <section class="events-section" id="events">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>📅</span>
+                    <span data-i18n="events.badge">Acara Akan Datang</span>
+                </div>
+                <h2 class="section-title" data-i18n="events.title">
+                    Sertai Aktiviti<br>
+                    <span class="section-title-accent">& Acara Madrasah</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="events.subtitle">
+                    Pelbagai program istimewa untuk pelajar dan komuniti
+                </p>
+            </div>
+
+            <!-- Featured Event -->
+            <div class="event-featured">
+                <div class="event-featured-image">
+                    <div class="event-featured-date">
+                        <div class="event-date-day">15</div>
+                        <div class="event-date-month" data-i18n="events.month3">Mac</div>
+                    </div>
+                    <div class="event-featured-overlay">
+                        <span class="event-featured-icon">🌙</span>
+                    </div>
+                </div>
+                <div class="event-featured-content">
+                    <span class="event-tag event-tag-special" data-i18n="events.special">⭐ Acara Istimewa</span>
+                    <h3 class="event-featured-title" data-i18n="events.feat.title">Program Tadarus Ramadhan 2025</h3>
+                    <p class="event-featured-desc" data-i18n="events.feat.desc">
+                        Program tadarus Al-Quran sepanjang bulan Ramadhan dengan ustaz/ustazah madrasah.
+                        Dibuka untuk pelajar dan komuniti. Sertai kami untuk meraih keberkatan Ramadhan!
+                    </p>
+                    <div class="event-featured-info">
+                        <div class="event-info-item">
+                            <span class="info-icon-large">📅</span>
+                            <div>
+                                <strong data-i18n="events.feat.dateLabel">Tarikh</strong>
+                                <p data-i18n="events.feat.date">1 Mac - 30 Mac 2025</p>
+                            </div>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="info-icon-large">🕐</span>
+                            <div>
+                                <strong data-i18n="events.feat.timeLabel">Masa</strong>
+                                <p data-i18n="events.feat.time">Selepas Tarawih (9:30 PM)</p>
+                            </div>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="info-icon-large">📍</span>
+                            <div>
+                                <strong data-i18n="events.feat.locLabel">Lokasi</strong>
+                                <p data-i18n="events.feat.loc">Surau Madrasah Tahfiz</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20berminat%20sertai%20Program%20Tadarus%20Ramadhan"
+                       target="_blank"
+                       class="btn-hero btn-hero-primary">
+                        💬 <span data-i18n="events.feat.btn">Daftar Sekarang</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Upcoming Events Grid -->
+            <h3 class="events-subheading" data-i18n="events.upcoming">📌 Acara Lain Yang Akan Datang</h3>
+
+            <div class="events-grid">
+
+                <!-- Event 1 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-purple">
+                        <div class="event-day">28</div>
+                        <div class="event-month" data-i18n="events.month2">Feb</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-class" data-i18n="events.category.class">📚 Kelas</span>
+                        <h4 data-i18n="events.1.title">Sesi Penilaian Pelajar Baru</h4>
+                        <p data-i18n="events.1.desc">Penilaian tahap bacaan & penempatan kelas yang sesuai untuk pelajar baru.</p>
+                        <div class="event-meta">
+                            <span><span>🕐</span> 9:00 AM</span>
+                            <span><span>📍</span> Pejabat Madrasah</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-blue">
+                        <div class="event-day">10</div>
+                        <div class="event-month" data-i18n="events.month4">Apr</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-event" data-i18n="events.category.event">🎉 Majlis</span>
+                        <h4 data-i18n="events.2.title">Majlis Khatam Quran Sesi 1/2025</h4>
+                        <p data-i18n="events.2.desc">Majlis khatam Al-Quran untuk pelajar yang telah menyempurnakan hafazan 30 juz.</p>
+                        <div class="event-meta">
+                            <span><span>🕐</span> 9:00 AM - 12:00 PM</span>
+                            <span><span>📍</span> Dewan Utama</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-orange">
+                        <div class="event-day">25</div>
+                        <div class="event-month" data-i18n="events.month4">Apr</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-activity" data-i18n="events.category.activity">🌟 Aktiviti</span>
+                        <h4 data-i18n="events.3.title">Pertandingan Tilawah Antara Kelas</h4>
+                        <p data-i18n="events.3.desc">Pertandingan tilawah Al-Quran untuk pelajar semua peringkat dengan hadiah menarik.</p>
+                        <div class="event-meta">
+                            <span><span>🕐</span> 2:00 PM - 5:00 PM</span>
+                            <span><span>📍</span> Surau Madrasah</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 4 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-green">
+                        <div class="event-day">15</div>
+                        <div class="event-month" data-i18n="events.month5">Mei</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-meeting" data-i18n="events.category.meeting">👨‍👩‍👧 Perjumpaan</span>
+                        <h4 data-i18n="events.4.title">Perjumpaan Ibu Bapa</h4>
+                        <p data-i18n="events.4.desc">Perbincangan progress pelajar bersama ustaz/ustazah dan perkongsian maklumat penting.</p>
+                        <div class="event-meta">
+                            <span><span>🕐</span> 8:00 PM - 10:00 PM</span>
+                            <span><span>📍</span> Dewan Madrasah</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 5 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-red">
+                        <div class="event-day">20</div>
+                        <div class="event-month" data-i18n="events.month6">Jun</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-holiday" data-i18n="events.category.holiday">🏖️ Cuti</span>
+                        <h4 data-i18n="events.5.title">Cuti Pertengahan Tahun</h4>
+                        <p data-i18n="events.5.desc">Madrasah akan tutup untuk cuti pertengahan tahun. Kelas akan disambung semula pada 1 Julai.</p>
+                        <div class="event-meta">
+                            <span><span>📅</span> 20-30 Jun 2025</span>
+                            <span><span>ℹ️</span> Tiada kelas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 6 -->
+                <div class="event-card">
+                    <div class="event-date-badge event-color-gold">
+                        <div class="event-day">17</div>
+                        <div class="event-month" data-i18n="events.month8">Ogo</div>
+                    </div>
+                    <div class="event-card-content">
+                        <span class="event-tag event-tag-special" data-i18n="events.category.special">⭐ Sambutan</span>
+                        <h4 data-i18n="events.6.title">Sambutan Hari Kemerdekaan</h4>
+                        <p data-i18n="events.6.desc">Sambutan khas dengan ceramah agama dan persembahan dari pelajar madrasah.</p>
+                        <div class="event-meta">
+                            <span><span>🕐</span> 9:00 AM - 1:00 PM</span>
+                            <span><span>📍</span> Dewan Utama</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="events-cta">
+                <div class="events-cta-content">
+                    <h3 data-i18n="events.ctaTitle">🔔 Jangan Terlepas Update!</h3>
+                    <p data-i18n="events.ctaDesc">Follow kami untuk update terkini acara dan aktiviti madrasah</p>
+                </div>
+                <div class="events-cta-actions">
+                    <a href="https://wa.me/60192363638"
+                       target="_blank"
+                       class="btn-hero btn-hero-primary">
+                        💬 <span data-i18n="events.ctaBtn1">Hubungi Kami</span>
+                    </a>
+                    <a href="#contact" class="btn-hero btn-hero-outline-dark">
+                        📞 <span data-i18n="events.ctaBtn2">Maklumat Lanjut</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wave Divider: Events → Gallery -->
+    <div class="wave-divider" style="background: #faf5ff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 L1200,100 L0,100 Z" fill="#f8fafc"></path>
+        </svg>
+    </div>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <section class="gallery-section" id="gallery">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>📸</span>
+                    <span data-i18n="gallery.badge">Galeri Aktiviti</span>
+                </div>
+                <h2 class="section-title" data-i18n="gallery.title">
+                    Saksikan Aktiviti<br>
+                    <span class="section-title-accent">Pelajar Kami</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="gallery.subtitle">
+                    Pelbagai aktiviti pembelajaran, majlis dan acara madrasah
+                </p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="gallery-filters" id="galleryFilters">
+                <button class="gallery-filter-btn active" onclick="filterGalleryHome('all')" data-i18n="gallery.all">
+                    📷 Semua
+                </button>
+                <button class="gallery-filter-btn" onclick="filterGalleryHome('Majlis Khatam')" data-i18n="gallery.khatam">
+                    🎓 Khatam
+                </button>
+                <button class="gallery-filter-btn" onclick="filterGalleryHome('Aktiviti Harian')" data-i18n="gallery.daily">
+                    📚 Harian
+                </button>
+                <button class="gallery-filter-btn" onclick="filterGalleryHome('Sukan & Permainan')" data-i18n="gallery.sports">
+                    ⚽ Sukan
+                </button>
+                <button class="gallery-filter-btn" onclick="filterGalleryHome('Lawatan')" data-i18n="gallery.trip">
+                    🚌 Lawatan
+                </button>
+                <button class="gallery-filter-btn" onclick="filterGalleryHome('Hari Raya')" data-i18n="gallery.raya">
+                    🎉 Hari Raya
+                </button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div id="homeGalleryGrid" class="home-gallery-grid">
+                <div class="gallery-loading">
+                    <div class="loading-spinner-large"></div>
+                    <p data-i18n="gallery.loading">Memuat gambar...</p>
+                </div>
+            </div>
+
+            <!-- View More -->
+            <div class="gallery-cta">
+                <p data-i18n="gallery.cta">Lihat lebih banyak gambar dan aktiviti kami</p>
+                <a href="login.html" class="btn-hero btn-hero-outline-dark" data-i18n="gallery.ctaBtn">
+                    📂 Akses Penuh Galeri
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <!-- Wave Divider: Gallery → Testimonials -->
+    <div class="wave-divider" style="background: #faf5ff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C300,90 600,10 900,50 C1050,70 1150,30 1200,40 L1200,100 L0,100 Z" fill="#faf5ff"></path>
+        </svg>
+    </div>
+
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>💬</span>
+                    <span data-i18n="test.badge">Testimoni</span>
+                </div>
+                <h2 class="section-title" data-i18n="test.title">
+                    Kata-kata Mereka<br>
+                    <span class="section-title-accent">Tentang Kami</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="test.subtitle">
+                    Pengalaman sebenar dari ibu bapa dan pelajar madrasah
+                </p>
+            </div>
+
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.1">
+                        Anak saya sudah khatam Juz 30 dalam masa setahun di sini.
+                        Ustaz dan ustazah sangat sabar dan dedicated mengajar.
+                        Alhamdulillah!
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👨</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Encik Ahmad</div>
+                            <div class="testimonial-role" data-i18n="test.1role">Bapa Pelajar Kelas 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.2">
+                        Saya gembira melihat perubahan akhlak anak saya selepas
+                        menyertai madrasah ini. Bukan setakat hafazan, tapi
+                        adab dan akhlak juga dibentuk.
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👩</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Puan Fatimah</div>
+                            <div class="testimonial-role" data-i18n="test.2role">Ibu Pelajar Kelas 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.3">
+                        Portal ibu bapa sangat membantu! Saya boleh pantau
+                        progress anak saya setiap hari, lihat markah dan
+                        ulasan ustaz. Sangat moden dan efisien!
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👨</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Encik Hisyam</div>
+                            <div class="testimonial-role" data-i18n="test.3role">Bapa Pelajar Kelas 4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.4">
+                        Suasana madrasah yang Islamik dan bersih. Anak-anak
+                        seronok belajar. Yuran berpatutan untuk kualiti
+                        pendidikan yang diberikan.
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👩</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Puan Aisyah</div>
+                            <div class="testimonial-role" data-i18n="test.4role">Ibu 2 Pelajar</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.5">
+                        Saya sendiri pelajar di sini. Ustaz mengajar dengan
+                        cara yang seronok, bukan paksa-paksa. Saya cepat hafal
+                        dan suka datang ke kelas setiap hari.
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">🧒</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Adam, 10 tahun</div>
+                            <div class="testimonial-role" data-i18n="test.5role">Pelajar Kelas 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 6 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text" data-i18n="test.6">
+                        Sistem pendidikan yang tersusun. Dari Iqra' sampai
+                        Khatam Quran, semua ada. Kami sebagai ibu bapa sangat
+                        berpuas hati. Highly recommended!
+                    </p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👨</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Encik Ismail</div>
+                            <div class="testimonial-role" data-i18n="test.6role">Bapa Pelajar Kelas 5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Wave Divider: Testimonials → FAQ -->
+    <div class="wave-divider" style="background: #ffffff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C200,100 400,0 600,50 C800,100 1000,0 1200,50 L1200,100 L0,100 Z" fill="#ffffff"></path>
+        </svg>
+    </div>
+
+        <!-- ===== FAQ SECTION ===== -->
+    <section class="faq-section" id="faq">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">
+                    <span>❓</span>
+                    <span data-i18n="faq.badge">Soalan Lazim</span>
+                </div>
+                <h2 class="section-title" data-i18n="faq.title">
+                    Soalan Yang Sering<br>
+                    <span class="section-title-accent">Ditanya</span>
+                </h2>
+                <p class="section-subtitle" data-i18n="faq.subtitle">
+                    Jawapan untuk soalan yang biasa ditanya oleh ibu bapa
+                </p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q1">Berapa umur minimum untuk daftar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a1">
+                            Umur minimum adalah 4 tahun untuk kelas Iqra'. Untuk kelas
+                            hafazan, pelajar perlu sudah boleh membaca Al-Quran dengan lancar.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q2">Berapa yuran bulanan?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a2">
+                            Yuran bulanan adalah RM300 dengan yuran pendaftaran sekali sahaja
+                            RM100 untuk pelajar baru. Yuran ini termasuk bahan pembelajaran asas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q3">Apakah waktu kelas?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a3">
+                            Madrasah beroperasi Isnin hingga Jumaat, 8AM hingga 9PM. Kami menawarkan
+                            3 sesi: Pagi (8AM-11AM), Petang (2PM-5PM), dan Malam (7PM-9PM).
+                            Pilih mengikut keselesaan anda.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q4">Bagaimana cara mendaftar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a4">
+                            Pendaftaran sangat mudah! Klik butang "Daftar" di atas, isi borang
+                            online, dan kami akan menghubungi anda dalam masa 24 jam untuk
+                            penilaian dan penempatan kelas yang sesuai.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q5">Bolehkah ibu bapa pantau progress anak?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a5">
+                            Ya! Setiap ibu bapa diberikan akses ke Portal Ibu Bapa untuk
+                            pantau rekod hafazan, kehadiran, pembayaran, dan progress anak
+                            secara real-time. Login dibekalkan selepas pendaftaran.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q6">Adakah kelas dipisahkan lelaki & perempuan?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a6">
+                            Ya, kami mengikut adab Islam. Kelas pelajar lelaki diajar oleh ustaz,
+                            manakala pelajar perempuan diajar oleh ustazah. Persekitaran yang
+                            kondusif dan selesa untuk semua.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q7">Apa beza dengan madrasah lain?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a7">
+                            Kami menggabungkan kaedah tradisional (talqin, musyafahah) dengan
+                            teknologi moden (portal online, tracking progress). Saiz kelas kecil
+                            untuk perhatian individu. Pengalaman 10+ tahun mengeluarkan huffaz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span data-i18n="faq.q8">Adakah sijil khatam diberikan?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq.a8">
+                            Ya! Setiap pelajar yang khatam akan menerima sijil rasmi dari madrasah.
+                            Untuk khatam 30 juz, kami adakan majlis khatam khas dengan
+                            kehadiran keluarga dan jemputan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Wave Divider: FAQ → Contact -->
+    <div class="wave-divider" style="background: #ffffff;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C150,0 350,100 500,50 C650,0 850,100 1000,50 C1150,0 1200,50 1200,50 L1200,100 L0,100 Z" fill="#7c3aed"></path>
+        </svg>
+    </div>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.3);">
+                    <span>📞</span>
+                    <span data-i18n="contact.badge">Hubungi Kami</span>
+                </div>
+                <h2 class="section-title" style="color:white;" data-i18n="contact.title">
+                    Mari Berhubung<br>
+                    <span style="background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Dengan Kami</span>
+                </h2>
+                <p class="section-subtitle" style="color:rgba(255,255,255,0.9);" data-i18n="contact.subtitle">
+                    Kami sedia membantu sebarang pertanyaan anda
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Contact Info Cards -->
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-content">
+                            <h4 data-i18n="contact.addr">Alamat</h4>
+                            <p>Lot 2305, Lorong Lebai Daud,<br>
+                            Jalan Raja Abdullah,<br>
+                            45800 Jeram, Selangor</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-content">
+                            <h4 data-i18n="contact.phone">Telefon</h4>
+                            <p>
+                                <strong data-i18n="contact.mudir">Mudir:</strong> <a href="tel:0192363638">019-236 3638</a><br>
+                                <strong>Ustaz Hisyam:</strong> <a href="tel:01161000542">011-6100 0542</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-content">
+                            <h4>Email</h4>
+                            <p><a href="mailto:mtsbakhirzaman2023@gmail.com">mtsbakhirzaman2023@gmail.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">🕐</div>
+                        <div class="contact-content">
+                            <h4 data-i18n="contact.hours">Waktu Operasi</h4>
+                            <p>
+                                <strong data-i18n="contact.weekday">Isnin - Jumaat:</strong> 8:00 AM - 9:00 PM<br>
+                                <strong data-i18n="contact.weekend">Sabtu - Ahad:</strong> <span data-i18n="contact.closed">Tutup</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Cards -->
+                <div class="contact-actions">
+                    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20bertanya%20tentang%20Madrasah%20Tahfiz%20Pekan%20Sungai%20Buloh" target="_blank" class="contact-action-card whatsapp">
+                        <div class="action-icon">💬</div>
+                        <div class="action-content">
+                            <h3 data-i18n="contact.waTitle">WhatsApp Kami</h3>
+                            <p data-i18n="contact.waDesc">Klik untuk mesej terus ke Mudir</p>
+                            <span class="action-arrow">→</span>
+                        </div>
+                    </a>
+
+                    <a href="daftar.html" class="contact-action-card register">
+                        <div class="action-icon">📝</div>
+                        <div class="action-content">
+                            <h3 data-i18n="contact.regTitle">Daftar Online</h3>
+                            <p data-i18n="contact.regDesc">Isi borang pendaftaran dengan mudah</p>
+                            <span class="action-arrow">→</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=Lot+2305+Lorong+Lebai+Daud+Jalan+Raja+Abdullah+45800+Jeram+Selangor" target="_blank" class="contact-action-card map">
+                        <div class="action-icon">🗺️</div>
+                        <div class="action-content">
+                            <h3 data-i18n="contact.mapTitle">Lokasi Madrasah</h3>
+                            <p data-i18n="contact.mapDesc">Lihat di Google Maps</p>
+                            <span class="action-arrow">→</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Embedded Map -->
+            <div class="contact-map">
+                <iframe
+                    src="https://maps.google.com/maps?q=Lot+2305+Lorong+Lebai+Daud+Jalan+Raja+Abdullah+45800+Jeram+Selangor&hl=ms&z=15&output=embed"
+                    width="100%"
+                    height="400"
+                    style="border:0;border-radius:20px;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+        <!-- Wave Divider: Contact → Footer -->
+    <div class="wave-divider" style="background: #052e1a;">
+        <svg viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,50 C300,100 600,0 900,50 C1050,75 1150,25 1200,50 L1200,100 L0,100 Z" fill="#0f172a"></path>
+        </svg>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-pattern"></div>
+
+        <div class="footer-container">
+
+            <!-- CTA Banner (BARU!) -->
+        <div class="footer-cta-banner">
+            <h3>🕌 Sertai Kami Hari Ini!</h3>
+            <p>Daftarkan anak anda untuk mula perjalanan hafazan Al-Quran</p>
+            <div class="footer-cta-buttons">
+                <a href="daftar.html" class="footer-cta-btn footer-cta-btn-primary">
+                    📝 Daftar Sekarang
+                </a>
+                <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20bertanya%20tentang%20pendaftaran" target="_blank" class="footer-cta-btn footer-cta-btn-outline">
+                    💬 WhatsApp Kami
+                </a>
+            </div>
+        </div>
+        
+            <div class="footer-grid">
+
+                <!-- About -->
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <span class="footer-logo-icon">🕌</span>
+                        <div>
+                            <div class="footer-logo-name">Madrasah Tahfiz</div>
+                            <div class="footer-logo-sub">Pekan Sungai Buloh</div>
+                        </div>
+                    </div>
+                    <p class="footer-desc" data-i18n="footer.desc">
+                        Pusat pembelajaran Al-Quran dan hafazan terkemuka di Jeram, Selangor.
+                        Membentuk generasi Quran cinta Sunnah sejak 2014.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/60192363638" target="_blank" title="WhatsApp" class="social-link">
+                            <span>💬</span>
+                        </a>
+                        <a href="mailto:mtsbakhirzaman2023@gmail.com" title="Email" class="social-link">
+                            <span>✉️</span>
+                        </a>
+                        <a href="tel:0192363638" title="Telefon" class="social-link">
+                            <span>📞</span>
+                        </a>
+                    </div>
+
+                                        <!-- Newsletter -->
+                    <div class="footer-newsletter">
+                        <h4>📬 Dapatkan Update</h4>
+                        <p>Terima berita & info terkini madrasah</p>
+                        <div class="footer-newsletter-form">
+                            <input type="text" class="footer-newsletter-input" placeholder="No. WhatsApp anda">
+                            <button class="footer-newsletter-btn" onclick="subscribeWA()">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-col">
+                    <h4 class="footer-title" data-i18n="footer.linksTitle">Pautan Pantas</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" data-i18n="nav.home">Utama</a></li>
+                        <li><a href="#about" data-i18n="nav.about">Tentang Kami</a></li>
+                        <li><a href="#akreditasi" data-i18n="nav.akred">🏆 Akreditasi</a></li>
+                        <li><a href="#programs" data-i18n="nav.programs">Program</a></li>
+                        <li><a href="#quiz" data-i18n="nav.quiz">Quiz Pintar</a></li>
+                        <li><a href="#yuran" data-i18n="nav.yuran">Yuran</a></li>
+                        <li><a href="#donation" data-i18n="nav.donate">💝 Infaq</a></li>
+                        <li><a href="#team" data-i18n="nav.team">Guru</a></li>
+                        <li><a href="#events" data-i18n="nav.events">Acara</a></li>
+                        <li><a href="#gallery" data-i18n="nav.gallery">Galeri</a></li>
+                        <li><a href="#testimonials" data-i18n="nav.testimonials">Testimoni</a></li>
+                        <li><a href="#faq" data-i18n="footer.faq">FAQ</a></li>
+                        <li><a href="#contact" data-i18n="nav.contact">Hubungi</a></li>
+                    </ul>
+                </div>
+
+                <!-- Programs -->
+                <div class="footer-col">
+                    <h4 class="footer-title" data-i18n="footer.progTitle">Program Kami</h4>
+                    <ul class="footer-links">
+                        <li><a href="#programs" data-i18n="prog.iqra.title">Kelas Iqra'</a></li>
+                        <li><a href="#programs" data-i18n="prog.asas.title">Al-Quran Asas</a></li>
+                        <li><a href="#programs" data-i18n="prog.juz30.title">Hafazan Juz 30</a></li>
+                        <li><a href="#programs" data-i18n="prog.5surah.title">Hafazan 5 Surah Pilihan</a></li>
+                        <li><a href="#programs" data-i18n="prog.lanjutan.title">Hafazan Lanjutan</a></li>
+                        <li><a href="#programs" data-i18n="prog.khatam.title">Kelas Khatam</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-col">
+                    <h4 class="footer-title" data-i18n="footer.contactTitle">Hubungi Kami</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <span class="footer-icon">📍</span>
+                            <span>Lot 2305, Lorong Lebai Daud,<br>Jalan Raja Abdullah,<br>45800 Jeram, Selangor</span>
+                        </li>
+                        <li>
+                            <span class="footer-icon">📞</span>
+                            <span>
+                                <a href="tel:0192363638">019-236 3638</a><br>
+                                <a href="tel:01161000542">011-6100 0542</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="footer-icon">✉️</span>
+                            <a href="mailto:mtsbakhirzaman2023@gmail.com">mtsbakhirzaman2023@gmail.com</a>
+                        </li>
+                        <li>
+                            <span class="footer-icon">🕐</span>
+                            <span data-i18n="footer.hours">Isnin - Jumaat<br>8:00 AM - 9:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Madrasah Tahfiz Pekan Sungai Buloh. <span data-i18n="footer.rights">All rights reserved.</span></p>
+                <p class="footer-arabic">جَزَاكُمُ اللَّهُ خَيْرًا</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/60192363638?text=Assalamualaikum,%20saya%20ingin%20bertanya%20tentang%20Madrasah%20Tahfiz%20Pekan%20Sungai%20Buloh"
+       target="_blank"
+       class="whatsapp-float"
+       title="WhatsApp Kami">
+        <span>💬</span>
+        <span class="whatsapp-tooltip" data-i18n="footer.waTooltip">Hubungi Kami</span>
+    </a>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Back to Top">
+        <span>↑</span>
+    </button>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div id="homeLightbox" class="home-lightbox hidden">
+        <div class="home-lightbox-content">
+            <button class="home-lightbox-close" onclick="closeHomeLightbox()">✕</button>
+            <button class="home-lightbox-prev" onclick="homeLightboxPrev()">‹</button>
+            <button class="home-lightbox-next" onclick="homeLightboxNext()">›</button>
+            <img id="homeLightboxImage" src="" alt="">
+            <div class="home-lightbox-info">
+                <div class="home-lightbox-title" id="homeLightboxTitle"></div>
+                <div class="home-lightbox-counter" id="homeLightboxCounter"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <!-- Scripts -->
+    <script src="js/home.js"></script>
+
+    <!-- ===== SIJIL MODAL ===== -->
+<div id="sijilModal" class="sijil-popup-overlay hidden">
+    <div class="sijil-popup-container">
+        <div class="sijil-popup-header">
+            <h2 id="sijilModalTitle">📜 Sijil Rasmi</h2>
+            <button onclick="closeSijilModal()" class="sijil-popup-close">✕</button>
+        </div>
+        <div class="sijil-popup-body">
+            <div id="sijilContent">
+                <!-- Akan dijana JS -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

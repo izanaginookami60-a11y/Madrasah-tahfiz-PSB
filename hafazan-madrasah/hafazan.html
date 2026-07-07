@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📖 Hafazan App - Madrasah</title>
+
+    <!-- iOS PWA Meta -->
+    <link rel="icon" type="image/png" href="icons/hafazan-icon-192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Hafazan">
+    <meta name="theme-color" content="#047857">
+
+    <!-- Apple Touch Icons - PENTING UNTUK ICON DI iPhone -->
+    <link rel="apple-touch-icon" href="icons/hafazan-icon-192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/hafazan-icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/hafazan-icon-180.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/hafazan-icon-192.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="hafazan-manifest.json">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --primary: #047857;
+            --primary-light: #10b981;
+            --gold: #fbbf24;
+            --red: #ef4444;
+            --text: #1f2937;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .login-logo {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .arabic-bismillah {
+            font-family: 'Amiri', serif;
+            color: #fbbf24;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .login-page h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-page > p {
+            color: #fbbf24;
+            margin-bottom: 30px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-form {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== MAIN APP ===== */
+        .app-page { display: none; }
+        .app-page.active { display: block; }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 15px 20px;
+            padding-top: calc(15px + env(safe-area-inset-top));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 { font-size: 1.2rem; }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon-h {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== TAB NAV ===== */
+        .tab-bar {
+            background: white;
+            padding: 12px 15px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .tab-btn-h {
+            background: #f1f5f9;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #64748b;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .tab-btn-h.active {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            box-shadow: 0 4px 12px rgba(4,120,87,0.3);
+        }
+
+        .tab-content-h { display: none; padding-bottom: 100px; }
+        .tab-content-h.active { display: block; }
+
+        /* ===== FORM SECTION ===== */
+        .form-section-h {
+            background: white;
+            margin: 15px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+
+        .section-title-h {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .section-title-h h3 {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .section-icon-h {
+            font-size: 1.5rem;
+        }
+
+        .form-group-h {
+            margin-bottom: 15px;
+        }
+
+        .form-group-h label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .form-group-h input,
+        .form-group-h select,
+        .form-group-h textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .form-group-h input:focus,
+        .form-group-h select:focus,
+        .form-group-h textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+        }
+
+        .form-row-h {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* Session radio cards */
+        .session-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .session-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .session-card.active[data-session="pagi"] {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: #f59e0b;
+            color: #78350f;
+        }
+
+        .session-card.active[data-session="petang"] {
+            background: linear-gradient(135deg, #fed7aa, #fdba74);
+            border-color: #ea580c;
+            color: #7c2d12;
+        }
+
+        .session-card.active[data-session="malam"] {
+            background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+            border-color: #7c3aed;
+            color: #4c1d95;
+        }
+
+        .session-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Selected items display */
+        .selected-display {
+            background: #f0fdf4;
+            border: 2px dashed #10b981;
+            border-radius: 12px;
+            padding: 12px;
+            min-height: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .selected-tag {
+            background: linear-gradient(135deg, var(--primary), #065f46);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .selected-tag .remove-tag {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .empty-selection {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Quick buttons */
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .quick-btn {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:active {
+            background: var(--primary);
+            color: white;
+            transform: scale(0.95);
+        }
+
+        /* Surah Ayat Item */
+        .surah-ayat-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .surah-ayat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .surah-name-display {
+            font-weight: 800;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .surah-juz-badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .ayat-inputs-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ayat-input-small {
+            width: 70px;
+            padding: 8px 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .btn-full-surah-h {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Score Slider */
+        .score-display {
+            background: #f0fdf4;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .score-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .score-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .score-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Quick notes */
+        .quick-notes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-note-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .quick-note-btn:active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            z-index: 50;
+        }
+
+        .btn-submit-h {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #1f2937;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(251,191,36,0.4);
+        }
+
+        .btn-submit-h:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== RECORDS LIST ===== */
+        .records-list {
+            padding: 15px;
+            padding-bottom: 100px;
+        }
+
+        .record-card {
+            background: white;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .record-date-badge {
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .record-day {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .record-month {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        .record-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .record-student {
+            font-weight: 800;
+            color: var(--text);
+            font-size: 0.92rem;
+            margin-bottom: 3px;
+        }
+
+        .record-surah {
+            color: var(--text-light);
+            font-size: 0.82rem;
+            margin-bottom: 5px;
+        }
+
+        .record-badges {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .record-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .badge-lancar { background: #d1fae5; color: #065f46; }
+        .badge-sederhana { background: #fef3c7; color: #78350f; }
+        .badge-ulang { background: #fef3c7; color: #7c2d12; }
+        .badge-gagal { background: #fee2e2; color: #7f1d1d; }
+
+        .record-score {
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .score-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 9999;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show { display: block; animation: slideUp 0.3s ease; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 30px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Empty state */
+        .empty-state-h {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-icon-h {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-h {
+            text-align: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .stat-num-h {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label-h {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Sync indicator */
+        .sync-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <div class="login-page" id="loginPage">
+        <div class="login-logo">📖</div>
+        <p class="arabic-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+        <h1>Hafazan App</h1>
+        <p>Madrasah Tahfiz PSB</p>
+
+        <form class="login-form" onsubmit="doLogin(event)">
+            <label>ID Guru</label>
+            <input type="text" id="loginId" placeholder="admin" autocapitalize="none" required>
+
+            <label>Kata Laluan</label>
+            <input type="password" id="loginPass" placeholder="••••••" required>
+
+            <button type="submit" class="btn-login">🔐 Log Masuk</button>
+        </form>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-page" id="mainPage">
+
+        <!-- Header -->
+        <div class="app-header">
+            <div>
+                <h1>📖 Hafazan App</h1>
+                <div class="sync-indicator">
+                    <span class="sync-dot" id="syncDot"></span>
+                    <span id="syncStatus">Synced</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon-h" onclick="loadAllData()" title="Refresh">🔄</button>
+                <button class="btn-icon-h" onclick="doLogout()" title="Logout">🚪</button>
+            </div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn-h active" onclick="switchTabH('add', this)">➕ Tambah Rekod</button>
+            <button class="tab-btn-h" onclick="switchTabH('list', this)">📋 Senarai Rekod</button>
+        </div>
+
+        <!-- TAB: ADD RECORD -->
+        <div id="tab-add" class="tab-content-h active">
+
+            <!-- Maklumat Asas -->
+            <div class="form-section-h">
+                <div class="section-title-h">
+                    <span class="section-icon-h">👨‍🎓</span>
+                    <h3>Maklumat Asas</h3>
+                </div>
+
+                <div class="form-group-h">
+                    <label>Pilih Pelajar *</label>
+                    <select id="recordStudent" required>
+                        <option value="">-- Pilih Pelajar --</option>
+                    </select>
+                </div>
+
+                <div class="form-row-h">
+                    <div class="form-group-h">
+                        <label>Tarikh *</label>
+                        <input type="date" id="recordDate" required>
+                    </div>
+                    <div class="form-group-h">
+                        <label>Penyemak</label>
+                        <input type="text" id="recordChecker" placeholder="Nama guru">
+                    </div>
+                </div>
+
+                <div class="form-group-h">
+                    <label>Sesi Kelas *</label>
+                    <div class="session-cards">
+                        <div class="session-card active" data-session="pagi" onclick="selectSession('pagi', this)">
+                            <span class="session-icon">🌅</span>
+                            Pagi
+                        </div>
+                        <div class="session-card" data-session="petang" onclick="selectSession('petang', this)">
+                            <span class="session-icon">🌤</span>
+                            Petang
+                        </div>
+                        <div class="session-card" data-session="malam" onclick="selectSession('malam', this)">
+                            <span class="session-icon">🌙</span>
+                            Malam
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-h">
+                    <label>Jenis Bacaan *</label>
+                    <select id="recordReadingType" required>
+                        <option value="">Pilih jenis</option>
+                        <optgroup label="📖 Nazirah">
+                            <option value="nazirah_khatam">Nazirah Khatam</option>
+                            <option value="nazirah_iqra">Nazirah Iqra</option>
+                        </optgroup>
+                        <optgroup label="📝 Hafazan">
+                            <option value="sabak_baru">Sabak Baru</option>
+                            <option value="para_sabak">Para Sabak</option>
+                            <option value="mukhtar">Mukhtar</option>
+                            <option value="mukhtar_khatam">Mukhtar Khatam</option>
+                        </optgroup>
+                        <optgroup label="🏆 Penghantaran">
+                            <option value="pra_syahadah">Pra Syahadah</option>
+                            <option value="syahadah">Syahadah</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Juz & Surah -->
+            <div class="form-section-h">
+                <div class="section-title-h">
+                    <span class="section-icon-h">📖</span>
+                    <h3>Juz & Surah</h3>
+                </div>
+
+                <!-- Quick Juz Buttons -->
+                <div class="form-group-h">
+                    <label>Pilih Juz *</label>
+                    <div class="selected-display" id="selectedJuzDisplay">
+                        <span class="empty-selection">Tap butang di bawah untuk pilih Juz</span>
+                    </div>
+                    <div class="quick-buttons">
+                        <button type="button" class="quick-btn" onclick="addJuz(30)">+ Juz 30</button>
+                        <button type="button" class="quick-btn" onclick="addJuz(29)">+ Juz 29</button>
+                        <button type="button" class="quick-btn" onclick="addJuz(28)">+ Juz 28</button>
+                        <button type="button" class="quick-btn" onclick="addJuz(1)">+ Juz 1</button>
+                        <button type="button" class="quick-btn" onclick="showJuzPicker()">📋 Lain</button>
+                    </div>
+                </div>
+
+                <!-- Surah Selection -->
+                <div class="form-group-h">
+                    <label>Pilih Surah *</label>
+                    <div class="selected-display" id="selectedSurahDisplay">
+                        <span class="empty-selection">Pilih Juz dahulu</span>
+                    </div>
+                    <button type="button" class="quick-btn" id="btnAddSurah" onclick="showSurahPicker()" style="margin-top:10px;width:100%;padding:12px;" disabled>
+                        ➕ Tambah Surah
+                    </button>
+                </div>
+
+                <!-- Surah Ayat Inputs -->
+                <div id="surahAyatList"></div>
+            </div>
+
+            <!-- Penilaian -->
+            <div class="form-section-h">
+                <div class="section-title-h">
+                    <span class="section-icon-h">⭐</span>
+                    <h3>Penilaian</h3>
+                </div>
+
+                <div class="form-group-h">
+                    <label>Markah</label>
+                    <div class="score-display">
+                        <div class="score-number" id="scoreDisplay">80</div>
+                        <div class="score-label" id="scoreLabel">👍 Baik</div>
+                    </div>
+                    <input type="range" id="recordScore" class="score-slider" min="0" max="100" value="80" oninput="updateScore(this.value)">
+                </div>
+
+                <div class="form-group-h">
+                    <label>Status *</label>
+                    <select id="recordStatus" required>
+                        <option value="Lancar">✅ Lancar (Cemerlang)</option>
+                        <option value="Sederhana">⚠️ Sederhana</option>
+                        <option value="Perlu Ulang">🔄 Perlu Ulang</option>
+                        <option value="Tidak Lulus">❌ Tidak Lulus</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Catatan -->
+            <div class="form-section-h">
+                <div class="section-title-h">
+                    <span class="section-icon-h">💬</span>
+                    <h3>Catatan Guru</h3>
+                </div>
+
+                <div class="form-group-h">
+                    <textarea id="recordNotes" rows="3" placeholder="Tulis catatan tentang bacaan/hafazan..."></textarea>
+                </div>
+
+                <div class="quick-notes-grid">
+                    <button type="button" class="quick-note-btn" onclick="addNote('Bacaan sangat baik dan lancar.')">👍 Sangat baik</button>
+                    <button type="button" class="quick-note-btn" onclick="addNote('Perlu perbaiki tajwid.')">📝 Tajwid</button>
+                    <button type="button" class="quick-note-btn" onclick="addNote('Makhraj huruf perlu dibetulkan.')">🔤 Makhraj</button>
+                    <button type="button" class="quick-note-btn" onclick="addNote('Perlu ulang semula hafazan ini.')">🔄 Perlu ulang</button>
+                    <button type="button" class="quick-note-btn" onclick="addNote('Ada peningkatan dari minggu lepas.')">📈 Peningkatan</button>
+                    <button type="button" class="quick-note-btn" onclick="addNote('Perlu lebih banyak murajaah.')">📖 Murajaah</button>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="submit-section">
+                <button class="btn-submit-h" onclick="saveRecord()">💾 Simpan Rekod Hafazan</button>
+            </div>
+        </div>
+
+        <!-- TAB: LIST -->
+        <div id="tab-list" class="tab-content-h">
+            <div class="stats-row">
+                <div class="stat-h">
+                    <div class="stat-num-h" id="statTotal">0</div>
+                    <div class="stat-label-h">Total Rekod</div>
+                </div>
+                <div class="stat-h">
+                    <div class="stat-num-h" id="statToday">0</div>
+                    <div class="stat-label-h">Hari Ini</div>
+                </div>
+                <div class="stat-h">
+                    <div class="stat-num-h" id="statWeek">0</div>
+                    <div class="stat-label-h">Minggu Ini</div>
+                </div>
+            </div>
+
+            <div class="records-list" id="recordsList">
+                <div class="empty-state-h">
+                    <div class="empty-icon-h">📖</div>
+                    <p>Memuat rekod...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+    // ============================================
+    // ===== FIREBASE CONFIG ======================
+    // ============================================
+    var firebaseConfig = {
+        apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+        authDomain: "hafazan-madrasah.firebaseapp.com",
+        databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hafazan-madrasah",
+        storageBucket: "hafazan-madrasah.firebasestorage.app",
+        messagingSenderId: "707178356175",
+        appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    // ============================================
+    // ===== SURAH DATA (Simplified) ==============
+    // ============================================
+    var SURAH_LIST = [
+        { no: 1, name: "Al-Fatihah", juz: 1, ayat: 7 },
+        { no: 2, name: "Al-Baqarah", juz: 1, ayat: 286 },
+        { no: 3, name: "Ali Imran", juz: 3, ayat: 200 },
+        { no: 4, name: "An-Nisa", juz: 4, ayat: 176 },
+        { no: 5, name: "Al-Maidah", juz: 6, ayat: 120 },
+        { no: 6, name: "Al-An'am", juz: 7, ayat: 165 },
+        { no: 7, name: "Al-A'raf", juz: 8, ayat: 206 },
+        { no: 8, name: "Al-Anfal", juz: 9, ayat: 75 },
+        { no: 9, name: "At-Taubah", juz: 10, ayat: 129 },
+        { no: 10, name: "Yunus", juz: 11, ayat: 109 },
+        { no: 11, name: "Hud", juz: 11, ayat: 123 },
+        { no: 12, name: "Yusuf", juz: 12, ayat: 111 },
+        { no: 13, name: "Ar-Ra'd", juz: 13, ayat: 43 },
+        { no: 14, name: "Ibrahim", juz: 13, ayat: 52 },
+        { no: 15, name: "Al-Hijr", juz: 14, ayat: 99 },
+        { no: 16, name: "An-Nahl", juz: 14, ayat: 128 },
+        { no: 17, name: "Al-Isra", juz: 15, ayat: 111 },
+        { no: 18, name: "Al-Kahf", juz: 15, ayat: 110 },
+        { no: 19, name: "Maryam", juz: 16, ayat: 98 },
+        { no: 20, name: "Taha", juz: 16, ayat: 135 },
+        { no: 21, name: "Al-Anbiya", juz: 17, ayat: 112 },
+        { no: 22, name: "Al-Hajj", juz: 17, ayat: 78 },
+        { no: 23, name: "Al-Mu'minun", juz: 18, ayat: 118 },
+        { no: 24, name: "An-Nur", juz: 18, ayat: 64 },
+        { no: 25, name: "Al-Furqan", juz: 18, ayat: 77 },
+        { no: 26, name: "Asy-Syu'ara", juz: 19, ayat: 227 },
+        { no: 27, name: "An-Naml", juz: 19, ayat: 93 },
+        { no: 28, name: "Al-Qasas", juz: 20, ayat: 88 },
+        { no: 29, name: "Al-'Ankabut", juz: 20, ayat: 69 },
+        { no: 30, name: "Ar-Rum", juz: 21, ayat: 60 },
+        { no: 31, name: "Luqman", juz: 21, ayat: 34 },
+        { no: 32, name: "As-Sajdah", juz: 21, ayat: 30 },
+        { no: 33, name: "Al-Ahzab", juz: 21, ayat: 73 },
+        { no: 34, name: "Saba'", juz: 22, ayat: 54 },
+        { no: 35, name: "Fatir", juz: 22, ayat: 45 },
+        { no: 36, name: "Ya-Sin", juz: 22, ayat: 83 },
+        { no: 37, name: "As-Saffat", juz: 23, ayat: 182 },
+        { no: 38, name: "Sad", juz: 23, ayat: 88 },
+        { no: 39, name: "Az-Zumar", juz: 23, ayat: 75 },
+        { no: 40, name: "Ghafir", juz: 24, ayat: 85 },
+        { no: 41, name: "Fussilat", juz: 24, ayat: 54 },
+        { no: 42, name: "Asy-Syura", juz: 25, ayat: 53 },
+        { no: 43, name: "Az-Zukhruf", juz: 25, ayat: 89 },
+        { no: 44, name: "Ad-Dukhan", juz: 25, ayat: 59 },
+        { no: 45, name: "Al-Jasiyah", juz: 25, ayat: 37 },
+        { no: 46, name: "Al-Ahqaf", juz: 26, ayat: 35 },
+        { no: 47, name: "Muhammad", juz: 26, ayat: 38 },
+        { no: 48, name: "Al-Fath", juz: 26, ayat: 29 },
+        { no: 49, name: "Al-Hujurat", juz: 26, ayat: 18 },
+        { no: 50, name: "Qaf", juz: 26, ayat: 45 },
+        { no: 51, name: "Az-Zariyat", juz: 26, ayat: 60 },
+        { no: 52, name: "At-Tur", juz: 27, ayat: 49 },
+        { no: 53, name: "An-Najm", juz: 27, ayat: 62 },
+        { no: 54, name: "Al-Qamar", juz: 27, ayat: 55 },
+        { no: 55, name: "Ar-Rahman", juz: 27, ayat: 78 },
+        { no: 56, name: "Al-Waqi'ah", juz: 27, ayat: 96 },
+        { no: 57, name: "Al-Hadid", juz: 27, ayat: 29 },
+        { no: 58, name: "Al-Mujadilah", juz: 28, ayat: 22 },
+        { no: 59, name: "Al-Hasyr", juz: 28, ayat: 24 },
+        { no: 60, name: "Al-Mumtahanah", juz: 28, ayat: 13 },
+        { no: 61, name: "As-Saff", juz: 28, ayat: 14 },
+        { no: 62, name: "Al-Jumu'ah", juz: 28, ayat: 11 },
+        { no: 63, name: "Al-Munafiqun", juz: 28, ayat: 11 },
+        { no: 64, name: "At-Tagabun", juz: 28, ayat: 18 },
+        { no: 65, name: "At-Talaq", juz: 28, ayat: 12 },
+        { no: 66, name: "At-Tahrim", juz: 28, ayat: 12 },
+        { no: 67, name: "Al-Mulk", juz: 29, ayat: 30 },
+        { no: 68, name: "Al-Qalam", juz: 29, ayat: 52 },
+        { no: 69, name: "Al-Haqqah", juz: 29, ayat: 52 },
+        { no: 70, name: "Al-Ma'arij", juz: 29, ayat: 44 },
+        { no: 71, name: "Nuh", juz: 29, ayat: 28 },
+        { no: 72, name: "Al-Jinn", juz: 29, ayat: 28 },
+        { no: 73, name: "Al-Muzzammil", juz: 29, ayat: 20 },
+        { no: 74, name: "Al-Muddassir", juz: 29, ayat: 56 },
+        { no: 75, name: "Al-Qiyamah", juz: 29, ayat: 40 },
+        { no: 76, name: "Al-Insan", juz: 29, ayat: 31 },
+        { no: 77, name: "Al-Mursalat", juz: 29, ayat: 50 },
+        { no: 78, name: "An-Naba'", juz: 30, ayat: 40 },
+        { no: 79, name: "An-Nazi'at", juz: 30, ayat: 46 },
+        { no: 80, name: "'Abasa", juz: 30, ayat: 42 },
+        { no: 81, name: "At-Takwir", juz: 30, ayat: 29 },
+        { no: 82, name: "Al-Infitar", juz: 30, ayat: 19 },
+        { no: 83, name: "Al-Mutaffifin", juz: 30, ayat: 36 },
+        { no: 84, name: "Al-Insyiqaq", juz: 30, ayat: 25 },
+        { no: 85, name: "Al-Buruj", juz: 30, ayat: 22 },
+        { no: 86, name: "At-Tariq", juz: 30, ayat: 17 },
+        { no: 87, name: "Al-A'la", juz: 30, ayat: 19 },
+        { no: 88, name: "Al-Gasyiyah", juz: 30, ayat: 26 },
+        { no: 89, name: "Al-Fajr", juz: 30, ayat: 30 },
+        { no: 90, name: "Al-Balad", juz: 30, ayat: 20 },
+        { no: 91, name: "Asy-Syams", juz: 30, ayat: 15 },
+        { no: 92, name: "Al-Lail", juz: 30, ayat: 21 },
+        { no: 93, name: "Ad-Duha", juz: 30, ayat: 11 },
+        { no: 94, name: "Asy-Syarh", juz: 30, ayat: 8 },
+        { no: 95, name: "At-Tin", juz: 30, ayat: 8 },
+        { no: 96, name: "Al-'Alaq", juz: 30, ayat: 19 },
+        { no: 97, name: "Al-Qadr", juz: 30, ayat: 5 },
+        { no: 98, name: "Al-Bayyinah", juz: 30, ayat: 8 },
+        { no: 99, name: "Az-Zalzalah", juz: 30, ayat: 8 },
+        { no: 100, name: "Al-'Adiyat", juz: 30, ayat: 11 },
+        { no: 101, name: "Al-Qari'ah", juz: 30, ayat: 11 },
+        { no: 102, name: "At-Takasur", juz: 30, ayat: 8 },
+        { no: 103, name: "Al-'Asr", juz: 30, ayat: 3 },
+        { no: 104, name: "Al-Humazah", juz: 30, ayat: 9 },
+        { no: 105, name: "Al-Fil", juz: 30, ayat: 5 },
+        { no: 106, name: "Quraisy", juz: 30, ayat: 4 },
+        { no: 107, name: "Al-Ma'un", juz: 30, ayat: 7 },
+        { no: 108, name: "Al-Kausar", juz: 30, ayat: 3 },
+        { no: 109, name: "Al-Kafirun", juz: 30, ayat: 6 },
+        { no: 110, name: "An-Nasr", juz: 30, ayat: 3 },
+        { no: 111, name: "Al-Masad", juz: 30, ayat: 5 },
+        { no: 112, name: "Al-Ikhlas", juz: 30, ayat: 4 },
+        { no: 113, name: "Al-Falaq", juz: 30, ayat: 5 },
+        { no: 114, name: "An-Nas", juz: 30, ayat: 6 }
+    ];
+
+    // ============================================
+    // ===== GLOBALS ==============================
+    // ============================================
+    var currentSession = 'pagi';
+    var selectedJuz = [];
+    var selectedSurah = []; // {name, juz, ayat, ayatFrom, ayatTo}
+    var allRecords = [];
+    var allStudents = [];
+
+    document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+
+    var savedSession = sessionStorage.getItem('hafazanAppSession');
+    if (savedSession) {
+        showApp();
+    }
+
+    // ============================================
+    // ===== AUTH =================================
+    // ============================================
+    function doLogin(e) {
+        e.preventDefault();
+        var id = document.getElementById('loginId').value.trim();
+        var pass = document.getElementById('loginPass').value.trim();
+
+        showToast('⏳ Logging in...');
+
+        db.ref('hafazanData/admins').once('value').then(function(snap) {
+            var admins = snap.val() || [];
+            var found = false;
+
+            for (var i = 0; i < admins.length; i++) {
+                if (admins[i].id === id && admins[i].password === pass) {
+                    found = true;
+                    sessionStorage.setItem('hafazanAppSession', JSON.stringify(admins[i]));
+                    document.getElementById('recordChecker').value = admins[i].name || '';
+                    showApp();
+                    showToast('✅ Selamat datang!');
+                    break;
+                }
+            }
+
+            if (!found) {
+                showToast('❌ ID atau password salah');
+            }
+        }).catch(function(err) {
+            showToast('❌ Error: ' + err.message);
+        });
+    }
+
+    function doLogout() {
+        if (!confirm('Log keluar?')) return;
+        sessionStorage.removeItem('hafazanAppSession');
+        document.getElementById('mainPage').classList.remove('active');
+        document.getElementById('loginPage').style.display = 'flex';
+    }
+
+    function showApp() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainPage').classList.add('active');
+
+        var session = sessionStorage.getItem('hafazanAppSession');
+        if (session) {
+            var admin = JSON.parse(session);
+            document.getElementById('recordChecker').value = admin.name || '';
+        }
+
+        loadAllData();
+        startRealtimeSync();
+    }
+
+    // ============================================
+    // ===== LOAD DATA ============================
+    // ============================================
+    function loadAllData() {
+        updateSyncStatus('syncing');
+
+        Promise.all([
+            db.ref('hafazanData/students').once('value'),
+            db.ref('hafazanData/records').once('value')
+        ]).then(function(snaps) {
+            // Students
+            var studentsData = snaps[0].val();
+            allStudents = [];
+            if (studentsData) {
+                if (Array.isArray(studentsData)) {
+                    allStudents = studentsData.filter(function(s) { return s; });
+                } else {
+                    allStudents = Object.values(studentsData).filter(function(s) { return s; });
+                }
+            }
+
+            // Records
+            var recordsData = snaps[1].val();
+            allRecords = [];
+            if (recordsData) {
+                if (Array.isArray(recordsData)) {
+                    allRecords = recordsData.filter(function(r) { return r; });
+                } else {
+                    allRecords = Object.values(recordsData).filter(function(r) { return r; });
+                }
+            }
+
+            populateStudentDropdown();
+            renderRecords();
+            updateStats();
+            updateSyncStatus('synced');
+        }).catch(function(err) {
+            updateSyncStatus('offline');
+            showToast('❌ Load error: ' + err.message);
+        });
+    }
+
+    // Real-time listener
+    function startRealtimeSync() {
+        db.ref('hafazanData/records').on('value', function(snap) {
+            var data = snap.val();
+            allRecords = [];
+            if (data) {
+                if (Array.isArray(data)) {
+                    allRecords = data.filter(function(r) { return r; });
+                } else {
+                    allRecords = Object.values(data).filter(function(r) { return r; });
+                }
+            }
+            renderRecords();
+            updateStats();
+        });
+    }
+
+    function populateStudentDropdown() {
+        var select = document.getElementById('recordStudent');
+        if (!select) return;
+
+        var sorted = allStudents.slice().sort(function(a, b) {
+            return (a.name || '').localeCompare(b.name || '');
+        });
+
+        var html = '<option value="">-- Pilih Pelajar --</option>';
+        for (var i = 0; i < sorted.length; i++) {
+            var s = sorted[i];
+            if (!s || !s.name) continue;
+            html += '<option value="' + s.id + '">' + s.name + ' (' + (s.class || '') + ')</option>';
+        }
+        select.innerHTML = html;
+    }
+
+    // ============================================
+    // ===== TAB SWITCHING ========================
+    // ============================================
+    function switchTabH(tab, btn) {
+        var tabs = document.querySelectorAll('.tab-content-h');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+        }
+
+        var btns = document.querySelectorAll('.tab-btn-h');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+
+        document.getElementById('tab-' + tab).classList.add('active');
+        if (btn) btn.classList.add('active');
+
+        if (tab === 'list') {
+            renderRecords();
+            updateStats();
+        }
+    }
+
+    // ============================================
+    // ===== SESSION SELECTION ====================
+    // ============================================
+    function selectSession(session, el) {
+        currentSession = session;
+        var cards = document.querySelectorAll('.session-card');
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove('active');
+        }
+        el.classList.add('active');
+    }
+
+    // ============================================
+    // ===== JUZ SELECTION ========================
+    // ============================================
+    function addJuz(juzNum) {
+        if (selectedJuz.indexOf(juzNum) > -1) {
+            showToast('⚠️ Juz ' + juzNum + ' sudah dipilih');
+            return;
+        }
+        selectedJuz.push(juzNum);
+        selectedJuz.sort(function(a, b) { return a - b; });
+        renderSelectedJuz();
+        renderSelectedSurah();
+        document.getElementById('btnAddSurah').disabled = false;
+    }
+
+    function removeJuz(juzNum) {
+        var idx = selectedJuz.indexOf(juzNum);
+        if (idx > -1) selectedJuz.splice(idx, 1);
+
+        // Remove surahs yang takda juz lain dipilih
+        selectedSurah = selectedSurah.filter(function(s) {
+            return selectedJuz.indexOf(s.juz) > -1;
+        });
+
+        renderSelectedJuz();
+        renderSelectedSurah();
+        renderSurahAyatList();
+
+        if (selectedJuz.length === 0) {
+            document.getElementById('btnAddSurah').disabled = true;
+        }
+    }
+
+    function showJuzPicker() {
+        var input = prompt('Masukkan nombor Juz (1-30):');
+        if (!input) return;
+        var num = parseInt(input);
+        if (isNaN(num) || num < 1 || num > 30) {
+            showToast('❌ Nombor Juz tidak sah');
+            return;
+        }
+        addJuz(num);
+    }
+
+    function renderSelectedJuz() {
+        var container = document.getElementById('selectedJuzDisplay');
+        if (selectedJuz.length === 0) {
+            container.innerHTML = '<span class="empty-selection">Tap butang di bawah untuk pilih Juz</span>';
+            return;
+        }
+
+        var html = '';
+        for (var i = 0; i < selectedJuz.length; i++) {
+            html += '<span class="selected-tag">Juz ' + selectedJuz[i];
+            html += '<button class="remove-tag" onclick="removeJuz(' + selectedJuz[i] + ')">✕</button>';
+            html += '</span>';
+        }
+        container.innerHTML = html;
+    }
+
+    // ============================================
+    // ===== SURAH SELECTION ======================
+    // ============================================
+    function showSurahPicker() {
+        if (selectedJuz.length === 0) {
+            showToast('❌ Pilih Juz dahulu');
+            return;
+        }
+
+        // Build list of available surahs
+        var available = [];
+        for (var i = 0; i < SURAH_LIST.length; i++) {
+            if (selectedJuz.indexOf(SURAH_LIST[i].juz) > -1) {
+                // Check if already selected
+                var alreadySelected = false;
+                for (var j = 0; j < selectedSurah.length; j++) {
+                    if (selectedSurah[j].name === SURAH_LIST[i].name) {
+                        alreadySelected = true;
+                        break;
+                    }
+                }
+                if (!alreadySelected) {
+                    available.push(SURAH_LIST[i]);
+                }
+            }
+        }
+
+        if (available.length === 0) {
+            showToast('✅ Semua surah dalam Juz dipilih sudah ditambah');
+            return;
+        }
+
+        // Show as native select dialog (simple way)
+        var promptText = 'Pilih Surah:\n\n';
+        for (var i = 0; i < available.length; i++) {
+            promptText += (i + 1) + '. ' + available[i].name + ' (Juz ' + available[i].juz + ')\n';
+        }
+        promptText += '\nMasukkan nombor (1-' + available.length + '):';
+
+        var input = prompt(promptText);
+        if (!input) return;
+
+        var idx = parseInt(input) - 1;
+        if (isNaN(idx) || idx < 0 || idx >= available.length) {
+            showToast('❌ Pilihan tidak sah');
+            return;
+        }
+
+        var surah = available[idx];
+        selectedSurah.push({
+            name: surah.name,
+            juz: surah.juz,
+            no: surah.no,
+            totalAyat: surah.ayat,
+            ayatFrom: 1,
+            ayatTo: surah.ayat
+        });
+
+        renderSelectedSurah();
+        renderSurahAyatList();
+    }
+
+    function removeSurah(index) {
+        selectedSurah.splice(index, 1);
+        renderSelectedSurah();
+        renderSurahAyatList();
+    }
+
+    function renderSelectedSurah() {
+        var container = document.getElementById('selectedSurahDisplay');
+        if (selectedSurah.length === 0) {
+            if (selectedJuz.length === 0) {
+                container.innerHTML = '<span class="empty-selection">Pilih Juz dahulu</span>';
+            } else {
+                container.innerHTML = '<span class="empty-selection">Tap "Tambah Surah" untuk pilih</span>';
+            }
+            return;
+        }
+
+        var html = '';
+        for (var i = 0; i < selectedSurah.length; i++) {
+            html += '<span class="selected-tag">' + selectedSurah[i].name;
+            html += '<button class="remove-tag" onclick="removeSurah(' + i + ')">✕</button>';
+            html += '</span>';
+        }
+        container.innerHTML = html;
+    }
+
+    function renderSurahAyatList() {
+        var container = document.getElementById('surahAyatList');
+        if (selectedSurah.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        var html = '<div style="margin-top:15px;padding-top:15px;border-top:2px dashed #e2e8f0;">';
+        html += '<label style="display:block;font-weight:700;margin-bottom:10px;">📝 Set Ayat untuk Setiap Surah</label>';
+
+        for (var i = 0; i < selectedSurah.length; i++) {
+            var s = selectedSurah[i];
+            html += '<div class="surah-ayat-item">';
+            html += '<div class="surah-ayat-header">';
+            html += '<span class="surah-name-display">' + s.name + ' <small style="color:#94a3b8;">(' + s.totalAyat + ' ayat)</small></span>';
+            html += '<span class="surah-juz-badge">Juz ' + s.juz + '</span>';
+            html += '</div>';
+            html += '<div class="ayat-inputs-row">';
+            html += '<span style="font-size:0.85rem;color:#64748b;">Ayat:</span>';
+            html += '<input type="number" class="ayat-input-small" value="' + s.ayatFrom + '" min="1" max="' + s.totalAyat + '" onchange="updateAyat(' + i + ', \'from\', this.value)">';
+            html += '<span style="color:#94a3b8;font-weight:700;">→</span>';
+            html += '<input type="number" class="ayat-input-small" value="' + s.ayatTo + '" min="1" max="' + s.totalAyat + '" onchange="updateAyat(' + i + ', \'to\', this.value)">';
+            html += '<button class="btn-full-surah-h" onclick="setFullSurah(' + i + ')">✅ Penuh</button>';
+            html += '</div>';
+            html += '</div>';
+        }
+
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    function updateAyat(index, type, value) {
+        var num = parseInt(value);
+        if (isNaN(num)) return;
+
+        if (type === 'from') {
+            selectedSurah[index].ayatFrom = num;
+        } else {
+            selectedSurah[index].ayatTo = num;
+        }
+    }
+
+    function setFullSurah(index) {
+        selectedSurah[index].ayatFrom = 1;
+        selectedSurah[index].ayatTo = selectedSurah[index].totalAyat;
+        renderSurahAyatList();
+        showToast('✅ ' + selectedSurah[index].name + ' set penuh');
+    }
+
+    // ============================================
+    // ===== SCORE ================================
+    // ============================================
+    function updateScore(val) {
+        var num = parseInt(val);
+        document.getElementById('scoreDisplay').textContent = num;
+
+        var label = document.getElementById('scoreLabel');
+        if (num >= 90) {
+            label.textContent = '🌟 Cemerlang';
+            label.style.color = '#047857';
+        } else if (num >= 80) {
+            label.textContent = '👍 Baik';
+            label.style.color = '#10b981';
+        } else if (num >= 70) {
+            label.textContent = '⚠️ Sederhana';
+            label.style.color = '#f59e0b';
+        } else if (num >= 60) {
+            label.textContent = '🔸 Lemah';
+            label.style.color = '#ea580c';
+        } else {
+            label.textContent = '❌ Perlu Bimbingan';
+            label.style.color = '#ef4444';
+        }
+    }
+
+    // ============================================
+    // ===== QUICK NOTES ==========================
+    // ============================================
+    function addNote(note) {
+        var textarea = document.getElementById('recordNotes');
+        if (textarea.value && textarea.value.charAt(textarea.value.length - 1) !== ' ' && textarea.value.charAt(textarea.value.length - 1) !== '\n') {
+            textarea.value += ' ';
+        }
+        textarea.value += note + ' ';
+        textarea.focus();
+    }
+
+    // ============================================
+    // ===== SAVE RECORD ==========================
+    // ============================================
+    function saveRecord() {
+        var studentId = document.getElementById('recordStudent').value;
+        var date = document.getElementById('recordDate').value;
+        var readingType = document.getElementById('recordReadingType').value;
+        var score = parseInt(document.getElementById('recordScore').value);
+        var status = document.getElementById('recordStatus').value;
+        var notes = document.getElementById('recordNotes').value.trim();
+        var checker = document.getElementById('recordChecker').value.trim();
+
+        // Validation
+        if (!studentId) {
+            showToast('❌ Sila pilih pelajar');
+            return;
+        }
+        if (!date) {
+            showToast('❌ Sila pilih tarikh');
+            return;
+        }
+        if (!readingType) {
+            showToast('❌ Sila pilih jenis bacaan');
+            return;
+        }
+        if (selectedJuz.length === 0) {
+            showToast('❌ Sila pilih sekurang-kurangnya satu Juz');
+            return;
+        }
+        if (selectedSurah.length === 0) {
+            showToast('❌ Sila pilih sekurang-kurangnya satu Surah');
+            return;
+        }
+
+        showToast('⏳ Menyimpan...');
+        updateSyncStatus('syncing');
+
+        // Build surah details
+        var surahDetails = [];
+        var surahNames = [];
+        for (var i = 0; i < selectedSurah.length; i++) {
+            surahDetails.push({
+                name: selectedSurah[i].name,
+                juz: selectedSurah[i].juz,
+                ayatFrom: selectedSurah[i].ayatFrom,
+                ayatTo: selectedSurah[i].ayatTo
+            });
+            surahNames.push(selectedSurah[i].name);
+        }
+
+        var newRecord = {
+            id: 'REC' + Date.now(),
+            studentId: studentId,
+            date: date,
+            session: currentSession,
+            readingType: readingType,
+            juz: selectedJuz.length === 1 ? selectedJuz[0] : selectedJuz.slice(),
+            juzList: selectedJuz.slice(),
+            surah: surahNames.length === 1 ? surahNames[0] : surahNames,
+            surahList: surahNames,
+            surahDetails: surahDetails,
+            score: score,
+            status: status,
+            notes: notes,
+            checkerName: checker,
+            checkerType: 'guru',
+            createdAt: new Date().toISOString(),
+            source: 'mobile_app'
+        };
+
+        // Load current data
+        db.ref('hafazanData').once('value').then(function(snap) {
+            var data = snap.val() || {};
+            if (!data.records) data.records = [];
+
+            data.records.push(newRecord);
+            data.lastUpdated = Date.now();
+
+            return db.ref('hafazanData').set(data);
+        }).then(function() {
+            showToast('✅ Rekod berjaya disimpan!');
+            updateSyncStatus('synced');
+            resetForm();
+        }).catch(function(err) {
+            showToast('❌ Gagal: ' + err.message);
+            updateSyncStatus('offline');
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('recordStudent').value = '';
+        document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('recordReadingType').value = '';
+        document.getElementById('recordScore').value = 80;
+        document.getElementById('recordStatus').value = 'Lancar';
+        document.getElementById('recordNotes').value = '';
+
+        selectedJuz = [];
+        selectedSurah = [];
+        renderSelectedJuz();
+        renderSelectedSurah();
+        renderSurahAyatList();
+        updateScore(80);
+        document.getElementById('btnAddSurah').disabled = true;
+
+        // Reset session
+        currentSession = 'pagi';
+        var cards = document.querySelectorAll('.session-card');
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove('active');
+            if (cards[i].dataset.session === 'pagi') {
+                cards[i].classList.add('active');
+            }
+        }
+    }
+
+    // ============================================
+    // ===== RENDER RECORDS LIST ==================
+    // ============================================
+    function renderRecords() {
+        var container = document.getElementById('recordsList');
+        if (!container) return;
+
+        if (allRecords.length === 0) {
+            container.innerHTML = '<div class="empty-state-h"><div class="empty-icon-h">📭</div><p>Tiada rekod hafazan</p></div>';
+            return;
+        }
+
+        // Sort newest first
+        var sorted = allRecords.slice().sort(function(a, b) {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        // Take latest 20
+        sorted = sorted.slice(0, 20);
+
+        var months = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+
+        var html = '';
+        for (var i = 0; i < sorted.length; i++) {
+            var r = sorted[i];
+            var d = new Date(r.date);
+
+            // Find student
+            var student = null;
+            for (var j = 0; j < allStudents.length; j++) {
+                if (allStudents[j].id === r.studentId) {
+                    student = allStudents[j];
+                    break;
+                }
+            }
+
+            var surahText = '';
+            if (r.surahDetails && r.surahDetails.length > 0) {
+                var parts = [];
+                for (var k = 0; k < Math.min(r.surahDetails.length, 2); k++) {
+                    var sd = r.surahDetails[k];
+                    parts.push(sd.name + ' (' + sd.ayatFrom + '-' + sd.ayatTo + ')');
+                }
+                surahText = parts.join(', ');
+                if (r.surahDetails.length > 2) {
+                    surahText += ' +' + (r.surahDetails.length - 2) + ' lagi';
+                }
+            } else {
+                surahText = Array.isArray(r.surah) ? r.surah.join(', ') : (r.surah || '-');
+            }
+
+            var badgeClass = 'badge-lancar';
+            if (r.status === 'Sederhana') badgeClass = 'badge-sederhana';
+            else if (r.status === 'Perlu Ulang') badgeClass = 'badge-ulang';
+            else if (r.status === 'Tidak Lulus') badgeClass = 'badge-gagal';
+
+            var scoreColor = r.score >= 80 ? '#10b981' : r.score >= 60 ? '#f59e0b' : '#ef4444';
+
+            html += '<div class="record-card">';
+            html += '<div class="record-date-badge">';
+            html += '<div class="record-day">' + d.getDate() + '</div>';
+            html += '<div class="record-month">' + months[d.getMonth()] + '</div>';
+            html += '</div>';
+            html += '<div class="record-info">';
+            html += '<div class="record-student">' + (student ? student.name : 'Unknown') + '</div>';
+            html += '<div class="record-surah">' + surahText + '</div>';
+            html += '<div class="record-badges">';
+            html += '<span class="record-badge ' + badgeClass + '">' + r.status + '</span>';
+            if (r.source === 'mobile_app') {
+                html += '<span class="record-badge" style="background:#dbeafe;color:#1e40af;">📱 Mobile</span>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="record-score">';
+            html += '<div class="score-circle" style="background:' + scoreColor + ';">' + r.score + '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+    }
+
+    function updateStats() {
+        var today = new Date().toISOString().split('T')[0];
+        var weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        var weekAgoStr = weekAgo.toISOString().split('T')[0];
+
+        var todayCount = 0;
+        var weekCount = 0;
+
+        for (var i = 0; i < allRecords.length; i++) {
+            if (allRecords[i].date === today) todayCount++;
+            if (allRecords[i].date >= weekAgoStr) weekCount++;
+        }
+
+        document.getElementById('statTotal').textContent = allRecords.length;
+        document.getElementById('statToday').textContent = todayCount;
+        document.getElementById('statWeek').textContent = weekCount;
+    }
+
+    // ============================================
+    // ===== UTILITIES ============================
+    // ============================================
+    function updateSyncStatus(status) {
+        var dot = document.getElementById('syncDot');
+        var text = document.getElementById('syncStatus');
+
+        if (status === 'syncing') {
+            dot.style.background = '#f59e0b';
+            text.textContent = 'Syncing...';
+        } else if (status === 'synced') {
+            dot.style.background = '#10b981';
+            text.textContent = 'Synced';
+        } else if (status === 'offline') {
+            dot.style.background = '#ef4444';
+            text.textContent = 'Offline';
+        }
+    }
+
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function() { toast.classList.remove('show'); }, 3000);
+    }
+
+    // PWA Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/hafazan-sw.js').then(function(reg) {
+                console.log('✅ PWA registered');
+            }).catch(function(err) {
+                console.log('❌ PWA error:', err);
+            });
+        });
+    }
+
+    console.log('✅ Hafazan App loaded');
+    </script>
+
+</body>
+</html>

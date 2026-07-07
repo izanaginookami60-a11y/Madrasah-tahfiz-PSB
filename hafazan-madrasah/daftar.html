@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Pelajar - Madrasah Tahfiz Pekan Sungai Buloh</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f0, #e8f0e8);
+            min-height: 100vh;
+        }
+        .reg-header {
+            background: linear-gradient(135deg, #0d5c35, #1a7a4c);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .reg-header .mosque-icon { font-size: 3rem; margin-bottom: 10px; }
+        .reg-header h1 { font-family: 'Amiri', serif; font-size: 1.5rem; color: #f9d56e; margin-bottom: 5px; }
+        .reg-header h2 { font-size: 1.3rem; font-weight: 600; }
+        .reg-header p { opacity: 0.85; margin-top: 5px; font-size: 0.9rem; }
+        .reg-container {
+            max-width: 800px;
+            margin: -30px auto 30px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .reg-container .card { margin-bottom: 0; }
+        .reg-container .card form { padding: 25px; }
+        .reg-success {
+            text-align: center;
+            padding: 60px 30px;
+        }
+        .reg-success .success-icon { font-size: 4rem; margin-bottom: 15px; }
+        .reg-success h2 { color: var(--primary-dark); margin-bottom: 10px; }
+        .reg-success p { color: var(--text-light); line-height: 1.6; }
+        .reg-success .ref-number {
+            background: #f0f9f4;
+            border: 2px solid var(--primary);
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .reg-footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="reg-header">
+        <div class="mosque-icon">🕌</div>
+        <h1>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h1>
+        <h2>Borang Pendaftaran Pelajar</h2>
+        <p>Madrasah Tahfiz Pekan Sungai Buloh</p>
+    </div>
+
+    <!-- Form -->
+    <div class="reg-container">
+        <div class="card" id="regFormCard">
+            <form id="regForm" onsubmit="submitRegistration(event)">
+
+                <!-- Bahagian 1: Maklumat Pelajar -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">👨‍🎓</span>
+                        <h3>Maklumat Pelajar</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Penuh Pelajar <span class="required">*</span></label>
+                            <input type="text" id="regStudentName" required placeholder="Nama seperti dalam MyKad">
+                        </div>
+                        <div class="form-group">
+                            <label>No. MyKid / MyKad <span class="required">*</span></label>
+                            <input type="text" id="regStudentIC" required placeholder="cth: 120515141234" maxlength="14">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tarikh Lahir <span class="required">*</span></label>
+                            <input type="date" id="regStudentDOB" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jantina <span class="required">*</span></label>
+                            <select id="regStudentGender" required>
+                                <option value="">Pilih Jantina</option>
+                                <option value="Lelaki">Lelaki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bahagian 2: Alamat -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">🏠</span>
+                        <h3>Alamat Rumah</h3>
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Baris 1 <span class="required">*</span></label>
+                        <input type="text" id="regAddress1" required placeholder="No. rumah, Nama jalan">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Baris 2</label>
+                        <input type="text" id="regAddress2" placeholder="Taman / Kampung / Apartment">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Poskod <span class="required">*</span></label>
+                            <input type="text" id="regPostcode" required placeholder="cth: 50000" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Bandar <span class="required">*</span></label>
+                            <input type="text" id="regCity" required placeholder="cth: Kuala Lumpur">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Negeri <span class="required">*</span></label>
+                        <select id="regState" required>
+                            <option value="">Pilih Negeri</option>
+                            <option value="Johor">Johor</option>
+                            <option value="Kedah">Kedah</option>
+                            <option value="Kelantan">Kelantan</option>
+                            <option value="Melaka">Melaka</option>
+                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                            <option value="Pahang">Pahang</option>
+                            <option value="Perak">Perak</option>
+                            <option value="Perlis">Perlis</option>
+                            <option value="Pulau Pinang">Pulau Pinang</option>
+                            <option value="Sabah">Sabah</option>
+                            <option value="Sarawak">Sarawak</option>
+                            <option value="Selangor">Selangor</option>
+                            <option value="Terengganu">Terengganu</option>
+                            <option value="W.P. Kuala Lumpur">W.P. Kuala Lumpur</option>
+                            <option value="W.P. Putrajaya">W.P. Putrajaya</option>
+                            <option value="W.P. Labuan">W.P. Labuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bahagian 3: Bapa -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">👨</span>
+                        <h3>Maklumat Bapa</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Bapa <span class="required">*</span></label>
+                            <input type="text" id="regFatherName" required placeholder="Nama penuh bapa">
+                        </div>
+                        <div class="form-group">
+                            <label>No. MyKad Bapa</label>
+                            <input type="text" id="regFatherIC" placeholder="cth: 800101145678" maxlength="14">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>No. Telefon Bapa <span class="required">*</span></label>
+                            <input type="tel" id="regFatherPhone" required placeholder="cth: 0123456789">
+                        </div>
+                        <div class="form-group">
+                            <label>Pekerjaan Bapa</label>
+                            <input type="text" id="regFatherJob" placeholder="cth: Pegawai Kerajaan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Bapa</label>
+                        <input type="email" id="regFatherEmail" placeholder="cth: bapa@email.com">
+                    </div>
+                </div>
+
+                <!-- Bahagian 4: Ibu -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">👩</span>
+                        <h3>Maklumat Ibu</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Ibu</label>
+                            <input type="text" id="regMotherName" placeholder="Nama penuh ibu">
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telefon Ibu</label>
+                            <input type="tel" id="regMotherPhone" placeholder="cth: 0139876543">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pekerjaan Ibu</label>
+                            <input type="text" id="regMotherJob" placeholder="cth: Suri Rumah">
+                        </div>
+                        <div class="form-group">
+                            <label>No. MyKad Ibu</label>
+                            <input type="text" id="regMotherIC" placeholder="cth: 820515145678" maxlength="14">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bahagian 5: Kecemasan -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">🆘</span>
+                        <h3>Penjaga Kecemasan</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Penjaga Kecemasan</label>
+                            <input type="text" id="regEmergencyName" placeholder="Jika bukan ibu/bapa">
+                        </div>
+                        <div class="form-group">
+                            <label>Hubungan</label>
+                            <select id="regEmergencyRelation">
+                                <option value="">Pilih Hubungan</option>
+                                <option value="Datuk/Nenek">Datuk / Nenek</option>
+                                <option value="Pak Cik/Mak Cik">Pak Cik / Mak Cik</option>
+                                <option value="Abang/Kakak">Abang / Kakak</option>
+                                <option value="Jiran">Jiran</option>
+                                <option value="Lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telefon Kecemasan</label>
+                        <input type="tel" id="regEmergencyPhone" placeholder="cth: 0191234567">
+                    </div>
+                </div>
+
+                <!-- Bahagian 6: Sekolah Terdahulu -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">🏫</span>
+                        <h3>Sekolah / Madrasah Terdahulu</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Sekolah Terdahulu</label>
+                            <input type="text" id="regPrevSchool" placeholder="cth: Madrasah Al-Falah">
+                        </div>
+                        <div class="form-group">
+                            <label>Tempoh Belajar</label>
+                            <input type="text" id="regPrevSchoolDuration" placeholder="cth: 2 tahun (2022-2024)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bahagian 7: Pencapaian -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">🏆</span>
+                        <h3>Pencapaian Al-Quran</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tahap Bacaan Al-Quran</label>
+                            <select id="regQuranLevel">
+                                <option value="">Pilih Tahap</option>
+                                <option value="Belum kenal huruf">Belum kenal huruf</option>
+                                <option value="Iqra 1-3">Iqra 1-3</option>
+                                <option value="Iqra 4-6">Iqra 4-6</option>
+                                <option value="Khatam Iqra">Khatam Iqra</option>
+                                <option value="Boleh baca Al-Quran (asas)">Boleh baca Al-Quran (asas)</option>
+                                <option value="Boleh baca Al-Quran (lancar)">Boleh baca Al-Quran (lancar)</option>
+                                <option value="Boleh baca dengan tajwid">Boleh baca dengan tajwid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tahap Tajwid</label>
+                            <select id="regTajwidLevel">
+                                <option value="">Pilih Tahap</option>
+                                <option value="Belum belajar">Belum belajar</option>
+                                <option value="Asas">Asas</option>
+                                <option value="Pertengahan">Pertengahan</option>
+                                <option value="Mahir">Mahir</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Surah Yang Sudah Dihafaz</label>
+                        <textarea id="regPrevSurah" rows="3" placeholder="cth: Al-Fatihah, An-Nas, Al-Falaq, Al-Ikhlas..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Bahagian 8: Kesihatan -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">🏥</span>
+                        <h3>Maklumat Kesihatan</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Alahan</label>
+                            <input type="text" id="regAllergy" placeholder="cth: Makanan laut, debu (atau Tiada)">
+                        </div>
+                        <div class="form-group">
+                            <label>Penyakit Kronik</label>
+                            <input type="text" id="regChronic" placeholder="cth: Asma (atau Tiada)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Catatan Kesihatan Lain</label>
+                        <textarea id="regHealthNotes" rows="2" placeholder="cth: Pakai cermin mata, masalah pendengaran..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Bahagian 9: Catatan -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-icon">📝</span>
+                        <h3>Catatan Tambahan</h3>
+                    </div>
+                    <div class="form-group">
+                        <label>Sebab Mendaftar</label>
+                        <textarea id="regEnrollReason" rows="2" placeholder="cth: Ingin anak menghafaz Al-Quran"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Sasaran Hafazan</label>
+                        <select id="regTarget">
+                            <option value="">Pilih Sasaran</option>
+                            <option value="Juz 30 (Juz Amma)">Juz 30 (Juz Amma) sahaja</option>
+                            <option value="5 Juz">5 Juz</option>
+                            <option value="10 Juz">10 Juz</option>
+                            <option value="20 Juz">20 Juz</option>
+                            <option value="30 Juz (Khatam)">30 Juz (Khatam Al-Quran)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Persetujuan -->
+                <div class="consent-box">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="regConsent" required>
+                        <span>Saya mengesahkan bahawa maklumat yang diberikan adalah benar dan bersetuju untuk pihak madrasah menyimpan data ini.</span>
+                    </label>
+                </div>
+
+                <div class="form-actions" style="margin-top:20px;">
+                    <button type="submit" class="btn btn-primary btn-lg" id="regSubmitBtn" style="width:100%;justify-content:center;">
+                        📤 Hantar Pendaftaran
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Success Message (hidden) -->
+        <div class="card hidden" id="regSuccessCard">
+            <div class="reg-success">
+                <div class="success-icon">✅</div>
+                <h2>Pendaftaran Berjaya Dihantar!</h2>
+                <p>Terima kasih kerana mendaftarkan anak anda.</p>
+                <div class="ref-number" id="regRefNumber">REF: ---</div>
+                <p>Sila simpan nombor rujukan ini.<br>Pihak madrasah akan menghubungi anda dalam masa terdekat.</p>
+                <br>
+                <button class="btn btn-primary" onclick="location.reload()">📝 Daftar Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reg-footer">
+        <p>© 2024 Madrasah Tahfiz Pekan Sungai Buloh. Sistem Hafazan Al-Quran.</p>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <script>
+    // Firebase Config (SAMA dengan data.js)
+    var firebaseConfig = {
+        apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+        authDomain: "hafazan-madrasah.firebaseapp.com",
+        databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hafazan-madrasah",
+        storageBucket: "hafazan-madrasah.firebasestorage.app",
+        messagingSenderId: "707178356175",
+        appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    function getVal(id) {
+        var el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    }
+
+    function submitRegistration(event) {
+        event.preventDefault();
+
+        var btn = document.getElementById('regSubmitBtn');
+        btn.textContent = '⏳ Menghantar...';
+        btn.disabled = true;
+
+        var refId = 'REG' + Date.now();
+
+        var regData = {
+            id: refId,
+            status: 'pending',
+            submittedAt: new Date().toISOString(),
+
+            studentName: getVal('regStudentName'),
+            studentIC: getVal('regStudentIC'),
+            studentDOB: getVal('regStudentDOB'),
+            studentGender: getVal('regStudentGender'),
+
+            address: {
+                line1: getVal('regAddress1'),
+                line2: getVal('regAddress2'),
+                postcode: getVal('regPostcode'),
+                city: getVal('regCity'),
+                state: getVal('regState')
+            },
+
+            fatherName: getVal('regFatherName'),
+            fatherIC: getVal('regFatherIC'),
+            fatherPhone: getVal('regFatherPhone'),
+            fatherJob: getVal('regFatherJob'),
+            fatherEmail: getVal('regFatherEmail'),
+
+            motherName: getVal('regMotherName'),
+            motherIC: getVal('regMotherIC'),
+            motherPhone: getVal('regMotherPhone'),
+            motherJob: getVal('regMotherJob'),
+
+            emergencyName: getVal('regEmergencyName'),
+            emergencyRelation: getVal('regEmergencyRelation'),
+            emergencyPhone: getVal('regEmergencyPhone'),
+
+            prevSchool: getVal('regPrevSchool'),
+            prevSchoolDuration: getVal('regPrevSchoolDuration'),
+
+            quranLevel: getVal('regQuranLevel'),
+            tajwidLevel: getVal('regTajwidLevel'),
+            prevSurahList: getVal('regPrevSurah'),
+
+            allergy: getVal('regAllergy'),
+            chronicDisease: getVal('regChronic'),
+            healthNotes: getVal('regHealthNotes'),
+
+            enrollReason: getVal('regEnrollReason'),
+            hafazanTarget: getVal('regTarget')
+        };
+
+        // Save to Firebase
+        db.ref('registrations/' + refId).set(regData)
+            .then(function() {
+                document.getElementById('regFormCard').classList.add('hidden');
+                document.getElementById('regSuccessCard').classList.remove('hidden');
+                document.getElementById('regRefNumber').textContent = 'REF: ' + refId;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            })
+            .catch(function(error) {
+                alert('Ralat: ' + error.message + '\n\nSila cuba lagi.');
+                btn.textContent = '📤 Hantar Pendaftaran';
+                btn.disabled = false;
+            });
+    }
+    </script>
+
+</body>
+</html>

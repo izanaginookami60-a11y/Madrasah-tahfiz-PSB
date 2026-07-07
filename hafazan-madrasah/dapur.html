@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ea580c">
+<title>🍳 Dapur - Madrasah PSB</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f4f0;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* ===== LOGIN SCREEN ===== */
+.d-login-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 50%, #fdba74 100%);
+}
+.d-login-box {
+    background: white;
+    border-radius: 24px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(234, 88, 12, 0.15);
+    text-align: center;
+}
+.d-login-logo {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    object-fit: contain;
+}
+.d-login-box h1 {
+    font-size: 20px;
+    color: #ea580c;
+    margin-bottom: 4px;
+}
+.d-login-box p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+}
+
+/* PIN Input */
+.d-pin-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.d-pin-dot {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ea580c;
+    transition: all 0.2s;
+}
+.d-pin-dot.filled {
+    border-color: #ea580c;
+    background: #fff7ed;
+}
+.d-pin-dot.error {
+    border-color: #ef4444;
+    background: #fef2f2;
+    animation: shake 0.5s;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* Numpad */
+.d-numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 280px;
+    margin: 0 auto;
+}
+.d-numpad-btn {
+    height: 56px;
+    border-radius: 14px;
+    border: none;
+    background: #f3f4f6;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1f2937;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.d-numpad-btn:active {
+    background: #ea580c;
+    color: white;
+    transform: scale(0.95);
+}
+.d-numpad-btn.empty {
+    background: transparent;
+    cursor: default;
+}
+.d-numpad-btn.delete {
+    background: #fef2f2;
+    color: #ef4444;
+    font-size: 18px;
+}
+
+.d-login-error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 12px;
+    min-height: 20px;
+}
+.d-login-lockout {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #991b1b;
+}
+
+/* ===== MAIN APP ===== */
+.d-app { display: none; }
+.d-app.show { display: block; }
+
+.d-header {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    color: white;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.d-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.d-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.d-header-logo {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: white;
+    padding: 3px;
+    object-fit: contain;
+}
+.d-header h1 { font-size: 18px; }
+.d-header-sub { font-size: 12px; opacity: 0.9; }
+.d-btn-logout {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+.d-cook-info {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Date Selector */
+.d-date-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    margin: 12px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.d-date-selector label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    white-space: nowrap;
+}
+.d-date-selector input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 15px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.d-date-selector input:focus {
+    outline: none;
+    border-color: #ea580c;
+}
+.d-btn-today {
+    background: #ea580c;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    -webkit-appearance: none;
+}
+
+/* Menu Cards */
+.d-menu-list {
+    padding: 0 12px 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.d-menu-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border-left: 5px solid #e5e7eb;
+    transition: all 0.2s;
+}
+.d-menu-card.filled { border-left-color: #22c55e; }
+.d-menu-card.sponsored { border-left-color: #f59e0b; }
+
+.d-menu-card-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 12px;
+    background: #fafafa;
+    border-bottom: 1px solid #f3f4f6;
+}
+.d-menu-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    flex-shrink: 0;
+}
+.d-menu-title-area { flex: 1; }
+.d-menu-title-area h3 { font-size: 15px; color: #333; margin-bottom: 2px; }
+.d-menu-title-area .d-time { font-size: 12px; color: #888; }
+.d-menu-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.status-empty { background: #f3f4f6; color: #999; }
+.status-filled { background: #dcfce7; color: #16a34a; }
+.status-sponsored { background: #fef3c7; color: #b45309; }
+
+.d-menu-card-body { padding: 16px; }
+
+.d-sponsor-banner {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.d-form-group { margin-bottom: 14px; }
+.d-form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+.d-form-group input,
+.d-form-group textarea,
+.d-form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 15px;
+    background: white;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.d-form-group input:focus,
+.d-form-group textarea:focus,
+.d-form-group select:focus {
+    outline: none;
+    border-color: #ea580c;
+}
+.d-form-group textarea { min-height: 60px; resize: vertical; }
+
+.d-btn-save-slot {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.d-btn-save-slot.save {
+    background: linear-gradient(135deg, #ea580c, #c2410c);
+    color: white;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+}
+.d-btn-save-slot.clear {
+    background: #fee2e2;
+    color: #dc2626;
+    margin-top: 8px;
+}
+
+/* Filled display (read-only view after saved) */
+.d-filled-display {
+    background: #f0fdf4;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.d-filled-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #dcfce7;
+}
+.d-filled-row:last-child { border-bottom: none; }
+.d-filled-row .label { color: #666; font-size: 12px; }
+.d-filled-row .value { color: #1f2937; font-weight: 600; text-align: right; }
+.d-btn-edit-slot {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid #ea580c;
+    background: white;
+    color: #ea580c;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+/* History Preview */
+.d-history-section {
+    margin: 20px 12px;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.d-history-section h3 {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 12px;
+}
+.d-history-day {
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+.d-history-day:last-child { border-bottom: none; }
+.d-history-date {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 4px;
+}
+.d-history-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.d-history-chip {
+    background: #f3f4f6;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #555;
+}
+.d-history-chip.filled { background: #dcfce7; color: #16a34a; }
+
+/* Toast */
+.d-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    display: none;
+    white-space: nowrap;
+}
+.d-toast.show { display: block; animation: fadeInUp 0.3s ease; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* TUKAR PIN */
+.d-btn-change-pin {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-left: auto;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.d-pin-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.d-pin-modal.show { display: flex; }
+
+.d-pin-modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+.d-pin-input-group {
+    margin: 16px 0;
+    text-align: left;
+}
+.d-pin-input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+.d-pin-input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    inputmode: numeric;
+}
+.d-pin-input-group input:focus {
+    outline: none;
+    border-color: #ea580c;
+}
+.d-pin-strength {
+    font-size: 11px;
+    margin-top: 4px;
+    color: #999;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div class="d-login-screen" id="dLoginScreen">
+    <div class="d-login-box">
+        <img src="https://i.ibb.co/DgSPkh8d/logo.png" alt="Logo" class="d-login-logo">
+        <h1>🍳 Sistem Dapur</h1>
+        <p>Madrasah Tahfiz Pekan Sungai Buloh</p>
+        <p style="font-size:12px;color:#aaa;margin-bottom:16px;">Masukkan PIN 6 digit anda</p>
+
+        <div class="d-pin-container" id="dPinDots">
+            <div class="d-pin-dot" id="dot0"></div>
+            <div class="d-pin-dot" id="dot1"></div>
+            <div class="d-pin-dot" id="dot2"></div>
+            <div class="d-pin-dot" id="dot3"></div>
+            <div class="d-pin-dot" id="dot4"></div>
+            <div class="d-pin-dot" id="dot5"></div>
+        </div>
+
+        <div class="d-numpad">
+            <button class="d-numpad-btn" onclick="dPressKey('1')">1</button>
+            <button class="d-numpad-btn" onclick="dPressKey('2')">2</button>
+            <button class="d-numpad-btn" onclick="dPressKey('3')">3</button>
+            <button class="d-numpad-btn" onclick="dPressKey('4')">4</button>
+            <button class="d-numpad-btn" onclick="dPressKey('5')">5</button>
+            <button class="d-numpad-btn" onclick="dPressKey('6')">6</button>
+            <button class="d-numpad-btn" onclick="dPressKey('7')">7</button>
+            <button class="d-numpad-btn" onclick="dPressKey('8')">8</button>
+            <button class="d-numpad-btn" onclick="dPressKey('9')">9</button>
+            <button class="d-numpad-btn empty"></button>
+            <button class="d-numpad-btn" onclick="dPressKey('0')">0</button>
+            <button class="d-numpad-btn delete" onclick="dDeleteKey()">⌫</button>
+        </div>
+
+        <div class="d-login-error" id="dLoginError"></div>
+        <div class="d-login-lockout" id="dLockout" style="display:none;">
+            🔒 Terlalu banyak percubaan. Cuba lagi dalam <span id="dLockTimer">60</span> saat.
+        </div>
+    </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div class="d-app" id="dApp">
+    <div class="d-header">
+        <div class="d-header-top">
+            <div class="d-header-left">
+                <img src="https://i.ibb.co/DgSPkh8d/logo.png" alt="Logo" class="d-header-logo">
+                <div>
+                    <h1>🍳 Menu Dapur</h1>
+                    <div class="d-header-sub">Madrasah Tahfiz PSB</div>
+                </div>
+            </div>
+            <button class="d-btn-logout" onclick="dLogout()">🚪 Log Keluar</button>
+        </div>
+        <div class="d-cook-info">
+    <span>👩‍🍳</span>
+    <span>Selamat datang, <strong id="dCookName">-</strong></span>
+    <button class="d-btn-change-pin" onclick="dOpenChangePin()">🔑 Tukar PIN</button>
+</div>
+    </div>
+
+    <div class="d-date-selector">
+        <label>📅 Tarikh:</label>
+        <input type="date" id="dMenuDate" onchange="dLoadMenu()">
+        <button class="d-btn-today" onclick="dSetToday()">Hari Ini</button>
+    </div>
+
+    <div class="d-menu-list" id="dMenuList">
+        <!-- Menu cards rendered by JS -->
+    </div>
+
+    <div class="d-history-section" id="dHistorySection">
+        <h3>📋 Menu 3 Hari Lepas</h3>
+        <div id="dHistoryList"></div>
+    </div>
+</div>
+
+<!-- TUKAR PIN MODAL -->
+<div class="d-pin-modal" id="dChangePinModal">
+    <div class="d-pin-modal-box">
+        <h2 style="color:#ea580c;margin-bottom:6px;">🔑 Tukar PIN</h2>
+        <p style="font-size:13px;color:#888;margin-bottom:20px;">
+            Masukkan PIN lama dan PIN baru (6 digit)
+        </p>
+
+        <div class="d-pin-input-group">
+            <label>🔒 PIN Lama</label>
+            <input type="password" id="dOldPin" maxlength="6" inputmode="numeric" 
+                   placeholder="● ● ● ● ● ●" pattern="[0-9]{6}">
+        </div>
+
+        <div class="d-pin-input-group">
+            <label>🔑 PIN Baru</label>
+            <input type="password" id="dNewPin" maxlength="6" inputmode="numeric" 
+                   placeholder="● ● ● ● ● ●" pattern="[0-9]{6}" oninput="dCheckPinStrength()">
+            <div class="d-pin-strength" id="dPinStrength"></div>
+        </div>
+
+        <div class="d-pin-input-group">
+            <label>🔑 Sahkan PIN Baru</label>
+            <input type="password" id="dConfirmPin" maxlength="6" inputmode="numeric" 
+                   placeholder="● ● ● ● ● ●" pattern="[0-9]{6}">
+        </div>
+
+        <div id="dChangePinError" style="color:#ef4444;font-size:13px;min-height:20px;margin:8px 0;"></div>
+
+        <button onclick="dSubmitChangePin()" 
+            style="width:100%;padding:14px;background:linear-gradient(135deg,#ea580c,#c2410c);color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;">
+            ✅ Tukar PIN
+        </button>
+
+        <button onclick="dCloseChangePin()" 
+            style="width:100%;padding:12px;background:#f3f4f6;color:#333;border:none;border-radius:12px;font-size:14px;cursor:pointer;">
+            Batal
+        </button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="d-toast" id="dToast"></div>
+
+<script>
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyD-78HpBX9BYUjGEXZsyDsY7GqKZkzbv7Y",
+    authDomain: "hafazan-madrasah.firebaseapp.com",
+    databaseURL: "https://hafazan-madrasah-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hafazan-madrasah",
+    storageBucket: "hafazan-madrasah.firebasestorage.app",
+    messagingSenderId: "707178356175",
+    appId: "1:707178356175:web:f93f9807c3d1645e5246ba"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+const SLOTS = [
+    { key: 'sarapan', label: 'Sarapan', icon: '🌅', time: 'Sebelum 8:00 pagi' },
+    { key: 'tengahari', label: 'Tengah Hari', icon: '☀️', time: 'Sebelum 12:30 tgh' },
+    { key: 'minumpetang', label: 'Minum Petang', icon: '🍵', time: 'Sebelum 4:30 ptg' },
+    { key: 'malam', label: 'Malam', icon: '🌙', time: 'Sebelum 7:30 mlm' }
+];
+const MONTH_NAMES = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogos','Sep','Okt','Nov','Dis'];
+const DAY_NAMES = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+
+// ============================================================
+// SECURITY — PIN Hashing (SHA-256)
+// ============================================================
+async function hashPin(pin) {
+    const encoder = new TextEncoder();
+    // Salt dengan identifier app supaya hash unik
+    const data = encoder.encode('MADRASAH_PSB_DAPUR_' + pin);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ============================================================
+// STATE
+// ============================================================
+let dCurrentPin = '';
+let dLoginAttempts = 0;
+let dMaxAttempts = 5;
+let dLockoutUntil = 0;
+let dCurrentCook = null; // { id, nama }
+let dMenuData = {};
+let dInfaqData = {};
+let dEditingSlot = {}; // track which slots are in edit mode
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Check session
+    var saved = sessionStorage.getItem('dapurCook');
+    if (saved) {
+        try {
+            dCurrentCook = JSON.parse(saved);
+            dShowApp();
+        } catch(e) {
+            sessionStorage.removeItem('dapurCook');
+        }
+    }
+
+    // Check lockout
+    var lockStr = localStorage.getItem('dapurLockout');
+    if (lockStr) {
+        dLockoutUntil = parseInt(lockStr);
+        if (Date.now() < dLockoutUntil) {
+            dShowLockout();
+        } else {
+            localStorage.removeItem('dapurLockout');
+            dLoginAttempts = 0;
+        }
+    }
+
+    // Load attempts count
+    var attStr = localStorage.getItem('dapurAttempts');
+    if (attStr) dLoginAttempts = parseInt(attStr);
+});
+
+// ============================================================
+// LOGIN — PIN INPUT
+// ============================================================
+function dPressKey(num) {
+    if (dCurrentPin.length >= 6) return;
+    if (Date.now() < dLockoutUntil) return;
+
+    dCurrentPin += num;
+    dUpdatePinDisplay();
+
+    if (dCurrentPin.length === 6) {
+        setTimeout(function() { dVerifyPin(); }, 200);
+    }
+}
+
+function dDeleteKey() {
+    if (dCurrentPin.length === 0) return;
+    dCurrentPin = dCurrentPin.slice(0, -1);
+    dUpdatePinDisplay();
+    dClearError();
+}
+
+function dUpdatePinDisplay() {
+    for (var i = 0; i < 6; i++) {
+        var dot = document.getElementById('dot' + i);
+        if (!dot) continue;
+        dot.className = 'd-pin-dot';
+        dot.textContent = '';
+        if (i < dCurrentPin.length) {
+            dot.classList.add('filled');
+            dot.textContent = '●';
+        }
+    }
+}
+
+function dShowPinError() {
+    for (var i = 0; i < 6; i++) {
+        var dot = document.getElementById('dot' + i);
+        if (dot) dot.classList.add('error');
+    }
+    setTimeout(function() {
+        dCurrentPin = '';
+        dUpdatePinDisplay();
+    }, 600);
+}
+
+function dClearError() {
+    document.getElementById('dLoginError').textContent = '';
+}
+
+// ============================================================
+// LOGIN — VERIFY PIN
+// ============================================================
+async function dVerifyPin() {
+    // Check lockout
+    if (Date.now() < dLockoutUntil) {
+        dShowLockout();
+        return;
+    }
+
+    var pinHash = await hashPin(dCurrentPin);
+
+    db.ref('dapurConfig/cooks').once('value').then(function(snap) {
+        var cooks = snap.val();
+        if (!cooks) {
+            dShowPinError();
+            document.getElementById('dLoginError').textContent = '❌ Sistem belum dikonfigurasi. Hubungi admin.';
+            return;
+        }
+
+        var found = null;
+        for (var id in cooks) {
+            if (cooks[id].pin === pinHash && cooks[id].status === 'active') {
+                found = { id: id, nama: cooks[id].nama };
+                break;
+            }
+        }
+
+        if (found) {
+            // Login berjaya — reset attempts
+            dLoginAttempts = 0;
+            localStorage.setItem('dapurAttempts', '0');
+            localStorage.removeItem('dapurLockout');
+            dCurrentCook = found;
+            sessionStorage.setItem('dapurCook', JSON.stringify(found));
+
+            // Log login
+            db.ref('dapurConfig/loginLog').push({
+                cookId: found.id,
+                cookName: found.nama,
+                timestamp: Date.now(),
+                date: new Date().toISOString()
+            });
+
+            dShowApp();
+        } else {
+            // Login gagal
+            dLoginAttempts++;
+            localStorage.setItem('dapurAttempts', String(dLoginAttempts));
+
+            dShowPinError();
+
+            if (dLoginAttempts >= dMaxAttempts) {
+                // Lockout 60 saat
+                dLockoutUntil = Date.now() + 60000;
+                localStorage.setItem('dapurLockout', String(dLockoutUntil));
+                dShowLockout();
+            } else {
+                var baki = dMaxAttempts - dLoginAttempts;
+                document.getElementById('dLoginError').textContent =
+                    '❌ PIN salah. ' + baki + ' percubaan lagi sebelum dikunci.';
+            }
+        }
+    }).catch(function(err) {
+        dShowPinError();
+        document.getElementById('dLoginError').textContent = '❌ Ralat sambungan. Sila cuba lagi.';
+        console.error('Login error:', err);
+    });
+}
+
+function dShowLockout() {
+    document.getElementById('dLockout').style.display = 'block';
+    document.getElementById('dLoginError').textContent = '';
+    dCurrentPin = '';
+    dUpdatePinDisplay();
+
+    var interval = setInterval(function() {
+        var remaining = Math.ceil((dLockoutUntil - Date.now()) / 1000);
+        if (remaining <= 0) {
+            clearInterval(interval);
+            document.getElementById('dLockout').style.display = 'none';
+            dLoginAttempts = 0;
+            localStorage.setItem('dapurAttempts', '0');
+            localStorage.removeItem('dapurLockout');
+        } else {
+            document.getElementById('dLockTimer').textContent = remaining;
+        }
+    }, 1000);
+}
+
+// ============================================================
+// SHOW APP
+// ============================================================
+function dShowApp() {
+    document.getElementById('dLoginScreen').style.display = 'none';
+    document.getElementById('dApp').classList.add('show');
+    document.getElementById('dCookName').textContent = dCurrentCook.nama;
+    dSetToday();
+
+    // Listen for infaq data (untuk papar sponsor)
+    db.ref('infaq').on('value', function(snap) {
+        dInfaqData = snap.val() || {};
+        dLoadMenu();
+    });
+}
+
+function dLogout() {
+    if (!confirm('Log keluar?')) return;
+    dCurrentCook = null;
+    sessionStorage.removeItem('dapurCook');
+    dCurrentPin = '';
+    dUpdatePinDisplay();
+    document.getElementById('dApp').classList.remove('show');
+    document.getElementById('dLoginScreen').style.display = 'flex';
+}
+
+// ============================================================
+// DATE
+// ============================================================
+function dSetToday() {
+    var today = new Date();
+    var dateStr = today.getFullYear() + '-' +
+        String(today.getMonth() + 1).padStart(2, '0') + '-' +
+        String(today.getDate()).padStart(2, '0');
+    document.getElementById('dMenuDate').value = dateStr;
+    dLoadMenu();
+}
+
+function dFormatDateDisplay(dateKey) {
+    var parts = dateKey.split('-');
+    var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    return DAY_NAMES[d.getDay()] + ', ' + parseInt(parts[2]) + ' ' + MONTH_NAMES[parseInt(parts[1]) - 1] + ' ' + parts[0];
+}
+
+// ============================================================
+// LOAD & RENDER MENU
+// ============================================================
+function dLoadMenu() {
+    var dateKey = document.getElementById('dMenuDate').value;
+    if (!dateKey) return;
+
+    db.ref('dapurMenu/' + dateKey).on('value', function(snap) {
+        dMenuData = snap.val() || {};
+        dRenderMenu(dateKey);
+    });
+
+    dLoadHistory();
+}
+
+function dRenderMenu(dateKey) {
+    var html = '';
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var parts = dateKey.split('-');
+    var selectedDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    var isPast = selectedDate < today;
+
+    html += '<div style="text-align:center;padding:8px;font-size:14px;font-weight:600;color:#666;">' +
+        dFormatDateDisplay(dateKey) + '</div>';
+
+    for (var i = 0; i < SLOTS.length; i++) {
+        var slot = SLOTS[i];
+        var record = dMenuData[slot.key] || null;
+        var infaqKey = dateKey + '_' + slot.key;
+        var infaqRecord = dInfaqData[infaqKey] || null;
+        var hasSponsor = infaqRecord && (infaqRecord.status === 'confirmed' || infaqRecord.status === 'SPONSORED');
+        var isEditing = dEditingSlot[slot.key] || false;
+
+        var cardClass = 'd-menu-card';
+        var statusHtml = '';
+
+        if (record) {
+            cardClass += ' filled';
+            statusHtml = '<span class="d-menu-status status-filled">✅ Diisi</span>';
+        } else if (hasSponsor) {
+            cardClass += ' sponsored';
+            statusHtml = '<span class="d-menu-status status-sponsored">🎁 Ada Sponsor</span>';
+        } else {
+            statusHtml = '<span class="d-menu-status status-empty">⬜ Belum diisi</span>';
+        }
+
+        html += '<div class="' + cardClass + '">';
+
+        // Header
+        html += '<div class="d-menu-card-header">';
+        html += '<div class="d-menu-icon">' + slot.icon + '</div>';
+        html += '<div class="d-menu-title-area">';
+        html += '<h3>' + slot.label + '</h3>';
+        html += '<span class="d-time">' + slot.time + '</span>';
+        html += '</div>';
+        html += statusHtml;
+        html += '</div>';
+
+        // Body
+        html += '<div class="d-menu-card-body">';
+
+        // Sponsor banner
+        if (hasSponsor) {
+            var sponsorName = infaqRecord.sponsorName || infaqRecord.nama || 'Anonymous';
+            var sponsorMenu = infaqRecord.menu || '';
+            if (!infaqRecord.dedah && infaqRecord.dedah !== undefined) sponsorName = 'Anonymous';
+
+            html += '<div class="d-sponsor-banner">';
+            html += '<span style="font-size:18px;">🎁</span>';
+            html += '<div>';
+            html += '<strong>Ditaja oleh ' + dEscapeHtml(sponsorName) + '</strong>';
+            if (sponsorMenu) html += '<br><span style="font-size:11px;">Menu: ' + dEscapeHtml(sponsorMenu) + '</span>';
+            html += '</div>';
+            html += '</div>';
+        }
+
+        // Show form or filled display
+        if (record && !isEditing) {
+            // Filled display
+            html += '<div class="d-filled-display">';
+            html += '<div class="d-filled-row"><span class="label">🍽️ Menu</span><span class="value">' + dEscapeHtml(record.menu) + '</span></div>';
+            html += '<div class="d-filled-row"><span class="label">👩‍🍳 Dimasak oleh</span><span class="value">' + dEscapeHtml(record.cook) + '</span></div>';
+            if (record.note) {
+                html += '<div class="d-filled-row"><span class="label">📝 Catatan</span><span class="value">' + dEscapeHtml(record.note) + '</span></div>';
+            }
+            html += '<div class="d-filled-row"><span class="label">🕐 Dikemaskini</span><span class="value">' + dFormatTime(record.timestamp) + '</span></div>';
+            html += '</div>';
+
+            if (!isPast) {
+                html += '<button class="d-btn-edit-slot" onclick="dEditSlot(\'' + slot.key + '\')">✏️ Edit Menu</button>';
+            }
+        } else if (!isPast) {
+            // Form
+            var menuVal = record ? dEscapeHtml(record.menu) : '';
+            var noteVal = record ? dEscapeHtml(record.note || '') : '';
+
+            html += '<div class="d-form-group">';
+            html += '<label>🍽️ Menu Makanan *</label>';
+            html += '<input type="text" id="dMenu_' + slot.key + '" value="' + menuVal + '" placeholder="Contoh: Nasi Goreng Ayam">';
+            html += '</div>';
+
+            html += '<div class="d-form-group">';
+            html += '<label>📝 Catatan (optional)</label>';
+            html += '<textarea id="dNote_' + slot.key + '" placeholder="Contoh: Tambah keropok">' + noteVal + '</textarea>';
+            html += '</div>';
+
+            html += '<button class="d-btn-save-slot save" onclick="dSaveSlot(\'' + slot.key + '\', \'' + dateKey + '\')">💾 Simpan Menu</button>';
+
+            if (record) {
+                html += '<button class="d-btn-save-slot clear" onclick="dClearSlot(\'' + slot.key + '\', \'' + dateKey + '\')">🗑️ Padam Menu</button>';
+            }
+        } else {
+            // Past date, no record
+            if (!record) {
+                html += '<div style="text-align:center;padding:16px;color:#aaa;font-size:13px;">Tiada rekod</div>';
+            }
+        }
+
+        html += '</div>'; // body
+        html += '</div>'; // card
+    }
+
+    document.getElementById('dMenuList').innerHTML = html;
+}
+
+// ============================================================
+// SAVE / EDIT / CLEAR MENU
+// ============================================================
+function dSaveSlot(slotKey, dateKey) {
+    var menuEl = document.getElementById('dMenu_' + slotKey);
+    var noteEl = document.getElementById('dNote_' + slotKey);
+
+    if (!menuEl) return;
+    var menu = menuEl.value.trim();
+    if (!menu) {
+        dShowToast('❌ Sila masukkan menu makanan');
+        return;
+    }
+
+    var record = {
+        menu: menu,
+        cook: dCurrentCook.nama,
+        cookId: dCurrentCook.id,
+        note: noteEl ? noteEl.value.trim() : '',
+        timestamp: Date.now(),
+        updatedAt: new Date().toISOString()
+    };
+
+    db.ref('dapurMenu/' + dateKey + '/' + slotKey).set(record)
+        .then(function() {
+            dEditingSlot[slotKey] = false;
+            dShowToast('✅ Menu ' + slotKey + ' berjaya disimpan!');
+        })
+        .catch(function(err) {
+            console.error('Save error:', err);
+            dShowToast('❌ Gagal simpan: ' + err.message);
+        });
+}
+
+function dEditSlot(slotKey) {
+    dEditingSlot[slotKey] = true;
+    var dateKey = document.getElementById('dMenuDate').value;
+    dRenderMenu(dateKey);
+}
+
+function dClearSlot(slotKey, dateKey) {
+    if (!confirm('Padam menu ' + slotKey + ' untuk hari ini?')) return;
+
+    db.ref('dapurMenu/' + dateKey + '/' + slotKey).remove()
+        .then(function() {
+            dEditingSlot[slotKey] = false;
+            dShowToast('🗑️ Menu dipadam');
+        })
+        .catch(function(err) {
+            dShowToast('❌ Gagal padam: ' + err.message);
+        });
+}
+
+// ============================================================
+// HISTORY
+// ============================================================
+function dLoadHistory() {
+    var today = new Date();
+    var html = '';
+
+    for (var i = 1; i <= 3; i++) {
+        var d = new Date(today);
+        d.setDate(d.getDate() - i);
+        var dateKey = d.getFullYear() + '-' +
+            String(d.getMonth() + 1).padStart(2, '0') + '-' +
+            String(d.getDate()).padStart(2, '0');
+
+        (function(dk, dayIndex) {
+            db.ref('dapurMenu/' + dk).once('value').then(function(snap) {
+                var data = snap.val() || {};
+                var container = document.getElementById('dHistory_' + dayIndex);
+                if (!container) return;
+
+                var chipHtml = '';
+                for (var s = 0; s < SLOTS.length; s++) {
+                    var slot = SLOTS[s];
+                    var rec = data[slot.key];
+                    if (rec) {
+                        chipHtml += '<span class="d-history-chip filled">' + slot.icon + ' ' + dEscapeHtml(rec.menu) + '</span>';
+                    } else {
+                        chipHtml += '<span class="d-history-chip">' + slot.icon + ' -</span>';
+                    }
+                }
+                container.innerHTML = chipHtml;
+            });
+        })(dateKey, i);
+
+        html += '<div class="d-history-day">';
+        html += '<div class="d-history-date">' + dFormatDateDisplay(dateKey) + '</div>';
+        html += '<div class="d-history-slots" id="dHistory_' + i + '">Loading...</div>';
+        html += '</div>';
+    }
+
+    document.getElementById('dHistoryList').innerHTML = html;
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function dEscapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function dFormatTime(ts) {
+    if (!ts) return '-';
+    var d = new Date(ts);
+    return String(d.getHours()).padStart(2, '0') + ':' +
+        String(d.getMinutes()).padStart(2, '0');
+}
+
+function dShowToast(msg) {
+    var el = document.getElementById('dToast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 3000);
+}
+// ============================================================
+// ADMIN SETUP — Panggil dari URL dengan ?setup=true
+// Contoh: hafazan-madrasah.vercel.app/dapur.html?setup=ADMINKEY
+// ============================================================
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var setupKey = params.get('setup');
+
+    // ⚠️ Tukar 'RAHSIA123' kepada kunci rahsia anda sendiri
+    if (setupKey !== 'RAHSIA123') return;
+
+    // Tunjuk setup UI
+    window.addEventListener('DOMContentLoaded', function() {
+        var setupHtml = [
+            '<div id="dSetupPanel" style="position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;">',
+            '<div style="background:white;border-radius:20px;padding:28px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;">',
+            '<h2 style="color:#ea580c;margin-bottom:20px;text-align:center;">⚙️ Setup Tukang Masak</h2>',
+
+            // Cook 1
+            '<div style="margin-bottom:16px;padding:16px;background:#fff7ed;border-radius:12px;border:1px solid #fed7aa;">',
+            '<h4 style="margin-bottom:10px;color:#c2410c;">👩‍🍳 Tukang Masak 1</h4>',
+            '<input id="sNama1" type="text" placeholder="Nama penuh" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:15px;">',
+            '<input id="sPin1" type="password" placeholder="PIN 6 digit" maxlength="6" inputmode="numeric" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;">',
+            '</div>',
+
+            // Cook 2
+            '<div style="margin-bottom:16px;padding:16px;background:#fff7ed;border-radius:12px;border:1px solid #fed7aa;">',
+            '<h4 style="margin-bottom:10px;color:#c2410c;">👩‍🍳 Tukang Masak 2</h4>',
+            '<input id="sNama2" type="text" placeholder="Nama penuh (optional)" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:15px;">',
+            '<input id="sPin2" type="password" placeholder="PIN 6 digit (optional)" maxlength="6" inputmode="numeric" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;">',
+            '</div>',
+
+            // Cook 3
+            '<div style="margin-bottom:20px;padding:16px;background:#fff7ed;border-radius:12px;border:1px solid #fed7aa;">',
+            '<h4 style="margin-bottom:10px;color:#c2410c;">👩‍🍳 Tukang Masak 3</h4>',
+            '<input id="sNama3" type="text" placeholder="Nama penuh (optional)" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:15px;">',
+            '<input id="sPin3" type="password" placeholder="PIN 6 digit (optional)" maxlength="6" inputmode="numeric" style="width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;">',
+            '</div>',
+
+            '<button onclick="dRunSetup()" style="width:100%;padding:14px;background:#ea580c;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;">',
+            '✅ Simpan Semua Tukang Masak',
+            '</button>',
+            '<button onclick="document.getElementById(\'dSetupPanel\').remove()" style="width:100%;padding:12px;background:#f3f4f6;color:#333;border:none;border-radius:12px;font-size:14px;cursor:pointer;">',
+            'Batal',
+            '</button>',
+            '<p style="font-size:11px;color:#999;text-align:center;margin-top:12px;">URL setup ini hanya untuk admin. Jangan kongsikan kepada orang lain.</p>',
+            '</div>',
+            '</div>'
+        ].join('');
+
+        document.body.insertAdjacentHTML('beforeend', setupHtml);
+    });
+})();
+
+async function dRunSetup() {
+    var cooks = {};
+    var hasCook = false;
+
+    for (var i = 1; i <= 3; i++) {
+        var namaEl = document.getElementById('sNama' + i);
+        var pinEl = document.getElementById('sPin' + i);
+        if (!namaEl || !pinEl) continue;
+
+        var nama = namaEl.value.trim();
+        var pin = pinEl.value.trim();
+
+        if (!nama && !pin) continue;
+
+        if (!nama) { dShowToast('❌ Sila masukkan nama tukang masak ' + i); return; }
+        if (pin.length !== 6 || !/^\d{6}$/.test(pin)) {
+            dShowToast('❌ PIN mesti 6 digit nombor untuk tukang masak ' + i);
+            return;
+        }
+
+        var pinHash = await hashPin(pin);
+        cooks['cook' + i] = {
+            nama: nama,
+            pin: pinHash,
+            status: 'active',
+            createdAt: new Date().toISOString()
+        };
+        hasCook = true;
+    }
+
+    if (!hasCook) {
+        dShowToast('❌ Sila isi sekurang-kurangnya 1 tukang masak');
+        return;
+    }
+
+    db.ref('dapurConfig/cooks').set(cooks)
+        .then(function() {
+            dShowToast('✅ Tukang masak berjaya didaftarkan!');
+            setTimeout(function() {
+                document.getElementById('dSetupPanel').remove();
+                // Buang setup param dari URL
+                window.history.replaceState({}, '', window.location.pathname);
+            }, 2000);
+        })
+        .catch(function(err) {
+            dShowToast('❌ Gagal: ' + err.message);
+        });
+}
+
+// ============================================================
+// TUKAR PIN
+// ============================================================
+
+function dOpenChangePin() {
+    document.getElementById('dOldPin').value = '';
+    document.getElementById('dNewPin').value = '';
+    document.getElementById('dConfirmPin').value = '';
+    document.getElementById('dChangePinError').textContent = '';
+    document.getElementById('dPinStrength').textContent = '';
+    document.getElementById('dChangePinModal').classList.add('show');
+}
+
+function dCloseChangePin() {
+    document.getElementById('dChangePinModal').classList.remove('show');
+}
+
+function dCheckPinStrength() {
+    var pin = document.getElementById('dNewPin').value;
+    var el = document.getElementById('dPinStrength');
+    if (!pin) { el.textContent = ''; return; }
+
+    if (pin.length < 6) {
+        el.textContent = '⚠️ Masukkan 6 digit';
+        el.style.color = '#f59e0b';
+        return;
+    }
+
+    // Check patterns lemah
+    var allSame = /^(\d)\1{5}$/.test(pin);         // 111111
+    var sequential = '012345678901234567890';
+    var seqReverse = '098765432109876543210';
+    var isSeq = sequential.indexOf(pin) > -1;       // 123456
+    var isSeqRev = seqReverse.indexOf(pin) > -1;    // 654321
+
+    if (allSame) {
+        el.textContent = '❌ Terlalu lemah — jangan guna nombor sama semua';
+        el.style.color = '#ef4444';
+    } else if (isSeq || isSeqRev) {
+        el.textContent = '❌ Terlalu lemah — jangan guna nombor berturutan';
+        el.style.color = '#ef4444';
+    } else {
+        el.textContent = '✅ PIN kuat';
+        el.style.color = '#22c55e';
+    }
+}
+
+async function dSubmitChangePin() {
+    var oldPin = document.getElementById('dOldPin').value.trim();
+    var newPin = document.getElementById('dNewPin').value.trim();
+    var confirmPin = document.getElementById('dConfirmPin').value.trim();
+    var errorEl = document.getElementById('dChangePinError');
+
+    errorEl.textContent = '';
+
+    // Validation
+    if (!oldPin) { errorEl.textContent = '❌ Sila masukkan PIN lama'; return; }
+    if (oldPin.length !== 6 || !/^\d{6}$/.test(oldPin)) {
+        errorEl.textContent = '❌ PIN lama mesti 6 digit nombor';
+        return;
+    }
+    if (!newPin) { errorEl.textContent = '❌ Sila masukkan PIN baru'; return; }
+    if (newPin.length !== 6 || !/^\d{6}$/.test(newPin)) {
+        errorEl.textContent = '❌ PIN baru mesti 6 digit nombor';
+        return;
+    }
+    if (newPin === oldPin) {
+        errorEl.textContent = '❌ PIN baru mesti berbeza dengan PIN lama';
+        return;
+    }
+    if (newPin !== confirmPin) {
+        errorEl.textContent = '❌ PIN baru dan sahkan PIN tidak sepadan';
+        return;
+    }
+
+    // Check weak PIN
+    var allSame = /^(\d)\1{5}$/.test(newPin);
+    var sequential = '012345678901234567890';
+    var seqReverse = '098765432109876543210';
+    if (allSame || sequential.indexOf(newPin) > -1 || seqReverse.indexOf(newPin) > -1) {
+        errorEl.textContent = '❌ PIN terlalu lemah. Sila pilih PIN yang lebih kuat.';
+        return;
+    }
+
+    // Verify old PIN against Firebase
+    var oldPinHash = await hashPin(oldPin);
+
+    try {
+        var snap = await db.ref('dapurConfig/cooks/' + dCurrentCook.id + '/pin').once('value');
+        var storedHash = snap.val();
+
+        if (oldPinHash !== storedHash) {
+            errorEl.textContent = '❌ PIN lama tidak betul';
+            return;
+        }
+
+        // Hash new PIN and save
+        var newPinHash = await hashPin(newPin);
+
+        // ⚠️ Rules semasa cooks ".write": false
+        // Perlu guna path khas untuk update PIN
+        // Tulis ke path sementara, admin approve kemudian
+        // ATAU — kita buat path khas yang boleh write
+
+        await db.ref('dapurConfig/pinChangeRequests/' + dCurrentCook.id).set({
+            cookId: dCurrentCook.id,
+            cookName: dCurrentCook.nama,
+            newPinHash: newPinHash,
+            requestedAt: new Date().toISOString(),
+            timestamp: Date.now(),
+            status: 'pending'
+        });
+
+        dShowToast('✅ PIN berjaya ditukar!');
+        dCloseChangePin();
+
+        // Auto-apply: tukar terus dalam cooks
+        await db.ref('dapurConfig/cooks/' + dCurrentCook.id + '/pin').set(newPinHash);
+
+        // Log
+        db.ref('dapurConfig/loginLog').push({
+            cookId: dCurrentCook.id,
+            cookName: dCurrentCook.nama,
+            action: 'PIN_CHANGED',
+            timestamp: Date.now(),
+            date: new Date().toISOString()
+        });
+
+    } catch (err) {
+        console.error('Change PIN error:', err);
+        if (err.message && err.message.indexOf('permission_denied') > -1) {
+            errorEl.textContent = '❌ Tiada kebenaran. Hubungi admin untuk tukar PIN.';
+        } else {
+            errorEl.textContent = '❌ Ralat: ' + err.message;
+        }
+    }
+}
+</script>
+</body>
+</html>
